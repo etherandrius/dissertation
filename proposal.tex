@@ -1,0 +1,158 @@
+\documentclass[12pt]{article}
+
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{datetime}
+\usepackage{datenumber}
+\usepackage{advdate}
+\usepackage[super]{nth}
+\usepackage[margin=0.75in]{geometry}
+
+\parindent 0pt \parskip 6pt
+
+\newcommand\todo[1]{\textbf{TODO(kc506): #1}}
+\newcommand\haskell[1]{\mintinline{haskell}{#1}}
+\newcommand\monospace[1]{\mintinline{text}{#1}}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\centerline{\large Computer Science Tripos: Part II Project Proposal}
+\vspace{0.4in}
+\centerline{\Large\bf Measuring mutual information within Neural networks}
+\vspace{0.3in}
+
+\centerline{Andrius Grabauskas, ag939}
+\centerline{Robinson College}
+
+% TODO(ag939)
+\centerline{\large \textbf{date}}
+
+\vspace{1in}
+
+\begin{tabular}{ p{4cm} p{4.5cm} l }
+{\bf Project Originator:} & Andrius Grabauskas & \\[3mm]
+{\bf Project Supervisor:} & Dr. Damon Wischik & {\bf Signature:} \\[3mm]
+{\bf Director of Studies:} & Prof. Alan Mycroft & {\bf Signature:} \\[3mm]
+{\bf Overseers:} & Dr. Robert Mullins & {\bf Signature:} \\[3mm]
+                 & Prof. Pietro Lio' & {\bf Signature:} \\[3mm]
+\end{tabular}
+
+\vspace{0.75in}
+
+\section*{Introduction and Description of the Work}
+
+The goal of this project is to confirm or deny the results produced by
+Shwartz-ziv \& Tishby in their paper "Opening the black box of Deep Neural
+Networks via Information"\footnote{https://arxiv.org/abs/1703.00810}
+
+The paper tackles our understating of Deep Neural Networks (DNNs). As of yet
+there is no comprehensive theoretical understanding of how DNNs learn from data.
+The Authors proposed to measure how information travels within the DNNs layers.
+
+They found that training of neural networks can be split into to two distinct
+phases memorization followed by the compression phase.
+\begin{itemize}
+  \item memorization - each layer increases information about the input and the
+    label
+  \item compression  - this is the generalization stage where each layer tries
+    to forget details about the input while still increasing mutual information
+    with the label thus improving performance of the DNN. This phase takes the
+    wast majority of the training time.
+\end{itemize}
+
+They found that each layer in neural network tries to throw out unnecessary data
+from the input while preserving information about the output/label. As the
+network is trained each layer preserves more information about the label
+
+The results they found were interesting but also contentious as they have not
+yet provided a formal proof, just experimental data as a result there are many
+peers that are cautious and sceptical of the theory.
+
+\section*{Starting Point}
+
+I've watched a talk given by Prof. Tishby gave on this topic at Yandex, no other
+preparation was done. 
+
+\section*{Resources Required}
+
+I will use my own laptop to train and evaluate the neural networks as I expect
+them to be small given the difficulty of measuring mutual information and
+entropy in neural networks.
+
+For backups I intend to store my work on GitHub and my own personal machine. In
+case my laptop breaks I'll get another one or use the MCS machines.
+
+\section*{Substance and Structure of the Project}
+
+The aim of this project to reproduce the results provided by Prof. Tishby and
+his peers. The intention of my work is to help settle the debate surrounding the
+topic either strengthening the arguments in favour of the theory in case my
+results are inline with the aforementioned results or encourage discussion in
+case my results contradict the theory.
+
+My work will require me to learn a great deal of Information theory and DNN
+theory. In order for my results to be valid.
+
+One of the more contentious parts of my project will be measuring mutual
+information between the input a layer in the DNN and the label. Mutual
+information is known to be tricky to measure when it comes to Continuous random
+variables.
+
+Will need to use Python to train the neural networks and GNUplot or alternative
+to plot the results.
+
+\section*{Success Criteria}
+
+Confirm or deny the results produced in "Opening the black box of Deep Neural
+Networks via Information" paper on the same dataset as the paper. In order to do
+that I will require:
+
+\begin{itemize}
+  \item Train a neural network
+  \item Measure the mutual information between input the layers and the label.
+  \item analyze the results
+\end{itemize}
+
+\section*{Extensions}
+
+The dataset used in the original paper is very non-standard so it would be very
+interesting to see how the theory holds up when we use it with different
+datasets.
+
+Different datasets will most likely need different ways to approximate mutual
+information between layers.
+
+\section*{Schedule}
+
+% Set start date to 15th October 2018
+\ThisYear{2018}\ThisMonth{10}\ThisDay{15}
+
+\input{daterange.tex}
+
+\begin{itemize}
+  \item {
+      \daterange{42}
+
+      Preliminary reading and examining code written provided by Prof. Tishby
+  } \item {
+      \daterange{28}
+
+      Reproduce the Papers results on the original dataset.
+  } \item {
+      \daterange{14}
+
+      Examine result and produce graphs.
+  } \item {
+      \daterange{42}
+
+      Test the theory on additional datasets 
+  } \item {
+      \daterange{28}
+
+      Final write up of the thesis
+  }
+\end{itemize}
+
+\end{document}
