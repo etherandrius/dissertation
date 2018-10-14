@@ -110,19 +110,9 @@ Networks via Information`` paper on the same dataset as the paper. In order to d
 that I will need to:
 
 \begin{itemize}
-    %TODO(aagg) clarify what dataset was used in the paper.
-  \item Train a neural network on the same dataset that is used in the paper. I
-    will need to train the DNN multiple times in order to make sure the results
-    hold irrespective of the neuron weights. I expect a single training round to
-    be quite light on the computational resources required but since I will need
-    to retrain it multiple times I might need to use compute provided by the
-    Computer Lab.
-  \item Measure the mutual information between input the layers and the label. I
-    will need to measure how information travels between layers this might be
-    tricky because as I understand measuring information is know to be difficult
-    to get right.
-  \item And lastly I will need to analyze the results, compare them to the
-    papers finding and address any discrepancies found.
+  \item Train a neural network
+  \item Measure the mutual information between input the layers and the label.
+  \item Analyze the results
 \end{itemize}
 
 \section*{Extensions}
