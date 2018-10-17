@@ -4,6 +4,7 @@
 \usepackage{hyperref}
 \usepackage{datetime}
 \usepackage{datenumber}
+\usepackage{pdfpages}
 \usepackage{advdate}
 \usepackage[super]{nth}
 \usepackage[margin=0.75in]{geometry}
@@ -12,6 +13,8 @@
 
 
 \begin{document}
+
+\includepdf[pages={1}]{ProposalForm.pdf}
 
 \thispagestyle{empty}
 
@@ -23,16 +26,15 @@
 \centerline{Andrius Grabauskas, ag939}
 \centerline{Robinson College}
 
-\centerline{\large \textbf{date}}
+\centerline{\large \textbf{\today}}
 
 \vspace{1in}
 
 \begin{tabular}{ p{4cm} p{4.5cm} l }
 {\bf Project Originator:} & Andrius Grabauskas & \\[3mm]
-{\bf Project Supervisor:} & Dr.\ Damon Wischik & {\bf Signature:} \\[3mm]
-{\bf Director of Studies:} & Prof.\ Alan Mycroft & {\bf Signature:} \\[3mm]
-{\bf Overseers:} & Dr.\ Robert Mullins & {\bf Signature:} \\[3mm]
-                 & Prof.\ Pietro Lio' & {\bf Signature:} \\[3mm]
+{\bf Project Supervisor:} & Dr.\ Damon Wischik \\[3mm]
+{\bf Director of Studies:} & Prof.\ Alan Mycroft \\[3mm]
+{\bf Overseers:} & Dr.\ Robert Mullins & Prof.\ Pietro Lio' \\[3mm]
 \end{tabular}
 
 \vspace{0.75in}
