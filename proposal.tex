@@ -79,9 +79,9 @@ preparation was done.
 
 \section*{Resources Required}
 
-The training of DNN`s will be computationally expensive so I will be using Azure
-cloud GPU service to acquire the required compute for this project. The GPU
-credits will be provided by Damon Wischik
+The training DNN`s and measuring mutual information will be computationally
+expensive so I will be using Azure cloud GPU service to acquire the required
+compute for this project. The GPU credits will be provided by Damon Wischik
 
 For backups I intend to store my work on GitHub and my own personal machine. In
 case my laptop breaks I will get another one or use the MCS machines.
@@ -89,10 +89,10 @@ case my laptop breaks I will get another one or use the MCS machines.
 \section*{Substance and Structure of the Project}
 
 The aim of this project to reproduce the results provided by Prof.\ Tishby and
-his colleagues. The intention of my work is to help settle the debate surrounding the
-topic either strengthening the arguments in favour of the theory in case my
-results are inline with the aforementioned results or encourage discussion in
-case my results contradict the theory.
+his colleagues. The intention of my work is to help settle the debate
+surrounding the topic either strengthening the arguments in favour of the theory
+in case my results are inline with the aforementioned results or encourage
+discussion in case my results contradict the theory.
 
 My work will require me to have a comprehensive understanding of Information
 theory, Information bottleneck and neural networks.
@@ -123,8 +123,8 @@ Provided I achieve the success criteria there are two main ways to extend it.
 \begin{itemize}
   \item {
       Use different datasets to test the theory. Using different datasets would
-      confirm that the results are not dataset specific. Current datasets we
-      considered are MNIST\footnote{http://yann.lecun.com/exdb/mnist/} and
+      confirm that the results are not data specific. Current datasets we
+      are considering: MNIST\footnote{http://yann.lecun.com/exdb/mnist/} and
       NOT-MNIST\footnote{https://www.kaggle.com/quanbk/notmnist}.
   }
   \item {
@@ -147,7 +147,7 @@ Provided I achieve the success criteria there are two main ways to extend it.
   \item {
       \daterange{14}
 
-      I expect to spend the first week reading up on Information theory
+      I expect to spend the first two weeks reading up on Information theory
       (primarily from Mackay`s book\footnote{Informaition Theory, Inference, and
       Learning Algorithms by David J. C. MacKay}) and the information bottleneck
       method in order to understand the nuances of the paper.
@@ -188,11 +188,12 @@ Provided I achieve the success criteria there are two main ways to extend it.
       \daterange{42}
 
       Assuming everything goes as planned I will start looking into implementing
-      one of the extensions.
-
-      Either reproducing the results on a different dataset too see if the
-      results of the paper are not dataset specific. Or to implement a discrete
-      DNN in order to measure mutual information in a fully defined way.
+      one of the extensions. Which are :
+      \begin{itemize}
+        \item Testing the theory on different datasets.
+        \item Implementing a quantized neural network implementation.
+      \end{itemize}
+      or both, if time is in my favour.
   } \item {
       \daterange{28}
 
