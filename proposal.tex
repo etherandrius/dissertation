@@ -130,11 +130,14 @@ Provided I achieve the success criteria there are two main ways to extend it.
   \item {
       Explore different ways of measuring mutual information. One interesting
       way would be to explore a discrete neural network where every node would
-      only be able assigned discrete values say {1...256} this would make
-      measuring mutual information more defined, however this would possibly
-      hurt the performance of the whole network.
+      only be able assigned discrete values say {1...256}. This would make the
+      distribution within a DNN layer discrete and hence it would make
+      calculating mutual information straightforward. However quantizing the
+      neural network could possibly hurt the performance of the network.
   }
 \end{itemize}
+
+\newpage
 
 \section*{Schedule}
 
@@ -173,7 +176,7 @@ Provided I achieve the success criteria there are two main ways to extend it.
       Implementing mutual information measurement in code.
 
       At this point I expect the computation to be too demanding for my machine
-      and will need to use Azure.
+      and will need to use provided compute.
   } 
   \item {
       \daterange{35}
