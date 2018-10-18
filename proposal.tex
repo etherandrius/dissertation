@@ -45,9 +45,9 @@ The goal of this project is to confirm or deny the results produced by
 Shwartz-ziv \& Tishby in their paper ``Opening the black box of Deep Neural
 Networks via Information``\footnote{https://arxiv.org/abs/1703.00810}
 
-The paper tackles our understating of Deep Neural Networks (DNNs). As of yet
-there is no comprehensive theoretical understanding of how DNNs learn from data.
-The authors proposed to measure how information travels within the DNNs layers.
+The paper tackles our understating of Deep Neural Networks (DNN`s). As of yet
+there is no comprehensive theoretical understanding of how DNN`s learn from data.
+The authors proposed to measure how information travels within the DNN`s layers.
 
 They found that training of neural networks can be split into to two distinct
 phases: memorization followed by the compression phase.
@@ -79,7 +79,7 @@ preparation was done.
 
 \section*{Resources Required}
 
-The training of DNNs will be computationally expensive so I will be using Azure
+The training of DNN`s will be computationally expensive so I will be using Azure
 cloud GPU service to acquire the required compute for this project. The GPU
 credits will be provided by Damon Wischik
 
@@ -139,52 +139,60 @@ Provided I achieve the success criteria there are two main ways to extend it.
 \section*{Schedule}
 
 % Set start date to 15th October 2018
-\ThisYear{2018}\ThisMonth{10}\ThisDay{15}
+\ThisYear{2018}\ThisMonth{10}\ThisDay{20}
 
 \input{daterange.tex}
 
 \begin{itemize}
   \item {
-      \daterange{21}
-
-      At the start of my dissertation I expect to spend quite a bit of time
-      reading up on the relevant subjects
-      \begin{itemize}
-        \item { 
-          Information theory primarily will read Mackay`s
-          book\footnote{Informaition Theory, Inference, and Learning Algorithms
-          by David J. C. MacKay} 
-        } \item { 
-          Information bottleneck will use relevant papers and talks.
-        } \item {
-          Training neural networks. 
-        } \item {
-          Measuring Entropy and Mutual information between DNN layers
-        }
-      \end{itemize}
-  } \item {
       \daterange{14}
 
-      At this point I should be confident enough with the theory proposed by
-      Tishby and will start examining the code that was
-      provided\footnote{https://github.com/ravidziv/IDNNs}.  I will need to
-      learn the relevant technologies for training neural networks.
-  } \item {
-      \daterange{14}
+      I expect to spend the first week reading up on Information theory
+      (primarily from Mackay`s book\footnote{Informaition Theory, Inference, and
+      Learning Algorithms by David J. C. MacKay}) and the information bottleneck
+      method in order to understand the nuances of the paper.
+  }
+  \item {
+      \daterange{28}
+      
+      The following weeks I intend to spend reading up on DNN`s doing some
+      introductory courses, I will train the neural network on the same data as
+      the paper but at this point will not yet try to measure the mutual
+      information between the layers.
 
-      Having examined Tishby`s code I will reimplement it both in order to
-      understand it better and for the cause of independent verification.
-  } \item {
+      At this point I will also start examining the
+      code\footnote{https://github.com/ravidziv/IDNNs} provided and start to
+      implement parts of it which don't deal with information measurement.
+  }
+  \item {
+      \daterange{28}
+
+      Will start reading up on mutual Information measurement with local
+      Gaussian approximation.
+
+      Implementing mutual information measurement in code.
+
+      At this point I expect the computation to be too demanding for my machine
+      and will need to use Azure.
+  } 
+  \item {
       \daterange{35}
 
       Having a working system to test data sets I will try to reproduce results
       from the paper on the same dataset. This will achieve my success criteria.
+
+      At this point my success criteria should be completed I will spend some
+      time writing the skeleton of the thesis. Look for any discrepancies
+      between my results and the ones provided in the paper.
   } \item {
       \daterange{42}
 
-      Assuming everything goes as planned I will start looking into other
-      datasets to verify the theory still stands and is not just a consequence
-      of the dataset chosen in the paper.
+      Assuming everything goes as planned I will start looking into implementing
+      one of the extensions.
+
+      Either reproducing the results on a different dataset too see if the
+      results of the paper are not dataset specific. Or to implement a discrete
+      DNN in order to measure mutual information in a fully defined way.
   } \item {
       \daterange{28}
 
