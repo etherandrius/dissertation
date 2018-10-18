@@ -79,9 +79,9 @@ preparation was done.
 
 \section*{Resources Required}
 
-I will use my own laptop to train and evaluate the neural networks as I expect
-them to be small given the difficulty of measuring mutual information and
-entropy in neural networks.
+The training of DNNs will be computationally expensive so I will be using Azure
+cloud GPU service to acquire the required compute for this project. The GPU
+credits will be provided by Damon Wischik
 
 For backups I intend to store my work on GitHub and my own personal machine. In
 case my laptop breaks I will get another one or use the MCS machines.
@@ -98,55 +98,43 @@ My work will require me to have a comprehensive understanding of Information
 theory, Information bottleneck and neural networks.
 
 One of the more contentious parts of my project will be measuring mutual
-information between the input a layer in the DNN and the label. Mutual
-information is known to be tricky to measure when it comes to continuous random
-variables.
+information between the input a layer in the DNN and the label. It will be
+computationally expensive to measure it in DNN since we will need to retrain the
+network in order to get a distribution rather than a single value. I will use
+Gaussian approximation to measure it (relevant
+paper\footnote{https://arxiv.org/abs/1508.00536})
 
 Will need to use Python to train the neural networks and GNUplot or alternative
 to plot the results.
 
-%TODO(ag939) confirm with @damon.wischik in which cases is mutual information is
-%tricky to measure ? And also is it computationally expensive to do so?
-
-%TODO(ag939) confirm with @damon.wischik how much compute resources my project
-%will require.
-
 \section*{Success Criteria}
 
-Confirm or deny the results produced in``Opening the black box of Deep Neural
-Networks via Information`` paper on the same dataset as the paper. In order to do
-that I will need to:
-
-\begin{itemize}
-    %TODO(ag939) clarify what dataset was used in the paper.
-  \item Train a neural network on the same dataset that is used in the paper. I
-    will need to train the DNN multiple times in order to make sure the results
-    hold irrespective of the neuron weights. I expect a single training round to
-    be quite light on the computational resources required but since I will need
-    to retrain it multiple times I might need to use compute provided by the
-    Computer Lab.
-  \item Measure the mutual information between input the layers and the label. I
-    will need to measure how information travels between layers this might be
-    tricky because as I understand measuring information is know to be difficult
-    to get right.
-  \item And lastly I will need to analyze the results, compare them to the
-    papers finding and address any discrepancies found.
-\end{itemize}
+Reimplement the code that was used to generate the papers results. Confirm or
+deny the results produced in``Opening the black box of Deep Neural Networks via
+Information`` paper on the same dataset as the paper. In order to do that I will
+need to: Train a neural network on the same dataset that was used in the paper
+and measure mutual information between the layers. Analyse the results produced
+and address any discrepancies that may have occurred.
 
 \section*{Extensions}
 
-% TODO(ag939) ask @damon.wischik if he has any datasets in mind so that I can
-% note them here ?
-Provided I achieve the success criteria I am planning to explore other datasets
-and try to verify that the theory holds.
-% TODO(ag939) clarify what dataset was used in the Paper.
-The dataset used in the original paper is very non-standard so it would be very
-interesting to see how the theory holds up when we use it with different
-datasets.
+Provided I achieve the success criteria there are two main ways to extend it.
 
-% TODO(ag939) clarify this with @damo.wishcik.
-Different datasets will most likely need different ways to approximate mutual
-information between layers.
+\begin{itemize}
+  \item {
+      Use different datasets to test the theory. Using different datasets would
+      confirm that the results are not dataset specific. Current datasets we
+      considered are MNIST\footnote{http://yann.lecun.com/exdb/mnist/} and
+      NOT-MNIST\footnote{https://www.kaggle.com/quanbk/notmnist}.
+  }
+  \item {
+      Explore different ways of measuring mutual information. One interesting
+      way would be to explore a discrete neural network where every node would
+      only be able assigned discrete values say {1...256} this would make
+      measuring mutual information more defined, however this would possibly
+      hurt the performance of the whole network.
+  }
+\end{itemize}
 
 \section*{Schedule}
 
