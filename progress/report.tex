@@ -51,15 +51,25 @@
   used, and to show that the results are stable with variations to the parameters
   such as: batch size, network shape, training size. 
 
-
 \large{\bf Current Progress, Planned work}
 
   I am not yet able to confirm or deny Tishby`s results when varying the Dataset
-  activation function or the Mutual Information estimators (MIE), as there has
-  been some difficulty getting sensible result from the Mutual Information
-  estimators I was able to find, the current plan in this regard is to try to
-  use the same estimator that was used in Saxe`s paper
-  \footnote{https://openreview.net/forum?id=ry\_WPG-A-} and see what results the
-  I can get with only varying the MIE as Saxe`s paper changed 
-  
+  neuron activation function or the Mutual Information estimators (MIE).
+  There has been some difficulty getting sensible results from the Mutual
+  Information estimators that I was able to find, and I have reason to believe
+  that Tishby`s MIE might be flawed. The current plan in this regard is to try
+  and use the same estimator that was used in Saxe`s paper
+  \footnote{https://openreview.net/forum?id=ry\_WPG-A-} which used a Kernel
+  Density estimator (KDE) and binning to compute the Mutual Information (MI). 
+  Saxe`s paper conducted an experiment where they changed Dataset, activation
+  function and the MIE, my current aim is to only vary the MIE which would show
+  if Tishby`s result is only due to how he calculates MI.
+
+  Also future plans include exploring the idea of how we can consider weights
+  between layers as random variables, and test if Tishby`s hypothesis works
+  under the those conditions. Tishby himself strongly suggests that weights
+  should be considered as random variables but as of yet I am not aware of any
+  work that tests this hypothesis. We are still unsure how it is best to test
+  conduct such an experiment.
+
 \end{document}
