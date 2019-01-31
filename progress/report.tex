@@ -18,7 +18,7 @@
 
 \thispagestyle{empty}
 
-\centerline{\large Calculating Mutual Information inside Deep Neural Networks}
+\centerline{\large Calculating Mutual Information in Deep Neural Networks}
 \centerline{\large Progress Report}
 \vspace{0.2in}
 
@@ -29,7 +29,6 @@
 \vspace{0.2in}
 
 \ThisYear{2019}\ThisMonth{1}\ThisDay{21}
-\input{daterange.tex}
 
 \begin{tabular}[t]{@{}l}
 {\bf Project Supervisor:} Dr.\ Damon Wischik \\[3mm]
@@ -45,27 +44,22 @@
 
 \large{\bf Success Criteria}
 
-\large{\bf Current Progress}
+  Success criteria have been achieved, I am now able to reproduce the results in
+  Tishby`s paper\footnote{https://arxiv.org/abs/1703.00810}. That is, I am able
+  to reproduce the information plane results that show the drift and the
+  compression phase of a Neural Network for the specific parameters that Tishby
+  used, and to show that the results are stable with variations to the parameters
+  such as: batch size, network shape, training size. 
 
-\large{\bf New Schedule}
 
-New Schedule
+\large{\bf Current Progress, Planned work}
 
-\begin{itemize}
-\item
-{
-    \daterange{14}
-
-    a
-}
-\item
-{
-    \daterange{21}
-
-    v
-}
-\end{itemize}
-
-end
-
+  I am not yet able to confirm or deny Tishby`s results when varying the Dataset
+  activation function or the Mutual Information estimators (MIE), as there has
+  been some difficulty getting sensible result from the Mutual Information
+  estimators I was able to find, the current plan in this regard is to try to
+  use the same estimator that was used in Saxe`s paper
+  \footnote{https://openreview.net/forum?id=ry\_WPG-A-} and see what results the
+  I can get with only varying the MIE as Saxe`s paper changed 
+  
 \end{document}
