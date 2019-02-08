@@ -1,9 +1,13 @@
-*.aux
-*.fdb_latexmk
-*.fdb_latexmk
-*.fls
-*.log
-*.out
-*.synctex.gz
+**/*.aux
+**/*.fdb_latexmk
+**/*.fdb_latexmk
+**/*.fls
+**/*.log
+**/*.out
+**/*.synctex.gz
+**/*.nav
+**/*.snm
+**/*.toc
 
-/_minted*/
+
+**/_minted*/
