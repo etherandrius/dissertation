@@ -117,7 +117,7 @@
       \item {
           Settled with Kernel Density Mutual (KDE) MIE, which agreed with
           Tishby`s results. (Although it is by far not a perfect measure of
-          information)
+          mutual information)
       }
 
     \end{itemize}
@@ -126,22 +126,29 @@
     \frametitle{Remaining work, Issues}
       \begin{itemize}
         \item{ 
-          Show that the results hold for a bigger dataset such as MNIST
+          Show that compression happens in a bigger dataset such as MNIST and
+          hence Tishby`s results holds for other datasets.
         }
         \item{ 
           Clean up and comment the code such that it is easy to understand and
           extensible by others.
         }
         \item{ 
-          At the core of Tishby`s thesis is the notion that Weights of a NN are
-          random
+          At the core of Tishby`s thesis is the suggestion that Weights of a NN
+          are random
           \begin{itemize}
+            \item {
+                However every weight is fixed at any given point in time and
+                every weight matrix is invertible which would suggest that the
+                neural network cannot lose information.
+            }
             \item{
-                What does it actually mean for a weight of a NN to be random ?
+                If the weights are random this implies that Neural networks
+                truly can lose information from layer to layer.
             } 
             \item {
-                given that at every point in time a weight is fixed and non
-                changing.
+                Need to find ways of working around the "issue" of fixed
+                weights.
             }
           \end{itemize}
         }
