@@ -9,6 +9,7 @@
 **/*.snm
 **/*.toc
 **/*.dvi
+**/*.lof
 
 
 **/_minted*/

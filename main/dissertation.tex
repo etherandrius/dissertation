@@ -1,180 +1,416 @@
 
-\documentclass[12pt]{article}
+% Template for a Computer Science Tripos Part II project dissertation
+\documentclass[12pt,a4paper,twoside,openright]{report}
+\usepackage[pdfborder={0 0 0}]{hyperref}    % turns references into hyperlinks
+\usepackage[margin=25mm]{geometry}  % adjusts page layout
+\usepackage{graphicx}  % allows inclusion of PDF, PNG and JPG images
+\usepackage{verbatim}
+\usepackage{docmute}   % only needed to allow inclusion of proposal.tex
 
-\usepackage{minted}
-\usepackage{hyperref}
-\usepackage{datetime}
-\usepackage{datenumber}
-\usepackage{pdfpages}
-\usepackage{advdate}
-\usepackage[super]{nth}
-\usepackage[margin=0.75in]{geometry}
+\raggedbottom                           % try to avoid widows and orphans
+\sloppy
+\clubpenalty1000%
+\widowpenalty1000%
 
-\parindent 0pt \parskip 6pt
-
+\renewcommand{\baselinestretch}{1.1}    % adjust line spacing to make
+                                        % more readable
 
 \begin{document}
 
-\centerline{\large Computer Science Tripos: Part II Project Proposal}
-\vspace{0.4in}
-\centerline{\Large\bf Measuring mutual information within Neural networks}
-\vspace{0.3in}
+\bibliographystyle{plain}
 
-\centerline{Andrius Grabauskas, ag939}
-\centerline{Robinson College}
 
-\centerline{\large \textbf{\today}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title
 
-\vspace{1in}
 
-\begin{tabular}{ p{4cm} p{4.5cm} l }
-{\bf Project Originator:} & Andrius Grabauskas & \\[3mm]
-{\bf Project Supervisor:} & Dr.\ Damon Wischik \\[3mm]
-{\bf Director of Studies:} & Prof.\ Alan Mycroft \\[3mm]
-{\bf Overseers:} & Dr.\ Robert Mullins & Prof.\ Pietro Lio' \\[3mm]
+\pagestyle{empty}
+
+\rightline{\LARGE \textbf{Martin Richards}}
+
+\vspace*{60mm}
+\begin{center}
+\Huge
+\textbf{How to write a dissertation in \LaTeX} \\[5mm]
+Computer Science Tripos -- Part II \\[5mm]
+St John's College \\[5mm]
+\today  % today's date
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Proforma, table of contents and list of figures
+
+\pagestyle{plain}
+
+\chapter*{Proforma}
+
+{\large
+\begin{tabular}{ll}
+Name:               & \bf Martin Richards                       \\
+College:            & \bf St John's College                     \\
+Project Title:      & \bf How to write a dissertation in \LaTeX \\
+Examination:        & \bf Computer Science Tripos -- Part II, July 2001  \\
+Word Count:         & \bf 1587\footnotemark[1]
+                      (well less than the 12000 limit)  \\
+Project Originator: & Dr M.~Richards                    \\
+Supervisor:         & Dr Markus Kuhn                    \\ 
 \end{tabular}
+}
+\footnotetext[1]{This word count was computed
+by \texttt{detex diss.tex | tr -cd '0-9A-Za-z $\tt\backslash$n' | wc -w}
+}
+\stepcounter{footnote}
 
-\vspace{0.75in}
 
-\section*{Abstract}
+\section*{Original Aims of the Project}
 
-\section*{Introduction}
+To write a demonstration dissertation\footnote{A normal footnote without the
+complication of being in a table.} using \LaTeX\ to save
+student's time when writing their own dissertations. The dissertation
+should illustrate how to use the more common \LaTeX\ constructs. It
+should include pictures and diagrams to show how these can be
+incorporated into the dissertation.  It should contain the entire
+\LaTeX\ source of the dissertation and the makefile.  It should
+explain how to construct an MSDOS disk of the dissertation in
+Postscript format that can be used by the book shop for printing, and,
+finally, it should have the prescribed layout and format of a diploma
+dissertation.
 
-\section*{1. Summary of results and structure of the paper}
 
-\section*{3. Numerical experiments and results}
+\section*{Work Completed}
 
-\subsection*{3.1 Different Mutual Information estimators}
+All that has been completed appears in this dissertation.
 
-\subsection*{3.1.1 Justifying why binning might actually be an appropriate way to
-measure MI inside neural networks}
+\section*{Special Difficulties}
 
-  
+Learning how to incorporate encapulated postscript into a \LaTeX\
+document on both Ubuntu Linux and OS X.
+ 
+\newpage
+\section*{Declaration}
+
+I, [Name] of [College], being a candidate for Part II of the Computer
+Science Tripos [or the Diploma in Computer Science], hereby declare
+that this dissertation and the work described in it are my own work,
+unaided except as may be specified below, and that the dissertation
+does not contain material that has already been used to any substantial
+extent for a comparable purpose.
+
+\bigskip
+\leftline{Signed [signature]}
+
+\medskip
+\leftline{Date [date]}
+
+\tableofcontents
+
+\listoffigures
+
+\newpage
+\section*{Acknowledgements}
+
+This document owes much to an earlier version written by Simon Moore
+\cite{Moore95}.  His help, encouragement and advice was greatly 
+appreciated.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% now for the chapters
+
+\pagestyle{headings}
+
+\chapter{Introduction}
+
+\section{Overview of the files}
+
+This document consists of the following files:
 
 \begin{itemize}
-
-  \item binning
-
-  \item KDE 
-
-  \item KL estimator
-
-  \item LNN order 1 and 2
-
-  \item Local Gaussian Approximation - to be implemented
-
-
-
-\end{itemize} 
-
-\subsection*{3.2 Different Data Sets}
-
-\begin{itemize}
-  \item Tishby's
-
-  \item MNIST
-
-  \item Fabricated with relevant and irrelevant inputs
-
+\item \texttt{makefile} --- The makefile for the dissertation and
+                         Project Proposal
+\item \texttt{diss.tex} --- The dissertation
+\item \texttt{proposal.tex}  --- The project proposal 
+\item \texttt{figs} -- A directory containing diagrams and pictures
+\item \texttt{refs.bib} --- The bibliography database
 \end{itemize}
 
+\section{Building the document}
 
-\section*{Introduction and Description of the Work}
+This document was produced using \LaTeXe which is based upon
+\LaTeX\cite{Lamport86}.  To build the document you first need to
+generate \texttt{diss.aux} which, amongst other things, contains the
+references used.  This if done by executing the command:
 
-The goal of this project is to confirm or deny the results produced by
-Shwartz-ziv \& Tishby in their paper ``Opening the black box of Deep Neural
-Networks via Information``\footnote{https://arxiv.org/abs/1703.00810}
+\texttt{pdflatex diss}
 
-The paper tackles our understating of Deep Neural Networks (DNN`s). As of yet
-there is no comprehensive theoretical understanding of how DNN`s learn from data.
-The authors proposed to measure how information travels within the DNN`s layers.
+\noindent
+Then the bibliography can be generated from \texttt{refs.bib} using:
 
-They found that training of neural networks can be split into to two distinct
-phases: memorization followed by the compression phase.
-\begin{itemize}
-  \item memorization - each layer increases information about the input and the
-    label
-  \item compression  - this is the generalization stage where each layer tries
-    to forget details about the input while still increasing mutual information
-    with the label thus improving performance of the DNN. This phase takes the
-    wast majority of the training time.
-\end{itemize}
+\texttt{bibtex diss}
 
-They found that each layer in neural network tries to throw out unnecessary data
-from the input while preserving information about the output/label. As the
-network is trained each layer preserves more information about the label
+\noindent
+Finally, to ensure all the page numbering is correct run \texttt{pdflatex}
+on \texttt{diss.tex} until the \texttt{.aux} files do not change.  This
+usually takes 2 more runs.
 
-The results they found were interesting but also contentious as they have not
-yet provided a formal proof, just experimental data as a result there are many
-peers that are cautious and sceptical of the theory even a
-paper\footnote{https://openreview.net/pdf?id=ry\_WPG-A-} was produced that tries
-to suggest that the theory is wrong, however this was dismissed by Tishby \&
-Shwartz-Ziv\footnote{https://openreview.net/forum?id=ry\_WPG-A-\&noteId=S1lBxcE1z}
+\subsection{The makefile}
+
+To simplify the calls to \texttt{pdflatex} and \texttt{bibtex}, 
+a makefile has been provided, see Appendix~\ref{makefile}. 
+It provides the following facilities:
+
+\begin{description}
+
+\item\texttt{make} \\
+ Display help information.
+
+\item\texttt{make proposal.pdf} \\
+ Format the proposal document as a PDF.
+
+\item\texttt{make view-proposal} \\
+ Run \texttt{make proposal.pdf} and then display it with a Linux PDF viewer
+ (preferably ``okular'', if that is not available fall back to ``evince'').
+
+\item\texttt{make diss.pdf} \\
+ Format the dissertation document as a PDF.
+
+\item\texttt{make count} \\
+Display an estimate of the word count.
+
+\item\texttt{make all} \\
+Construct \texttt{proposal.pdf} and \texttt{diss.pdf}.
+
+\item\texttt{make pub} \\ Make \texttt{diss.pdf}
+and place it in my \texttt{public\_html} directory.
+
+\item\texttt{make clean} \\ Delete all intermediate files except the
+source files and the resulting PDFs. All these deleted files can
+be reconstructed by typing \texttt{make all}.
+
+\end{description}
 
 
-\section*{Starting Point}
+\section{Counting words}
 
-I have watched a talk that Prof.\ Tishby gave on this topic at Yandex, no other
-preparation was done. 
+An approximate word count of the body of the dissertation may be
+obtained using:
 
-\section*{Resources Required}
+\texttt{wc diss.tex}
 
-The training DNN`s and measuring mutual information will be computationally
-expensive so I will be using Azure cloud GPU service to acquire the required
-compute for this project. The GPU credits will be provided by Damon Wischik
+\noindent
+Alternatively, try something like:
 
-For backups I intend to store my work on GitHub and my own personal machine. In
-case my laptop breaks I will get another one or use the MCS machines.
+\verb/detex diss.tex | tr -cd '0-9A-Z a-z\n' | wc -w/
 
-\section*{Substance and Structure of the Project}
 
-The aim of this project to reproduce the results provided by Prof.\ Tishby and
-his colleagues. The intention of my work is to help settle the debate
-surrounding the topic either strengthening the arguments in favour of the theory
-in case my results are inline with the aforementioned results or encourage
-discussion in case my results contradict the theory.
+\chapter{Preparation}
 
-My work will require me to have a comprehensive understanding of Information
-theory, Information bottleneck and neural networks.
+This chapter is empty!
 
-One of the more contentious parts of my project will be measuring mutual
-information between the input a layer in the DNN and the label. It will be
-computationally expensive to measure it in DNN since we will need to retrain the
-network in order to get a distribution rather than a single value. I will use
-Gaussian approximation to measure it (relevant
-paper\footnote{https://arxiv.org/abs/1508.00536})
 
-Will need to use Python to train the neural networks and GNUplot or alternative
-to plot the results.
+\chapter{Implementation}
 
-\section*{Success Criteria}
+\section{Verbatim text}
 
-Reimplement the code that was used to generate the papers results. Confirm or
-deny the results produced in``Opening the black box of Deep Neural Networks via
-Information`` paper on the same dataset as the paper. In order to do that I will
-need to: Train a neural network on the same dataset that was used in the paper
-and measure mutual information between the layers. Analyse the results produced
-and address any discrepancies that may have occurred.
+Verbatim text can be included using \verb|\begin{verbatim}| and
+\verb|\end{verbatim}|. I normally use a slightly smaller font and
+often squeeze the lines a little closer together, as in:
 
-\section*{Extensions}
-
-Provided I achieve the success criteria there are two main ways to extend it.
-
-\begin{itemize}
-  \item {
-      Use different datasets to test the theory. Using different datasets would
-      confirm that the results are not data specific. Current datasets we
-      are considering: MNIST\footnote{http://yann.lecun.com/exdb/mnist/} and
-      NOT-MNIST\footnote{https://www.kaggle.com/quanbk/notmnist}.
+{\renewcommand{\baselinestretch}{0.8}\small
+\begin{verbatim}
+GET "libhdr"
+ 
+GLOBAL { count:200; all  }
+ 
+LET try(ld, row, rd) BE TEST row=all
+                        THEN count := count + 1
+                        ELSE { LET poss = all & ~(ld | row | rd)
+                               UNTIL poss=0 DO
+                               { LET p = poss & -poss
+                                 poss := poss - p
+                                 try(ld+p << 1, row+p, rd+p >> 1)
+                               }
+                             }
+LET start() = VALOF
+{ all := 1
+  FOR i = 1 TO 12 DO
+  { count := 0
+    try(0, 0, 0)
+    writef("Number of solutions to %i2-queens is %i5*n", i, count)
+    all := 2*all + 1
   }
-  \item {
-      Explore different ways of measuring mutual information. One interesting
-      way would be to explore a discrete neural network where every node would
-      only be able assigned discrete values say {1...256}. This would make the
-      distribution within a DNN layer discrete and hence it would make
-      calculating mutual information straightforward. However quantizing the
-      neural network could possibly hurt the performance of the network.
-  }
-\end{itemize}
+  RESULTIS 0
+}
+\end{verbatim}
+}
+
+\section{Tables}
+
+\begin{samepage}
+Here is a simple example\footnote{A footnote} of a table.
+
+\begin{center}
+\begin{tabular}{l|c|r}
+Left      & Centred & Right \\
+Justified &         & Justified \\[3mm]
+%\hline\\%[-2mm]
+First     & A       & XXX \\
+Second    & AA      & XX  \\
+Last      & AAA     & X   \\
+\end{tabular}
+\end{center}
+
+\noindent
+There is another example table in the proforma.
+\end{samepage}
+
+\section{Simple diagrams}
+
+Simple diagrams can be written directly in \LaTeX.  For example, see
+figure~\ref{latexpic1} on page~\pageref{latexpic1} and see
+figure~\ref{latexpic2} on page~\pageref{latexpic2}.
+
+\begin{figure}
+\setlength{\unitlength}{1mm}
+\begin{center}
+\begin{picture}(125,100)
+\put(0,80){\framebox(50,10){AAA}}
+\put(0,60){\framebox(50,10){BBB}}
+\put(0,40){\framebox(50,10){CCC}}
+\put(0,20){\framebox(50,10){DDD}}
+\put(0,00){\framebox(50,10){EEE}}
+
+\put(75,80){\framebox(50,10){XXX}}
+\put(75,60){\framebox(50,10){YYY}}
+\put(75,40){\framebox(50,10){ZZZ}}
+
+\put(25,80){\vector(0,-1){10}}
+\put(25,60){\vector(0,-1){10}}
+\put(25,50){\vector(0,1){10}}
+\put(25,40){\vector(0,-1){10}}
+\put(25,20){\vector(0,-1){10}}
+
+\put(100,80){\vector(0,-1){10}}
+\put(100,70){\vector(0,1){10}}
+\put(100,60){\vector(0,-1){10}}
+\put(100,50){\vector(0,1){10}}
+
+\put(50,65){\vector(1,0){25}}
+\put(75,65){\vector(-1,0){25}}
+\end{picture}
+\end{center}
+\caption{A picture composed of boxes and vectors.}
+\label{latexpic1}
+\end{figure}
+
+\begin{figure}
+\setlength{\unitlength}{1mm}
+\begin{center}
+
+\begin{picture}(100,70)
+\put(47,65){\circle{10}}
+\put(45,64){abc}
+
+\put(37,45){\circle{10}}
+\put(37,51){\line(1,1){7}}
+\put(35,44){def}
+
+\put(57,25){\circle{10}}
+\put(57,31){\line(-1,3){9}}
+\put(57,31){\line(-3,2){15}}
+\put(55,24){ghi}
+
+\put(32,0){\framebox(10,10){A}}
+\put(52,0){\framebox(10,10){B}}
+\put(37,12){\line(0,1){26}}
+\put(37,12){\line(2,1){15}}
+\put(57,12){\line(0,2){6}}
+\end{picture}
+
+\end{center}
+\caption{A diagram composed of circles, lines and boxes.}
+\label{latexpic2}
+\end{figure}
+
+
+
+\section{Adding more complicated graphics}
+
+The use of \LaTeX\ format can be tedious and it is often better to use
+encapsulated postscript (EPS) or PDF to represent complicated graphics.
+Figure~\ref{epsfig} and~\ref{xfig} on page \pageref{xfig} are
+examples. The second figure was drawn using \texttt{xfig} and exported in
+{\tt.eps} format. This is my recommended way of drawing all diagrams.
+
+
+\begin{figure}[tbh]
+\centerline{\includegraphics{figs/cuarms.pdf}}
+\caption{Example figure using encapsulated postscript}
+\label{epsfig}
+\end{figure}
+
+\begin{figure}[tbh]
+\vspace{4in}
+\caption{Example figure where a picture can be pasted in}
+\label{pastedfig}
+\end{figure}
+
+
+\begin{figure}[tbh]
+\centerline{\includegraphics{figs/diagram.pdf}}
+\caption{Example diagram drawn using \texttt{xfig}}
+\label{xfig}
+\end{figure}
+
+
+\chapter{Evaluation}
+
+\section{Printing and binding}
+
+Use a ``duplex'' laser printer that can print on both sides to print
+two copies of your dissertation. Then bind them, for example using the
+comb binder in the Computer Laboratory Library.
+
+\section{Further information}
+
+See the Unix Tools notes at
+
+\url{http://www.cl.cam.ac.uk/teaching/current-1/UnixTools/materials.html}
+
+
+\chapter{Conclusion}
+
+I hope that this rough guide to writing a dissertation is \LaTeX\ has
+been helpful and saved you time.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% the bibliography
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{refs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% the appendices
+\appendix
+
+\chapter{Latex source}
+
+\section{diss.tex}
+{\scriptsize\verbatiminput{diss.tex}}
+
+\section{proposal.tex}
+{\scriptsize\verbatiminput{proposal.tex}}
+
+\chapter{Makefile}
+
+\section{makefile}\label{makefile}
+{\scriptsize\verbatiminput{makefile.txt}}
+
+\section{refs.bib}
+{\scriptsize\verbatiminput{refs.bib}}
+
+
+\chapter{Project Proposal}
+
+\input{proposal}
 
 \end{document}
