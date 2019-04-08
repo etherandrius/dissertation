@@ -1,3 +1,55 @@
+Before developing a plan for how we are going to realize the project in code we
+needed to fully understand the ideas presented in the paper:
+\begin{itemize}
+    \begin{item}
+      We needed to identify the main ideas of the paper and understand why some
+      parts of the paper are not agreed upon in the scientific community.
+      Understand why his ideas are contentious and whether reproducing his
+      experiments could bring more validity to his claims. This involved reading
+      papers published by Tishby and academics who shown an opposing view to
+      him.
+    \end{item}
+    \begin{item}
+      A main tool that the paper relies on is MIE (Mutual Information
+      Estimation). Reading about MIE we quickly understood that MIE is a
+      contentious part of the project as a result we had to do a decent amount
+      of research regarding the subject. MIE is difficult because we are trying
+      to estimate information between two continuous distributions using only a
+      discrete sample set. This area has not seen much academic attention so the
+      tools we ended up using could be greatly improved in the future.
+    \end{item}
+\end{itemize}
+
+Once we had a reasonable understanding of the ideas in the paper and which areas
+needed more attention we diverted our attention to figuring out the details of
+how the experiments were conducted figure out what hyper parameters Tishby
+decided are important and what assumptions he made whilst devising the
+experiments. 
+
+In addition we needed to find out what resources are available to us online,
+what programming frameworks we are going to use for the projects implementation,
+and to think about possible extensions to the project once the success criteria
+has been achieved.
+
+\begin{itemize}
+  \item{
+      Online Resources: The two main papers by Tishby and by Saxe have made
+      their code public online via Github, we made 
+
+      Online Resources: The two main papers we were looking at has made their
+      code available to the public via Github, the papers are Tishby`s paper and
+      the main opposing paper by Saxe.
+    }
+  \item{
+      Programming frameworks: The original experiment implementation by Tishby
+      has used the Tensorflow framework. We have decided to use the Keras
+      framework as it produces code that is more concise and is easier to
+      read/maintain. Furthermore rewriting the experiments in a different
+      framework means that we cannot rely on the details of Tishby`s and
+      potentially avoid any mistakes that may exist in the original
+      implementation.
+    }
+\end{itemize}
 
 \begin{itemize}
   \item{
@@ -41,6 +93,19 @@
           }
       \end{itemize}
       
+    }
+  \item{
+      starting point
+      \begin{itemize}
+        \item{
+            Had Tishby`s paper and code as a reference point of what has to be
+            achieved 
+          }
+        \item{
+            ended up following other's peoples implementations of MIE`s closely
+            some of which didn't work and had to be scrapped.
+          }
+      \end{itemize}
     }
 \end{itemize}
 
