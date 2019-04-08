@@ -49,83 +49,42 @@ has been achieved.
       potentially avoid any mistakes that may exist in the original
       implementation.
     }
-\end{itemize}
+    \begin{item}
 
-\begin{itemize}
-  \item{
-      theoretical basis 
+      Thinking about how we could extend the project helped us understand the
+      scope of the project and what areas were most important and/or interesting
+      to us. 
+
+      We came up with a couple of extensions before having written any code but
+      the most interesting one only materialized after a good deal amount of
+      work into the project (that is the AS IF Random experiment described
+      below)
+
       \begin{itemize}
         \item{
-            MIE, what Tishby has actually shown and why is it contentious
+            Different Datasets : the most straight forward extension to the
+            project just using different dataset to the one Tishby used. This is
+            essentially just varying one of the parameters in the Neural
+            Network. (Implemented)
           }
         \item{
-            Had to fully understand the main points Tishby was making and other
-            peoples opinions in the field in order to avoid downfalls that might
-            have already been explored.
-          
+            Quantized Neural Network : the idea behind this was to only allow
+            single neurons to acquire values in a given range say 1...256. This
+            would make the distribution within a DNN later discrete and hence it
+            would make calculating mutual information straightforward. (Not
+            Implemented)
           }
         \item{
-            Had to do research MIE`s (Mutual Information Estimator`s) from the
-            start we knew that MIE will be a contentious part of the project as
-            there has been little work done (to the best of my knowledge) on
-            estimating mutual information of continues distributions from
-            discrete sample sets
+            As If Random : one problem with Tishby`s work is that he calculates
+            mutual information for a single epoch at a time which by definition
+            is zero (in his paper he tries to justify the result will explore
+            this later) this extension tries to explore the weights of a neural
+            network as random variables by bunching results from multiple epochs
+            together.
           }
       \end{itemize}
-    }
-  \item{
-      I needed to come up with a plan on how am I gonna reproduce the results
-      \begin{itemize}
-        \item{
-            understand the setup up of Tishby`s experiments exactly how he
-            produced the results, thankfully the code was publicly available
-            Tishby recently released his results on Github which I used as a
-            point of reference.
-          }
-        \item{
-            figure out what technologies I am going to use. For his
-            implementation Tishby used the Tensorflow framework. I've decided to
-            use the Keras framework as I've found out Keras produced code that
-            is more concise and easier to read/maintain and easy to read.
-            Further more rewriting the code in a different framework made so
-            that I can't rely on the detail of Tishby`s code and avoid mistakes
-            that might be in the original code.
-          }
-      \end{itemize}
-      
-    }
-  \item{
-      starting point
-      \begin{itemize}
-        \item{
-            Had Tishby`s paper and code as a reference point of what has to be
-            achieved 
-          }
-        \item{
-            ended up following other's peoples implementations of MIE`s closely
-            some of which didn't work and had to be scrapped.
-          }
-      \end{itemize}
-    }
+    \end{item}
 \end{itemize}
 
-Preparation for the project required me to understand how Tishby arrived to the
-conclusion that he has presented us in his paper, I needed to understand how the
-experiments in the paper were constructed in order to be able to reproduce them reliably.
-
-I needed to understand 
-
-Finally In order to be able to reproduce the results and extend on the ideas I
-needed to learn python and frameworks such as Keras and Tensorflow.
-\begin{itemize}
-  \item{
-      Tensorflow - this is the framework Tishby decided to use for
-      his implementation.
-    }
-  \item{
-      Keras - this is the framework I have decided to use for my implementation
-      as the produced code is much more concise.
-    }
-\end{itemize}
 
 
