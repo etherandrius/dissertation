@@ -1,3 +1,65 @@
 
-this is the implementation chapter behold how much words it has
+The thesis is compromised of multiple of experiments some of which are
+re-implementations of experiments written by Tishby or Saxe. We aimed to
+reproduce the experiment as a feat for independent verification and hopefully to
+provide a baseline codebase for other researches to conduct their experiments
+and work upon.
+
+% need to explain motivation and experiment layout here 
+% will explain what the results showed in the next chapter evaluation
+% this is suboptimal
+% need to use a lot of forward references to the next chapter
+
+\section{Mutual Information Estimation}
+
+
+\begin{itemize}
+  \item{
+      why Mutual Information Estimation is hard
+    }
+  \item{
+      what have I tried
+      \begin{itemize}
+        \item{
+            wgao - tried to implement, but failed the implementation was too
+            complex and decided to cut my loses as it was taking too much time
+            to implement. Emailed the author, he wasn't able to provide any
+            code.
+          }
+        \item{
+            wgao9 (lnn) - local nearest neighbour mutual information estimation.
+            Based on a paper1 the code was available online on Github.
+            The code produced nonsensical results highly sporadic and often even
+            negative results for measure of mutual information. Although the
+            code might have been fixable running it took an extremely long time
+            so I've decided to not use this method as it already has consumed a
+            lot of my time.
+          }
+      \end{itemize}
+    }
+  \item{
+      what worked
+      \begin{itemize}
+        \item{
+            Tishby - describe how Tishby calculated mutual information, what
+            assumptions he made and what faults it has.
+          }
+        \item{
+            Saxe - Saxe used kernel density estimation for to calculate some of
+            the experiments this is a more rigorous way to measure information
+            but it still produces less than stellar results.
+          }
+      \end{itemize}
+    }
+  \item{
+      even though the MIE we ended up using is by far not the most sophisticated
+      technique, it is still the state of the art that has been used in regards
+      to measuring mutual information inside neural networks.
+    }
+\end{itemize}
+    
+
+
+\section{Tishby`s reproduction}
+\section{Saxe`s reproduction}
 
