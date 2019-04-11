@@ -10,12 +10,105 @@ and work upon.
 % this is suboptimal
 % need to use a lot of forward references to the next chapter
 
+\section{Introduction, and required equations and ideas}
+
+\begin{itemize}
+  \item{
+      $ I(X, Y) = H(X) - H(X|Y) $
+    }
+  \item{
+      Information is lost from layer to layer:
+      $ H(T_1) <= H(T_2) $
+    }
+\end{itemize}
+
+
 \section{Mutual Information Estimation}
 
+\begin{itemize}
+  \item{
+      <++>
+    }
+  \item{
+      <++>
+    }
+\end{itemize}
 
 \begin{itemize}
   \item{
       why Mutual Information Estimation is hard
+
+      Yeah why?????
+
+      Explain what it is - two continuous distributions we have a discrete
+      sample 
+
+      Why is it weird in this case
+      our X is a discrete (sometimes continuous distribution) uniform
+      distribution 
+
+      A layer produces a continuous distribution
+
+      Every layer is a vector, this does not affect theories for mutual
+      information but makes the code more difficult to handle unless heavy
+      abstraction is used.
+
+      There has only been little work in this field so no publicly available
+      collection of MIE (Mutual Information Estimators) exist, I was able to
+      find some implementations of MIE by other researchers but they were not
+      general enough or just didn't work. 
+
+      There is some theoretical work in the subject but finding an
+      implementation of the algorithms described in the paper has been difficult
+
+      I was left with two options using the same methods as used by Tishby and
+      Saxe or trying to implement an advanced algorithm from one of the papers.
+      I tried to implement 
+
+      In our specific example:
+      \begin{itemize}
+        \item{
+            We need to produce mutual information values for:
+            \begin{itemize}
+              \item{
+                  $I(X, T_i)$ - input and every NN layer
+                }
+              \item{
+                  $I(Y, T_i)$ - output and every NN layer
+                }
+            \end{itemize}
+
+            Where:
+
+            \begin{itemize}
+              \item{
+                  $X$ - Input distribution
+                }
+              \item{
+                  $Y$ - Output distribution
+                }
+              \item{
+                  $T_i$ - Distribution of $i'th$ layer in the neural network
+                }
+            \end{itemize}
+
+          }
+        \item{
+            Problem: we know that every input value is unique and that weight
+            matrix for every layer in the NN is reversible, which implies that
+            every input corresponds to a unique network activation, however that
+            means that no information is lost in the network and compression
+            does not happen. Which implies that for any single epoch mutual
+            information between any two layers in NN or the input is just equal to the entropy of the input as H(X|Y) is always 
+
+          }
+        \item{
+            <++>
+          }
+      \end{itemize}
+
+
+
     }
   \item{
       what have I tried
