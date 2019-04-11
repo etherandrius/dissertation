@@ -25,9 +25,48 @@ and work upon.
 
 \section{Mutual Information Estimation}
 
+Mutual Information Estimation is a contentious part of the project. It is
+valuable to understand how it's done before going in to details of how the
+experiments are conducted.
+ 
+We usually measure mutual information in one these three ways:
+
 \begin{itemize}
   \item{
-      <++>
+      $ I(X, Y) = H(X) - H(X|Y) $
+    }
+  \item{
+      $ I(X, Y) = H(X) + H(Y) - H(X,Y) $
+    }
+  \item{
+      $ {I} (X;Y)=\sum _{y\in {\mathcal {Y}}}\sum _{x\in {\mathcal
+      {X}}}{p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}} $ for
+      discrete distributions or,    
+    }
+	\item{
+    ${I} (X;Y)=\int _{\mathcal {Y}}\int _{\mathcal {X}}{p(x,y)\log {\left({\frac
+    {p(x,y)}{p(x)\,p(y)}}\right)}}\;dx\,dy$ for continuous distributions
+
+	  }
+\end{itemize}
+
+All methods that I've looked focus exclusively on the first two equations, which
+means if we have a good way to calculate entropy we can calculate mutual
+information.
+
+Calculating mutual information is fully defined for the discrete and continuous
+case, however in our case we have a continuous distribution and a discrete
+sample set of the distribution. Our distributions are the input set $X$ to the
+NN (Neural Network), activations of every NN layer $T_i$ and the output(label)
+set $Y$
+
+
+
+\begin{itemize}
+  \item{
+      As stated before Mutual information measurement is a contentious part of
+      the project. Understanding why it's hard is useful in order to correctly
+      evaluate the experiments.
     }
   \item{
       <++>
@@ -48,6 +87,9 @@ and work upon.
       distribution 
 
       A layer produces a continuous distribution
+
+      Estimating mutual information boils down to how well we can measure
+      entropy.
 
       Every layer is a vector, this does not affect theories for mutual
       information but makes the code more difficult to handle unless heavy
@@ -138,9 +180,11 @@ and work upon.
             assumptions he made and what faults it has.
           }
         \item{
-            Saxe - Saxe used kernel density estimation for to calculate some of
-            the experiments this is a more rigorous way to measure information
-            but it still produces less than stellar results.
+            Saxe used kernel density estimation in order to calculate entropy
+            for some of their experiments, it a rigorous way to measure entropy
+            however the results produced have big error bounds. see Kolchinsky
+            and Tracey "Estimating Mixture Entropy with Pairwise Distances" for
+            upper and lower bounds
           }
       \end{itemize}
     }
