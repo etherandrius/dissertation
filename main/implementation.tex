@@ -1,4 +1,6 @@
 
+TODO this is probably not necessary 
+
 The thesis is compromised of multiple of experiments some of which are
 re-implementations of experiments written by Tishby or Saxe. We aimed to
 reproduce the experiment as a feat for independent verification and hopefully to
@@ -12,16 +14,20 @@ and work upon.
 
 \section{Introduction, and required equations and ideas}
 
-\begin{itemize}
+TODO: \begin{itemize}
   \item{
-      $ I(X, Y) = H(X) - H(X|Y) $
+      need to explain what information I am actually computing sort of a problem
+      statement.
     }
   \item{
-      Information is lost from layer to layer:
-      $ H(T_1) <= H(T_2) $
+      introduce notation X, Y, T
+    }
+  \item{
+      explain the information plane, give example picture
     }
 \end{itemize}
 
+EMPIRICAL SAMPLE
 
 \section{Mutual Information Estimation}
 
@@ -31,35 +37,50 @@ experiments are conducted.
  
 We usually measure mutual information in one these three ways:
 
-\begin{itemize}
-  \item{
-      $ I(X, Y) = H(X) - H(X|Y) $
-    }
-  \item{
-      $ I(X, Y) = H(X) + H(Y) - H(X,Y) $
-    }
-  \item{
-      $ {I} (X;Y)=\sum _{y\in {\mathcal {Y}}}\sum _{x\in {\mathcal
-      {X}}}{p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}} $ for
-      discrete distributions or,    
-    }
-	\item{
-    ${I} (X;Y)=\int _{\mathcal {Y}}\int _{\mathcal {X}}{p(x,y)\log {\left({\frac
-    {p(x,y)}{p(x)\,p(y)}}\right)}}\;dx\,dy$ for continuous distributions
+Using the entropy of the distributions
+\begin{equation}
+  I(X, Y) = H(X) - H(X|Y)
+\end{equation}
+\begin{equation}
+  I(X, Y) = H(X) + H(Y) - H(X,Y)
+\end{equation}
+or calculating the mutual information explicitly from probabilities, for
+discrete and continuous distributions respectively:
+\begin{equation}
+      {I} (X;Y)=\sum _{y\in {\mathcal {Y}}}\sum _{x\in {\mathcal
+      {X}}}{p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}} 
+\end{equation}
 
-	  }
-\end{itemize}
+\begin{equation}
+    {I} (X;Y)=\int _{\mathcal {Y}}\int _{\mathcal {X}}{p(x,y)\log {\left({\frac
+    {p(x,y)}{p(x)\,p(y)}}\right)}}\;dx\,dy
+\end{equation}
 
-All methods that I've looked focus exclusively on the first two equations, which
-means if we have a good way to calculate entropy we can calculate mutual
-information.
+Calculating mutual information is mathematically defined for continuous and
+discrete distributions, however in our case we have an empirical sample of the
+(unknown) continuous joint distribution $P(X, Y)$
+
+Calculating mutual information is mathematically defined for continuous and
+discrete distributions, however in our case we a discrete sample set of a
+continuous distribution. Such a set up necessarily means that we will have some
+missing information and our methods will contain errors in the results.
+
+------------------------------------------------------------------------------------------------------------
 
 Calculating mutual information is fully defined for the discrete and continuous
-case, however in our case we have a continuous distribution and a discrete
-sample set of the distribution. Our distributions are the input set $X$ to the
-NN (Neural Network), activations of every NN layer $T_i$ and the output(label)
-set $Y$
-
+distributions, however we have a continuous distributions and a discrete sample
+sets of those distributions. Our distributions are:
+\begin{itemize}
+  \item{
+      $X$ - the input set (training set) to the NN (Neural Network)
+    }
+  \item{
+      $T_i$ - activation of every NN layer, and
+    }
+  \item{
+      $Y$ - the output set (labels of the training data)
+    }
+\end{itemize}
 
 
 \begin{itemize}
