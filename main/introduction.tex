@@ -31,9 +31,26 @@ Saxe that provides an opposing view to that of Tishby`s. Saxe showed that
 compression that Tishby showed is only a result of Tishby`s choice of
 activation function for the neural network. He showed that compression only
 happens when Tanh activation function is used and does not happen when ReLu is
-used. 
+used.
 
-Lastly, We think Tishby`s experiments don't fully align with some of the ideas
-he presented, specifically his idea that weights should be treated as if they
-are random. We devised an experiment that tries to capture this idea more
-explicitly that Tishby`s experiments.
+Lastly, we think that the experiments presented in both papers don't fully align
+with the ideas that Tishby presented to us, specifically his idea that weights
+should be treated "as if" they are random variables. Tishby`s and Saxe`s
+experiment deal with this "as if" random notion quite crudely or try to sidestep
+it completely. As a result we devised an experiment that tries to capture this
+idea more explicitly, although it is still relatively crude and more work should
+be put into it in the future.
+
+\section{The Information plane}
+
+
+\begin{itemize}
+  \item{
+      show picture of the information plane and explain it
+    }
+  \item{
+      talk about the information inequality, that every layer can be looked as a
+      node in the Markov chain and from node to node information can only go
+      down or stay equal.
+    }
+\end{itemize}
