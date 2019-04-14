@@ -1,13 +1,22 @@
-Deep Neural Networks (DNNs) although extremely successful and widely adopted are
-still a black box machine as there is no comprehensive understanding on how they
-learn. Recently Prof.\ Tishby produced a paper claiming to understand the basic
+Deep Neural Networks (DNNs) are an extremely successful tool, widely adopted
+commercially and closely studied academically, however even given the attention
+they have gathered little is known about the secret to their performance let
+alone a comprehensive understanding on how they learn or their inner workings.
+. Recently Prof.\ Tishby produced a paper claiming to understand the basic
 principle of how DNNs work. He suggested that there are two phases that the
 network goes trough while being trained - the fitting phase and the compression
 phase. During the fitting phase the network memorizes the training data and
 makes predictions based on that, during the compression phase the network
 generalizes, it forgets the unnecessary information from the training data.
-Tishby showed this by looking at DNNs trough the information domain, most
-notably he used what is now called the information plane.
+Tishby suggested that the incredible performance that DNNs are able to achieve
+is due to this compression phase, and that this process of compression is a
+result of randomness inherent in Stochastic gradient descent. Tishby showed this
+by looking at DNNs trough the information domain, most notably he used what is
+now called the information plane. The information plane summarizes how the
+information is flowing trough the DNN, for every neuron layer the plane shows
+mutual information it has with the input data and the label data. In his
+experiments Tishby has concluded that every layer loses unnecessary information
+from the input data and tries to keep information of the label.
 %TODO(ag939) possibly explain what an information plane is here.
 Tishby made some interesting and significant claims about how DNNs work, however
 he did no provide a formal proof, his conclusion are based only on experimental
