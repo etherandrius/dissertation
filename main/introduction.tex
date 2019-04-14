@@ -17,8 +17,10 @@ In our work we looked at Tishby`s claim that DNNs compress data and throw away
 information about the input. We reimplement his experiments as a form of
 independent verification, showing that the results Tishby got are robust and not
 a fluke of his specific parameters. We take a look at a paper by Saxe that
-provides an opposing view to that of Tishby`s, explain why their experiments
-disagree with Tishby as well as reproduce some of them. 
+provides an opposing view to that of Tishby`s. Saxe showed experimentally that
+compression does not happen and is only a result of Tishby`s choice of
+activation function. He showed that compression happens when Tanh activation
+function is used and does not happen when ReLu is used.
 
 Lastly, We think Tishby`s experiments don't fully align with some of the ideas
 he presented, specifically his idea that weights should be treated as if they
