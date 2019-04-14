@@ -1,12 +1,13 @@
-Deep Neural Networks (DNNs) are an extremely successful tool, widely adopted
-commercially and closely studied academically, however even given the attention
-they have gathered little is known about the secret to their performance let
-alone a comprehensive understanding on how they learn or their inner workings.
-. Recently Prof.\ Tishby produced a paper claiming to understand the basic
-principle of how DNNs work. He suggested that there are two phases that the
-network goes trough while being trained - the fitting phase and the compression
-phase. During the fitting phase the network memorizes the training data and
-makes predictions based on that, during the compression phase the network
+Deep Neural Networks (DNNs) are an extremely successful tool, they are widely
+adopted commercially and closely studied academically, however even given the
+attention they have gathered there is no comprehensive understanding of how
+these models generalize data and provide such impressive performance - in fact
+very little is know about how DNNs learn or about their inner workings. Recently
+Prof.\ Tishby produced a paper claiming to understand the basic principle of how
+DNNs work. He suggested that there are two phases that the network goes trough
+while being trained - the fitting phase and the compression phase. During the
+fitting phase the network memorizes the training data and makes predictions
+based on what it has seen before, during the compression phase the network
 generalizes, it forgets the unnecessary information from the training data.
 Tishby suggested that the incredible performance that DNNs are able to achieve
 is due to this compression phase, and that this process of compression is a
@@ -22,14 +23,15 @@ Tishby made some interesting and significant claims about how DNNs work, however
 he did no provide a formal proof, his conclusion are based only on experimental
 evidence. 
 
-In our work we looked at Tishby`s claim that DNNs compress data and throw away
-information about the input. We reimplement his experiments as a form of
-independent verification, showing that the results Tishby got are robust and not
-a fluke of his specific parameters. We take a look at a paper by Saxe that
-provides an opposing view to that of Tishby`s. Saxe showed experimentally that
-compression does not happen and is only a result of Tishby`s choice of
-activation function. He showed that compression happens when Tanh activation
-function is used and does not happen when ReLu is used.
+In our work we look at Tishby`s claim that DNNs compress data and throw away
+unnecessary information about the input. We reimplement his experiments as a
+form of independent verification, showing that the results Tishby got are robust
+and are stable to parameter changes. We also take a look at a paper produced by
+Saxe that provides an opposing view to that of Tishby`s. Saxe showed that
+compression that Tishby showed is only a result of Tishby`s choice of
+activation function for the neural network. He showed that compression only
+happens when Tanh activation function is used and does not happen when ReLu is
+used. 
 
 Lastly, We think Tishby`s experiments don't fully align with some of the ideas
 he presented, specifically his idea that weights should be treated as if they
