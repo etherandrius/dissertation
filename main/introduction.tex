@@ -85,60 +85,28 @@ Y $, which is what we expect if we assume that the network guesses at random
 before any training is done.
 
 \begin{center}
-  \includegraphics[width=0.65\textwidth]{figs/ip_1v2.png}
+  \includegraphics[width=0.65\textwidth]{figs/ip_10000.png}
   \captionof{figure}{
-    Information plane for a neural network with 5 layers, which was trained for
+    Information plane for a neural network with 4 layers, which was trained for
     approximately $ 10\,000 $ epochs
   }
 \end{center}
 
-Fi
-
------------------------------------------------------------
-
-The information plane is a summary of the DNN`s training process. Lets take a
-simple example of a network for which was only trained for one epoch. every node
-corresponds to  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-The information plane is a summary of the training process it shows 
+Figure 1.2 shows an example of a full information plane. The gradient maps the
+colour to the epoch. From this figure we can clearly see the fitting and the
+compression phases Tishby was describing. 
 
 \begin{itemize}
   \item{
-      show picture of the information plane and explain it
+      The Fitting phase is the rapid improvement phase at the start of the
+      training period, where information about the label is rapidly increasing
+      while information about the input remains approximately the same. In this
+      case the training is in the fitting phase for less than 1000 epochs.
     }
   \item{
-      The information plane summarizes how the information is flowing trough the
-      DNN, for every neuron layer the plane shows mutual information it has with
-      the input data and the label data. 
-    }
-  \item{
-      picture for the information plane for a single epoch
-    }
-  \item{
-      however the information plane is usually shown for the whole training
-      process, which helps us make better deductions 
-    }
-  \item{
-      picture for the full information plane.
+      The Compression phase begins when the after the fitting phase ends and the
+      rapid improvement stops. We can see during this phase we start losing
+      information about the input while still gaining information about the
+      label. This phase the was majority of the training time.
     }
 \end{itemize}
