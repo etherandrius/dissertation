@@ -1,35 +1,55 @@
 
-TODO this is probably not necessary 
-
-The thesis is compromised of multiple of experiments some of which are
-re-implementations of experiments written by Tishby or Saxe. We aimed to
-reproduce the experiment as a feat for independent verification and hopefully to
-provide a baseline codebase for other researches to conduct their experiments
-and work upon.
-
-% need to explain motivation and experiment layout here 
-% will explain what the results showed in the next chapter evaluation
-% this is suboptimal
-% need to use a lot of forward references to the next chapter
-
-\section{Introduction, and required equations and ideas}
-
-TODO: \begin{itemize}
-  \item{
-      need to explain what information I am actually computing sort of a problem
-      statement.
-    }
-  \item{
-      introduce notation X, Y, T
-    }
-  \item{
-      explain the information plane, give example picture
-    }
-\end{itemize}
-
-EMPIRICAL SAMPLE
-
 \section{Mutual Information Estimation}
+
+As stated before we are trying to validate the fact that compression is
+happening within the hidden layers in a neural network as such having robust
+tools to measure mutual information is of utmost importance. 
+
+\subsection{Mutual Information Definition}
+
+If we have two random variables $ X $ and $ Y $ we usually measure mutual
+information in one of these four ways: 
+
+\medskip
+
+Using the entropy of the distributions to infer the value
+\begin{equation}
+  I(X, Y) = H(X) - H(X|Y)
+\end{equation}
+\begin{equation}
+  I(X, Y) = H(X) + H(Y) - H(X,Y)
+\end{equation}
+
+Or calculating the mutual information explicitly from probabilities, for
+discrete and continuous distributions respectively
+\begin{equation}
+      {I} (X;Y)=\sum _{y\in {\mathcal {Y}}}\sum _{x\in {\mathcal
+      {X}}}{p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}} 
+\end{equation}
+
+\begin{equation}
+    {I} (X;Y)=\int _{\mathcal {Y}}\int _{\mathcal {X}}{p(x,y)\log {\left({\frac
+    {p(x,y)}{p(x)\,p(y)}}\right)}}\;dx\,dy
+\end{equation}
+
+\subsection{Theoretically undefined}
+
+Calculating mutual information is mathematically defined for both continuous and
+discrete distributions by using one of the functions above. However since we are
+looking at neural networks we do not have the full distribution only an
+empirical sample of the unknown joint distribution $ P(X,Y) $. As such we cannot
+use conventional methods to calculate the mutual information and instead have to
+use tools to estimate it.
+
+The field of estimating mutual information for empirical distributions is
+relatively new as a result the methods the tools that are available are quite
+primitive. There has been some papers published that use more advanced
+techniques to tackle the problem, however the implementation were quite
+unstable.
+
+
+------------------------------------------------------------------------------------------------------------
+
 
 Mutual Information Estimation is a contentious part of the project. It is
 valuable to understand how it's done before going in to details of how the
