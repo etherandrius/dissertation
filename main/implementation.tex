@@ -7,8 +7,13 @@ tools to measure mutual information is of utmost importance.
 
 \subsection{Mutual Information Definition}
 
-If we have two random variables $ X $ and $ Y $ we usually measure mutual
-information in one of these four ways: 
+Mutual information is a measure of dependence between two variables $ X $ and $
+Y $, it quantifies the number of bits obtained about one when observing the
+other.
+
+Suppose we have two random variables $ X $ and $ Y $ if we want to measure
+mutual information between the two of them we usually refer to one of the
+following equations:
 
 \medskip
 
@@ -32,6 +37,7 @@ discrete and continuous distributions respectively
     {p(x,y)}{p(x)\,p(y)}}\right)}}\;dx\,dy
 \end{equation}
 
+
 \subsection{Theoretically undefined}
 
 Calculating mutual information is mathematically defined for both continuous and
@@ -41,12 +47,9 @@ empirical sample of the unknown joint distribution $ P(X,Y) $. As such we cannot
 use conventional methods to calculate the mutual information and instead have to
 use tools to estimate it.
 
-The field of estimating mutual information for empirical distributions is
-relatively new as a result the methods the tools that are available are quite
-primitive. There has been some papers published that use more advanced
-techniques to tackle the problem, however the implementation were quite
-unstable.
-
+The field of estimating mutual information is relatively new as a result the
+tools that are available are quite primitive. There has been some papers
+published that use more advanced techniques to tackle the problem. 
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -238,6 +241,6 @@ sets of those distributions. Our distributions are:
     
 
 
-\section{Tishby`s reproduction}
-\section{Saxe`s reproduction}
+\section{Tishby's reproduction}
+\section{Saxe's reproduction}
 

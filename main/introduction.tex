@@ -22,19 +22,19 @@ Tishby made some interesting and significant claims about how DNNs work, however
 he did no provide a formal proof, his conclusion are based only on experimental
 evidence. 
 
-In our work we look at Tishby`s claim that DNNs compress data and throw away
+In our work we look at Tishby's claim that DNNs compress data and throw away
 unnecessary information about the input. We reimplement his experiments as a
 form of independent verification, showing that the results Tishby got are robust
 and are stable to parameter changes. We also take a look at a paper produced by
-Saxe that provides an opposing view to that of Tishby`s. Saxe showed that
-compression that Tishby showed is only a result of Tishby`s choice of
+Saxe that provides an opposing view to that of Tishby's. Saxe showed that
+compression that Tishby showed is only a result of Tishby's choice of
 activation function for the neural network. He showed that compression only
 happens when Tanh activation function is used and does not happen when ReLu is
 used.
 
 Lastly, we think that the experiments presented in both papers don't fully align
 with the ideas that Tishby presented to us, specifically his idea that weights
-should be treated "as if" they are random variables. Tishby`s and Saxe`s
+should be treated "as if" they are random variables. Tishby's and Saxe's
 experiment deal with this "as if" random notion quite crudely or try to sidestep
 it completely. As a result we devised an experiment that tries to capture this
 idea more explicitly, although it is still relatively crude and more work should
