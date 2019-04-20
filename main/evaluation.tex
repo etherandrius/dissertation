@@ -1,0 +1,20 @@
+\subsection{Deterministic networks}
+
+There's a very real argument to be made against compression in neural networks.
+Consider a generic neural network we can think of it as a function that is a
+series of matrix transformation, where a matrix corresponds to weights of a
+specific layer. However these matrices are all random (at least at the start of
+training) and hence probability of them being invertible is 100\%. 
+
+Knowing that every single matrix is invertible allows us to conclude that that
+neural network as a whole is an invertible function, which means no information
+is lost and compression is impossible.
+
+% matrix is invertible if it's random, maybe the neural network tends to
+% non-invertible matrices ? if this was the case we would see mutual information
+% full at the start and it would decrease however we see that mutual information
+% increases for Y and decreases for X
+
+\subsection{Discrete method}
+
+  Method used by Tishby in his paper 
