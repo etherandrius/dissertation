@@ -4,6 +4,7 @@
 \usepackage[pdfborder={0 0 0}]{hyperref}    % turns references into hyperlinks
 \usepackage[margin=25mm]{geometry}  % adjusts page layout
 \usepackage{graphicx}  % allows inclusion of PDF, PNG and JPG images
+\usepackage{minted}
 \usepackage{verbatim}
 \usepackage{caption}
 \usepackage{docmute}   % only needed to allow inclusion of proposal.tex
@@ -17,6 +18,8 @@
 \sloppy
 \clubpenalty1000%
 \widowpenalty1000%
+      
+\newminted[pythonfigure]{python}{linenos, frame=lines, framesep=2mm, autogobble, escapeinside=\#\#, mathescape}
 
 \renewcommand{\baselinestretch}{1.1}    % adjust line spacing to make
                                         % more readable
