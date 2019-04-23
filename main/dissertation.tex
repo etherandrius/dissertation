@@ -5,6 +5,7 @@
 \usepackage[margin=25mm]{geometry}  % adjusts page layout
 \usepackage{graphicx}  % allows inclusion of PDF, PNG and JPG images
 \usepackage{minted}
+\usepackage{hyperref}
 \usepackage{verbatim}
 \usepackage{caption}
 \usepackage{docmute}   % only needed to allow inclusion of proposal.tex
@@ -19,7 +20,8 @@
 \clubpenalty1000%
 \widowpenalty1000%
       
-\newminted[pythonfigure]{python}{linenos, frame=lines, framesep=2mm, autogobble, escapeinside=\#\#, mathescape}
+\newminted[pythonfigure]{python}{linenos, frame=single, framesep=2mm, autogobble, escapeinside=;;, mathescape}
+\newminted[monospacefigure]{text}{linenos, frame=single, framesep=2mm, autogobble, escapeinside=;;, mathescape=true}
 
 \renewcommand{\baselinestretch}{1.1}    % adjust line spacing to make
                                         % more readable
