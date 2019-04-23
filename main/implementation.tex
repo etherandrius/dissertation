@@ -100,10 +100,11 @@ about in \autoref{ssection:advanced}
 
 \subsection{Discrete method} 
 
-  The method used by Tishby in his paper. It assumes that the discrete empirical
-  distributions we manage to collect are a good representation of entropy with
-  in the dataset. The method relies heavily on computing entropy values for
-  dataset and it's subsets, as outlined in \autoref{eq:discrete}
+  The method used by Tishby in his paper. The method estimates mutual
+  information between the $X$ or $Y$ and the hidden layer $T$ by assuming the
+  observed empirical distribution of input samples is the true distribution. We
+  use this assumption to compute entropies of $T$ and varying subsets as
+  outlined in \autoref{eq:discrete}
 
 \begin{equation}
   I(X, Y) = H(X) - H(X|Y) = H(X) - \sum _{y\in Y} H(X|Y = y)p(Y = y)
@@ -113,8 +114,8 @@ about in \autoref{ssection:advanced}
   However just calculating mutual information for a discrete distribution is not
   enough as this yields mutual information equal to 0, in order to sidestep this
   issue we need to simulate randomness Tishby achieves this by grouping multiple
-  values together. A more detailed explanation why this is done is given in
-  \autoref{ssection:detnet}
+  values together, which he calls binning. A more detailed explanation why this
+  is done is given in \autoref{ssection:detnet}
 
    \autoref{fig:mutualinfo} trough \autoref{fig:entropy2} outline the full
    algorithm.
@@ -124,8 +125,8 @@ about in \autoref{ssection:advanced}
       ;$X = x_1, x_2,...,x_n$;
       ;$Y = y_1, y_2,...,y_n$;
       Output: ;$I(X:Y)$;
-      ;$X$; = Batch close values of ;$X$; together
-      ;$Y$; = Batch close values of ;$Y$; together
+      ;$X$; = Bin close values of ;$X$; together
+      ;$Y$; = Bin close values of ;$Y$; together
       ;$H(X)$; = Calculate entropy of X
       ;$H(X|Y)$; = Calculate conditional entropy of X given Y
       ;$I = H(X) - H(X|Y)$;
@@ -171,6 +172,13 @@ about in \autoref{ssection:advanced}
 
 
 \subsection{Kernel Density Estimation}
+
+  The KDE method used in Saxe's paper but originally devised by Kolchinsky \&
+  Tracey (2017); Kolchinsky et al. (2017). As well as the Discrete method KDE
+  assumes that the observed empirical distribution in the hidden layer $T$ is
+  the true distribution. 
+
+  However, instead of
 
 \subsection{Advanced methods} \label{ssection:advanced}
 \subsubsection{Mutual Information by Gaussian approximation}
