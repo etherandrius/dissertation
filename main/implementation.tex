@@ -292,13 +292,42 @@ have implemented a couple of ways to skip the epochs
 \subsubsection{Simple Skip}
   
   A very simple simple way to skip epochs calculates mutual information for
-  every $n'th$ epoch. It's quite effective and is fast to implement, however it
-  yields subpar results at the beginning of the training period during the
-  fitting phase when there are big changes between every epoch, The next two
-  methods address this problem.
+  every $n'th$ epoch.
+
+  It's quite effective and is fast to implement and easy to parallelize, however
+  it yields subpar results. At the beginning of the training period during the
+  fitting phase the step sizes are too big and yields gaps in data as there are
+  big changes between consecutive epochs. Toward the end of the training period
+  during the compression phase the step size becomes too small and we are
+  wasting computation as the changes between epochs is negligible. The next two
+  methods address this problem, but have their own drawbacks.
 
 \subsubsection{Delta Skip Exact}
 \subsubsection{Delta Skip Approximate}
 
+  The Exact method suffer the same problem as when we try to parallelize too
+  many mutual information instances, namely we run out of memory if a dataset is
+  big enough. To solve this problem we use the Approximate method which follows
+  closely the Exact method. The Algorithm assumes that the gap between epochs
+  shrinks and never increases. The algorithm gives more accurate results than
+  the simple skip method but only allows 
+
+\begin{figure}[h]
+    \begin{pythonfigure}
+      Input:
+      prev = mutual information result from previous epoch
+      curr = mutual information result from current epoch
+      Output:
+      skip # how many epoch to skip until we measure again. defaults to 1
+      Algorithm:
+      dist = distance(prev, curr)
+      if delta < dist: # the gap is bigger than delta
+        skip = skip
+      else: # the gap is smaller than delta
+        skip = skip*2
+    \end{pythonfigure}
+    \caption{Delta Skip Approximate}
+    \label{fig:deltaapprox}
+\end{figure}
 
 
