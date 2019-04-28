@@ -42,7 +42,7 @@ discrete and continuous distributions respectively
 
 Calculating mutual information is mathematically defined for both continuous and
 discrete distributions by using one of the functions above. However since we are
-looking at neural networks we do not have the full distribution - only an
+looking at neural networks we do not have the full distribution -- only an
 empirical sample of the unknown joint distribution $ P(X,Y) $. As such we cannot
 use conventional methods to calculate the mutual information and instead have to
 use tools to estimate it.
@@ -56,13 +56,13 @@ about in \autoref{ssection:advanced}
 
 \subsection{Experimental setup}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{pythonfigure}
       Input:
-      ;$T$; := number of layers
-      ;$X$; := training data
-      ;$Y$; := label data
-      N := number of epochs
+      ;$T$; = number of layers
+      ;$X$; = training data
+      ;$Y$; = label data
+      N = number of epochs
       Output: 
       ;$I_x$;(epoch, layer), # mutual information with $X$ 
       ;$I_y$;(epoch, layer)  # mutual information with $Y$ 
@@ -149,7 +149,7 @@ about in \autoref{ssection:advanced}
         ;$P_x$; = count / len;$(X)$;
       ;$H(X) = - \sum _{x\in Unique(X)} P_x log(P_x)$; 
     \end{pythonfigure}
-    \caption{Algorithm for computing entropy - Discrete method}
+    \caption{Algorithm for computing entropy -- Discrete method}
     \label{fig:entropy1}
 \end{figure} 
 
@@ -197,9 +197,9 @@ This does not affect the result but increases performance of our algorithm.
   calculating entropy for a collection of data points.
 
   The algorithm closely follows figures :\autoref{fig:mutualinfo},
-  \autoref{fig:entropy1}, and \autoref{fig:entropy2}. However changes the way
-  entropy is calculated so instead of \autoref{fig:entropy1} we have
-  \autoref{fig:entropy3} below
+  \autoref{fig:entropy1}, and \autoref{fig:entropy2}, however there is a change
+  the way entropy is calculated so instead of \autoref{fig:entropy1} we have
+  \autoref{fig:entropy3} below.
 
 \begin{figure}[H]
     \begin{pythonfigure}
@@ -218,10 +218,14 @@ This does not affect the result but increases performance of our algorithm.
         lprobs.append(log(sum(exp(-row))) - log(n) - normconst
       H(X) = mean(lprobs) + (dim / 2)
     \end{pythonfigure}
-    \caption{Algorithm for computing entropy - Kernel Density Estimation method.
+    \caption{Algorithm for computing entropy -- Kernel Density Estimation method.
     The same algorithm as used by Saxe.}
     \label{fig:entropy3}
 \end{figure} 
+
+As before when computing mutual information between a hidden layer $T$ and the
+input set $X$ we can use the fact that every element $x\in X$ is unique and
+hence uniquely identifies an element in $t\in T$.
 
 \subsection{Advanced methods} \label{ssection:advanced}
 
@@ -302,28 +306,55 @@ have implemented a couple of ways to skip the epochs
   wasting computation as the changes between epochs is negligible. The next two
   methods address this problem, but have their own drawbacks.
 
-\subsubsection{Delta Skip Exact}
-\subsubsection{Delta Skip Approximate}
+\subsubsection{Delta Skip -- Exact}
 
-  The Exact method suffer the same problem as when we try to parallelize too
-  many mutual information instances, namely we run out of memory if a dataset is
-  big enough. To solve this problem we use the Approximate method which follows
-  closely the Exact method. The Algorithm assumes that the gap between epochs
-  shrinks and never increases. The algorithm gives more accurate results than
-  the simple skip method but only allows 
+  The Exact Delta Skip method introduces a distance metric which measures
+  mutual information distance between two epochs. Using the distance metric the
+  method tries to skip as many epochs as possible while still guaranteeing that
+  the distance is at most delta $\delta$, and backtracks when necessary.
 
-\begin{figure}[h]
+  \subparagraph{Distance Metric}
+  
+  \autoref{fig:ip_pair}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.80\textwidth]{figs/ip_pair.png}
+    \captionof{figure}{
+      Example how distance between two epochs is measured.
+    }
+    \label{fig:ip_pair}
+  \end{figure}
+
+\subsubsection{Delta Skip -- Approximate}
+
+  The Exact method suffers the same problem as when we try to instantiate too
+  many mutual information calculation instances, namely it runs out of memory if
+  our dataset is too big. In order to solve this we use the approximate method
+  which follows closely the Exact method. 
+
+  The Algorithm -- refer to \autoref{fig:deltaapprox}, as previously, in the
+  Exact method it uses a distance metric and measures every $n'th$ epoch where
+  $n$ is adaptive and depends on how close the epochs are. The critical
+  difference between Exact and Approximate method happens when the distance
+  between epochs is more than $\delta$, the Exact method attempts to backtrack
+  and fill in the gap whereas the Approximate doesn't backtrack and just
+  continues to the next epoch, this is justified because the approximate method
+  assumes that distance between epochs only shrinks and never increases.
+
+\begin{figure}[H]
     \begin{pythonfigure}
       Input:
-      prev = mutual information result from previous epoch
-      curr = mutual information result from current epoch
+      prev = mutual information result of the previous epoch
+      curr = mutual information result of the current epoch
+      ;$\delta$; = user specified maximum "distance" between epochs
       Output:
       skip # how many epoch to skip until we measure again. defaults to 1
       Algorithm:
       dist = distance(prev, curr)
-      if delta < dist: # the gap is bigger than delta
+      if ;$\delta$; < dist: # the gap is bigger than $\delta$
         skip = skip
-      else: # the gap is smaller than delta
+      else: # the gap is smaller than $\delta$
         skip = skip*2
     \end{pythonfigure}
     \caption{Delta Skip Approximate}
