@@ -109,7 +109,8 @@ about in \autoref{ssection:advanced}
 
 \begin{equation}
   I(X, Y) = H(X) - H(X|Y) = H(X) - \sum _{y\in Y} H(X|Y = y)p(Y = y)
-\end{equation} \label{eq:discrete}
+\label{eq:discrete}
+\end{equation} 
 
 
   However just calculating mutual information for a discrete distribution is not
@@ -314,8 +315,33 @@ have implemented a couple of ways to skip the epochs
   the distance is at most delta $\delta$, and backtracks when necessary.
 
   \subparagraph{Distance Metric}
-  
-  \autoref{fig:ip_pair}
+  Every epoch that we measure yields us with a vector of mutual information
+  values, that is for every layer $T$ we receive two values $I(X,T)$ and
+  $I(Y,T)$. Given the information vectors for two epochs we need to find a
+  reasonable way to measure distance between them.
+
+  The distance is used for the purposes of speeding up the computation and won't
+  meaningfully impact the results. I've chosen to define the distance as the
+  maximum shift between the two epochs refer to \autoref{eq:distance} how to
+  compute it or to \autoref{fig:ip_pair} for a graphical representation.
+
+  \begin{equation}
+    D = max_{t\in T} [max( I_e(X, t) - I_{\hat{e}}(X, t), I_e(Y, t) - I_{\hat{e}}(Y, t))]
+    \label{eq:distance}
+  \end{equation} 
+
+  This reduces the vector to a single value that is easy to compare and track. 
+
+  If we consider the \autoref{fig:ip_pair} we can see that the axis are
+  different in scale this is due to input $X$ and label $Y$ having different
+  entropy values $ H(X) = 12 $ and $ H(Y) = 1 $. As such we might wish to adjust
+  \autoref{eq:distance}, and scale mutual information values by the entropy as
+  in \autoref{eq:distance2}.
+
+  \begin{equation}
+    D = max_{s\in\{X, Y\}} max_{t\in T} [(I_e(s, t) - I_{\hat{e}}(s, t)) / H(s)]
+    \label{eq:distance2}
+  \end{equation} 
 
   \begin{figure}[H]
     \centering
