@@ -239,11 +239,9 @@ below.
   
   "Estimating Mutual Information by Local Gaussian Approximation" (Shuyang Gao). A
   promising way to estimate mutual information. However the implementation
-  proved to be to difficult and time consuming so we abandoned it. We reached
+  proved to be to difficult and time consuming so we abandoned it. I contacted
   out to the author but he was not able to provide any concrete code.
 
-
-  failure
 \subsubsection{Geometrical Adaptive Entropy Estimation}
 
   "Breaking the Bandwidth Barrier: Geometric Adaptive Entropy Estimation"
@@ -314,6 +312,9 @@ have implemented a couple of ways to skip the epochs
   method tries to skip as many epochs as possible while still guaranteeing that
   the distance is at most delta $\delta$, and backtracks when necessary.
 
+  
+
+
   \subparagraph{Distance Metric}
   Every epoch that we measure yields us with a vector of mutual information
   values, that is for every layer $T$ we receive two values $I(X,T)$ and
@@ -330,7 +331,8 @@ have implemented a couple of ways to skip the epochs
     \label{eq:distance}
   \end{equation} 
 
-  This reduces the vector to a single value that is easy to compare and track. 
+  The equation reduces the vector to a single value that is easy to compare and
+  to track.
 
   If we consider the \autoref{fig:ip_pair} we can see that the axis are
   different in scale this is due to input $X$ and label $Y$ having different
