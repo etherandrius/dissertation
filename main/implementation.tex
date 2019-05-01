@@ -312,8 +312,45 @@ have implemented a couple of ways to skip the epochs
   method tries to skip as many epochs as possible while still guaranteeing that
   the distance is at most delta $\delta$, and backtracks when necessary.
 
-  
+  We maintain a skip value which tells us how many epochs we should skip 
 
+\begin{figure}[H]
+    \begin{pythonfigure}
+      Input:
+      prev = mutual information result of the previous epoch
+      curr = mutual information result of the current epoch
+      ;$\delta$; = user specified maximum "distance" between epochs
+      Output:
+      skip # how many epoch to skip until we measure again. defaults to 1
+      Algorithm:
+      dist = distance(prev, curr)
+      if ;$\delta$; < dist: # the gap is bigger than $\delta$
+        backtrack(prev, curr)
+      else: # the gap is smaller than $\delta$
+        skip = skip*4
+    \end{pythonfigure}
+    \caption{Delta Skip Approximate}
+    \label{fig:deltaapprox}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      Input:
+      prev = mutual information result of the previous epoch
+      curr = mutual information result of the current epoch
+      ;$\delta$; = user specified maximum "distance" between epochs
+      Output:
+      skip # how many epoch to skip until we measure again. defaults to 1
+      Algorithm:
+      dist = distance(prev, curr)
+      if ;$\delta$; < dist: # the gap is bigger than $\delta$
+        backtrack(prev, curr)
+      else: # the gap is smaller than $\delta$
+        skip = skip*4
+    \end{pythonfigure}
+    \caption{Delta Skip Approximate}
+    \label{fig:deltaapprox}
+\end{figure}
 
   \subparagraph{Distance Metric}
   Every epoch that we measure yields us with a vector of mutual information
@@ -375,7 +412,7 @@ have implemented a couple of ways to skip the epochs
       Input:
       prev = mutual information result of the previous epoch
       curr = mutual information result of the current epoch
-      ;$\delta$; = user specified maximum "distance" between epochs
+      ;$\delta$; = user specified estimated "distance" between epochs
       Output:
       skip # how many epoch to skip until we measure again. defaults to 1
       Algorithm:
