@@ -317,11 +317,20 @@ have implemented a couple of ways to skip the epochs
   method tries to skip as many epochs as possible while still guaranteeing that
   the distance is at most delta $\delta$, and backtracks when necessary.
 
-  We can consider the problem as an array of unknowns, where every unkown
-  corresponds to the saved state of the neural network and a lookup is
-  equivalent to computing mutual information for the epoch. In this context we
-  can rephrase the problem as finding a subset of the array such that difference
-  between every consecutive number is less than or equal to $\delta$.
+  The Algorithm starts by measuring every consecutive epoch ($skip = 1$) as at
+  the start of the training epochs are far apart -- distance between them is
+  more than $\delta$. When the distance become smaller there is no need to
+  measure every epoch so we exponentially increase $skip$ until the difference
+  between consecutively measured epochs is larger than $\delta$. At this point
+  we run into the issue of backtracking since we made a guarantee that every
+  measured epoch will be at most $\delta$ apart.
+
+  We can consider the backtracing problem as an array of unknown -- let's call
+  this array a section. Every unknown in a section corresponds to the saved
+  state of the neural network, revealing the unknown is equivalent to computing
+  mutual information for the epoch. In this context we can rephrase the problem
+  of backtracking as finding a subset of the section such that the difference
+  between every consecutive number is less than or equal $\delta$.
 
   Consider an example with $\delta = 2$.
   At the start all the values are unknown 
@@ -335,7 +344,7 @@ have implemented a couple of ways to skip the epochs
     \end{tabular}
   \end{table}
 
-  We measure values at the start and the end of the array to get the range.
+  We measure values at the start and the end of the section to get the range.
 
   \begin{table}[H]
     \centering
@@ -346,7 +355,7 @@ have implemented a couple of ways to skip the epochs
     \end{tabular}
   \end{table}
 
-  We continue to split the array and measure the middle element until the
+  We continue to split the section and measure the middle element until the
   difference between consecutive elements is less than or equal to $\delta$ or
   there are no more elements left.
 
@@ -378,6 +387,49 @@ have implemented a couple of ways to skip the epochs
     \end{tabular}
   \end{table}
 
+  The algorithm stops at this stage as:
+  \begin{itemize}
+    \item{
+        The distances between 10, 12 and 14 are 2 and $\delta <= 2$ holds.
+      }
+    \item{
+        There is no cell between 2 and 5, even though the distance is $3 >
+        \delta$.
+      }
+  \end{itemize}
+
+  Every unknown has to save the state of the neural network, that means that
+  every unknown contains $|X|*|nodes|$ float numbers. To put it into perspective
+  if we use the MNIST dataset which has 240,000 samples into a small network of
+  128 nodes every unknown would contain ~0.25GB of data. As such this method is
+  unsuited for large datasets in that case Delta Skip Approximate is more suited
+  for the job. A way to remedy the problem is instead of saving all the
+  activations, just save the neural network weights and compute the activations
+  just before calculating Mutual Information for the epoch
+  
+  \subparagraph{Parallelizing} 
+  The entire single threaded algorithm is described in \autoref{fig:deltaexact}
+  and \autoref{fig:backtrack}. However there are two main ways how we can
+  parallelize the algorithm.
+  \begin{itemize}
+    \item{
+        Parallelize Backtracking -- every time we need to backtrack we can
+        launch two threads to do the computation, it's quite easy to implement
+        however we need to be careful as we don't want to change the global
+        $skip$ value.
+      }
+    \item{
+        Compute Multiple sections -- consider a section as before.
+        Once we compute the latest epoch of the array we can launch backtracking
+        and the next section computation in parallel as separate threads.
+        We need to wait until the latest epoch is computed before computing the
+        next section as we might need to
+        update the $skip$ value.
+      }
+  \end{itemize}
+
+  
+
 \begin{figure}[H]
     \begin{pythonfigure}
       Algorithm: DeltaSkipExact
@@ -396,7 +448,7 @@ have implemented a couple of ways to skip the epochs
     \end{pythonfigure}
     \caption{Delta Skip Exact. The skip value is assumed to be global it
     specifies how many epochs to skip until we measure again}
-    \label{fig:deltaapprox}
+    \label{fig:deltaexact}
 \end{figure}
 
 \begin{figure}[H]
@@ -407,16 +459,16 @@ have implemented a couple of ways to skip the epochs
       curr = mutual information result of the current epoch
       ;$\delta$; = user specified maximum "distance" between epochs
       Output:
-      mid_epoch = average(prev.epoch, curr.epoch)
-      mid = Calculate Mutual Information of mid_epoch
-      DeltaSkipExact(prev, mid, ;$\delta$;, 1)
-      DeltaSkipExact(mid, curr, ;$\delta$;, 1)
+      if prev.epoch + 1 < curr.epoch:
+        mid_epoch = average(prev.epoch, curr.epoch)
+        mid = Calculate Mutual Information of mid_epoch
+        DeltaSkipExact(prev, mid, ;$\delta$;, 1)
+        DeltaSkipExact(mid, curr, ;$\delta$;, 1)
     \end{pythonfigure}
-    \caption{Delta Skip Approximate}
+    \caption{Backtrack Algorithm}
     \label{fig:backtrack}
 \end{figure}
 
-  \subparagraph{Parallelizing}
 
   \subparagraph{Distance Metric}
   Every epoch that we measure yields us with a vector of mutual information
@@ -472,6 +524,11 @@ have implemented a couple of ways to skip the epochs
   and fill in the gap whereas the Approximate doesn't backtrack and just
   continues to the next epoch, this is justified because the approximate method
   assumes that distance between epochs only shrinks and never increases.
+
+  This method does not suffer from memory issues but cannot be parallelized as
+  in order to compute next epoch we need to know the distance between current
+  epoch and the previous one. Delta Approximate method performs best when paired
+  with highly parallel Mutual Information Estimator.
 
 \begin{figure}[H]
     \begin{pythonfigure}
