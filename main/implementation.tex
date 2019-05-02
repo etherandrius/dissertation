@@ -58,6 +58,7 @@ about in \autoref{ssection:advanced}
 
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: Generate Information Plane Data
       Input:
       ;$T$; = number of layers
       ;$X$; = training data
@@ -123,6 +124,7 @@ about in \autoref{ssection:advanced}
    algorithm.
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: Mutual Information
       Input: 
       ;$X = x_1, x_2,...,x_n$;
       ;$Y = y_1, y_2,...,y_n$;
@@ -140,6 +142,7 @@ about in \autoref{ssection:advanced}
 
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: Entropy - Discrete Method
       Input: ;$X = x_1, x_2,...,x_n$;
       Output: ;$H(X)$;
       for ;$ \hat{x}\in Unique(X)$;:
@@ -156,6 +159,7 @@ about in \autoref{ssection:advanced}
 
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: Conditional Entropy
       Input: 
       ;$X = x_1, x_2,...,x_n$;
       ;$Y = y_1, y_2,...,y_n$;
@@ -204,6 +208,7 @@ This does not affect the result but increases performance of our algorithm.
 
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: Entropy - KDE
       Input: 
       ;$X = x_1, x_2,...,x_n$;  
       var = noise variance 0.05 by default
@@ -312,45 +317,106 @@ have implemented a couple of ways to skip the epochs
   method tries to skip as many epochs as possible while still guaranteeing that
   the distance is at most delta $\delta$, and backtracks when necessary.
 
-  We maintain a skip value which tells us how many epochs we should skip 
+  We can consider the problem as an array of unknowns, where every unkown
+  corresponds to the saved state of the neural network and a lookup is
+  equivalent to computing mutual information for the epoch. In this context we
+  can rephrase the problem as finding a subset of the array such that difference
+  between every consecutive number is less than or equal to $\delta$.
+
+  Consider an example with $\delta = 2$.
+  At the start all the values are unknown 
+
+  \begin{table}[H]
+    \centering
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline			
+        ?&?&?&?&?&?&?&?&? \\
+      \hline  
+    \end{tabular}
+  \end{table}
+
+  We measure values at the start and the end of the array to get the range.
+
+  \begin{table}[H]
+    \centering
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline			
+        \bf{2}&?&?&?&?&?&?&?&\bf{14}\\
+      \hline  
+    \end{tabular}
+  \end{table}
+
+  We continue to split the array and measure the middle element until the
+  difference between consecutive elements is less than or equal to $\delta$ or
+  there are no more elements left.
+
+
+  \begin{table}[H]
+    \centering
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline			
+        2&?&?&?&\bf{10}&?&?&?&14\\
+      \hline  
+    \end{tabular}
+  \end{table}
+
+  \begin{table}[H]
+    \centering
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline			
+        2&?&\bf{6}&?&10&?&\bf{12}&?&14\\
+      \hline  
+    \end{tabular}
+  \end{table}
+
+  \begin{table}[H]
+    \centering
+      \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+      \hline			
+        2&\bf{5}&6&\bf{8}&10&?&12&?&14\\
+      \hline  
+    \end{tabular}
+  \end{table}
 
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: DeltaSkipExact
       Input:
       prev = mutual information result of the previous epoch
       curr = mutual information result of the current epoch
       ;$\delta$; = user specified maximum "distance" between epochs
+      multiplier = how much to multiply skip by
       Output:
-      skip # how many epoch to skip until we measure again. defaults to 1
       Algorithm:
-      dist = distance(prev, curr)
-      if ;$\delta$; < dist: # the gap is bigger than $\delta$
-        backtrack(prev, curr)
-      else: # the gap is smaller than $\delta$
-        skip = skip*4
+      dist = Distance(prev, curr)
+      if dist > ;$\delta$;:
+        Backtrack(prev, curr) # $\autoref{fig:backtrack}$
+      else:
+        skip = skip*multiplier
     \end{pythonfigure}
-    \caption{Delta Skip Approximate}
+    \caption{Delta Skip Exact. The skip value is assumed to be global it
+    specifies how many epochs to skip until we measure again}
     \label{fig:deltaapprox}
 \end{figure}
 
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: Backtrack
       Input:
       prev = mutual information result of the previous epoch
       curr = mutual information result of the current epoch
       ;$\delta$; = user specified maximum "distance" between epochs
       Output:
-      skip # how many epoch to skip until we measure again. defaults to 1
-      Algorithm:
-      dist = distance(prev, curr)
-      if ;$\delta$; < dist: # the gap is bigger than $\delta$
-        backtrack(prev, curr)
-      else: # the gap is smaller than $\delta$
-        skip = skip*4
+      mid_epoch = average(prev.epoch, curr.epoch)
+      mid = Calculate Mutual Information of mid_epoch
+      DeltaSkipExact(prev, mid, ;$\delta$;, 1)
+      DeltaSkipExact(mid, curr, ;$\delta$;, 1)
     \end{pythonfigure}
     \caption{Delta Skip Approximate}
-    \label{fig:deltaapprox}
+    \label{fig:backtrack}
 \end{figure}
+
+  \subparagraph{Parallelizing}
 
   \subparagraph{Distance Metric}
   Every epoch that we measure yields us with a vector of mutual information
@@ -409,17 +475,17 @@ have implemented a couple of ways to skip the epochs
 
 \begin{figure}[H]
     \begin{pythonfigure}
+      Algorithm: Delta Skip - Approximate
       Input:
       prev = mutual information result of the previous epoch
       curr = mutual information result of the current epoch
       ;$\delta$; = user specified estimated "distance" between epochs
       Output:
-      skip # how many epoch to skip until we measure again. defaults to 1
       Algorithm:
-      dist = distance(prev, curr)
-      if ;$\delta$; < dist: # the gap is bigger than $\delta$
+      dist = Distance(prev, curr)
+      if dist > ;$\delta$;:
         skip = skip
-      else: # the gap is smaller than $\delta$
+      else:
         skip = skip*2
     \end{pythonfigure}
     \caption{Delta Skip Approximate}
