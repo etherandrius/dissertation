@@ -553,5 +553,33 @@ have implemented a couple of ways to skip the epochs
 
 \section{As-If-Random Experiment}
 
-We beleive that Tishby's experiments Saxe's experiments could be improved, with
+
+
+\begin{itemize}
+  \item{
+      Tishby and Saxe didn't capture randomness incredibly well 
+    }
+  \item{
+      We have a bettter way
+    }
+  \item{
+      How we've done it, only measure compression at the end of the training
+      period when the network is stable and only "brownian randomness
+      happens"(refer paper what randomness).
+    }
+  \item{
+      the problem is every x in X is unique, if we sample multiple epochs
+      instead of only one we have more compresssion
+    }
+  \item{
+      we rely on the property of the network that there is very little change at
+      the end of the training period
+    }
+  \item{
+      Achieves compression even with ReLu yay!!!!!!!!!
+    }
+\end{itemize}
+
+
+We believe that Tishby's experiments Saxe's experiments could be improved, with
 introducing a better notion of randomness. blah blah blah blah not finished.
