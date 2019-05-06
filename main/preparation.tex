@@ -1,3 +1,100 @@
+
+\begin{itemize}
+  \item{
+      MIE
+    }
+  \item{
+      NN
+    }
+  \item{
+      Input set 
+    }
+  \item{
+    }
+\end{itemize}
+
+\section{Entropy and Mutual Information}
+
+\paragraph{Entropy}-- quantifies information content of a random variable. It's
+generally measured in bits and can be though of as the expected information
+content when we sample a random variable once. Entropy for a discrete random
+variable is defined in \autoref{eq:entropy}.
+
+\begin{equation}
+  H(X)=-\sum _{i=1}^{n}{P (x_{i})\log P(x_{i})}
+\label{eq:entropy}
+\end{equation}
+
+Consider a random variable $X$ s.t $P(X=1) = P(X=0) = 0.5$, this tells
+us that $H(X) = 1$ and every time we sample $X$ we are expected to gain 1 bit of
+information.
+
+Similarly for a random variable $Y$ s.t $P(X=0) = 0.5, P(X=1) = P(X=2) = 0.25$,
+we have $H(Y) = 1.5$
+
+\paragraph{Conditional Entropy}-- quantifies the amount of information needed to
+describe an outcome of variable $Y$ given that value of another random variable
+$X$ is already known. Entropy of $Y$ given $X$ is written as $H(Y|X)$.
+Conditional Entropy for a discrete random variable is defined in
+\autoref{eq:condEntropy}
+
+\begin{equation}
+H(Y|X)\ =-\sum _{x\in {X},y\in {Y}}p(x,y)\log {\frac {p(x,y)}{p(x)}}
+\label{eq:condEntropy}
+\end{equation}
+
+Consider a random variable pair $X$ and $Y$ s.t 
+$$P(X=0,Y=0) = P(X=0,Y=1) = 0.25, P(X=1,Y=0) = 0.5, P(X=1,Y=1) = 0$$
+then $H(Y|X) = 0.5$ and $H(X|Y) \approx 0.6887$, while $H(X) = 1$ and $H(Y)
+\approx 0.8112$
+
+\paragraph{Mutual Information (MI)}-- is a measure between two random variables,
+it builds on top of entropy and measures how much information the variables have
+in common. It quantifies information gained about one variables when observing
+the other. Mutual information is generally computed either explicitly using the
+probabilities as in \autoref{eq:miExplicit} or using entropies as in
+\autoref{eq:miEntropy}.
+
+\begin{equation}
+      I(X,Y)=\sum _{y\in Y}\sum _{x\in X}{p(x,y)\log {\left({\frac
+      {p(x,y)}{p(x)\,p(y)}}\right)}} 
+\label{eq:miExplicit}
+\end{equation}
+
+\begin{equation}
+  I(X, Y) = H(X) - H(X|Y)
+\label{eq:miEntropy}
+\end{equation}
+
+Consider the random variables $X$ and $Y$ as before in the conditional entropy
+section. 
+$$P(X=0,Y=0) = P(X=0,Y=1) = 0.25, P(X=1,Y=0) = 0.5$$
+Here we can see that $I(X,Y) \approx 0.3113$
+
+\section{Neural Network}
+
+\paragraph{Neural Network} is a machine learning framework based on multiple
+perceptrons which are usually connected in sequential layers as in
+\autoref{fig:neuralNetworkEX}. However for our purposes we can define the neural
+network to be an abstract collection of parameterized functions.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.35\textwidth]{figs/neural_network_ex.png}
+  \caption{
+    https://commons.wikimedia.org/wiki/File:Artificial\_neural\_network.svg
+  }
+  \label{fig:neuralNetworkEX}
+\end{figure}
+
+\paragraph{Neural Network} is a machine learning framework, based on
+individually connected perceptrons
+
+A neural network is a machine learning framework
+
+---------------------------------------------------------------
+
+
 Before developing a plan for how we are going to realize the project in code we
 needed to fully understand the ideas presented in the paper:
 \begin{itemize}
