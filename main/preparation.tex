@@ -1,18 +1,3 @@
-
-\begin{itemize}
-  \item{
-      MIE
-    }
-  \item{
-      NN
-    }
-  \item{
-      Input set 
-    }
-  \item{
-    }
-\end{itemize}
-
 \section{Entropy and Mutual Information}
 
 \paragraph{Entropy}-- quantifies information content of a random variable. It's
@@ -73,24 +58,51 @@ Here we can see that $I(X,Y) \approx 0.3113$
 
 \section{Neural Network}
 
-\paragraph{Neural Network} is a machine learning framework based on multiple
-perceptrons which are usually connected in sequential layers as in
-\autoref{fig:neuralNetworkEX}. However for our purposes we can define the neural
-network to be an abstract collection of parameterized functions.
+\paragraph{Neural Network} is a machine learning framework that is intended to
+solve the problem of prediction or classification of data. Suppose we have a
+dataset $(x_i, y_i)$ for $i = 1,...,N$ s.t $x_i$ is the input to the Neural
+Network and $y_i$ is the label or the value we want the neural network to
+predict. We have $x_i \in \mathbb{R}^d$ and $y_i \in \mathbb{R}^{d^\prime}$. $X$
+and $Y$ is representation of our input and label data for example -- $X$ could
+represent encoded images of handwritten digits and $Y$ could represent the truth
+value what the digit actually is, this is the case for the popular MNIST
+dataset.
+
+The network is structured in layers where every layer holds an intermediate
+representation of the final prediction output, lets call this intermediate
+representation an activation of that specific layer. For our purposes we will
+define a neural network to be a sequence of parameterized functions
+$f_{\theta}^1, f_{\theta}^2, ...  ,f_{\theta}^N$ s.t
+
+\begin{align*}
+  \text{let } t_0 &= x, \\
+    t_0 \rightarrow f_{\theta}^1(t_0) &= t_1,\\
+    t_1 \rightarrow f_{\theta}^2(t_1) &= t_2,\\
+    ...\\
+    t_{N-1} \rightarrow f_{\theta}^N(t_{N-1}) &= t_N,\\
+    \text{let } y &= t_N\\
+\end{align*}
+
+We have one function for each layer transition of the neural network this allows
+us to extract the activation of a specific layer as in \autoref{eq:layerL}, we
+will need to get access to intermediate layers in our experiments.
 
 \begin{figure}[H]
-  \centering
-  \includegraphics[width=0.35\textwidth]{figs/neural_network_ex.png}
-  \caption{
-    https://commons.wikimedia.org/wiki/File:Artificial\_neural\_network.svg
-  }
-  \label{fig:neuralNetworkEX}
+  \[ t_m = f_{\theta}^m(f_{\theta}^{m-1}(...(f_{\theta}^1(x)))) \]
+  \caption{activation of layer m for input x}
+  \label{eq:layerL}
 \end{figure}
 
-\paragraph{Neural Network} is a machine learning framework, based on
-individually connected perceptrons
+\paragraph{Stochastic Gradient Descent} Each of the transition function are
+parameterized by the weights function $\theta$. The $\theta$ function is
+directly controlled by Stochastic Gradient Descent (SGD) algorithm.  SGD is an
+algorithm for training a neural network it gradually updates the weights
+$\theta$ according to some goal such as minimising the prediction error.  SGD is
+an iterative process, it has a notion of epochs where one iteration of the
+algorithm advances epochs by one, this implies that $\theta$ function depends on
+which epoch we are currently at thus it must take the epoch number as an
+argument -- $\theta(e)$.
 
-A neural network is a machine learning framework
 
 ---------------------------------------------------------------
 
