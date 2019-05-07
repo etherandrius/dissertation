@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pdflatex --shell-escape dissertation.tex && pkill -HUP mupdf-x11
