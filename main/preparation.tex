@@ -59,6 +59,16 @@ Here we can see that $I(X,Y) \approx 0.3113$
 \section{Neural Network}
 
 \paragraph{Neural Network} is a machine learning framework that is intended to
+solve the problem of prediction or classification of data. 
+
+Suppose we have a dataset:
+$$ (x_i, y_i) \text{ for } i = 1,...,N, x_i \in \mathbb{R}^d, y_i \in \mathbb{R}^{d^\prime}$$ 
+where $x_i$ is the input to the Neural Network and $y_i$ is the label or the
+value we want the neural network to predict. Suppose we are trying to classify
+if an image contains a cat or no, then $x_i$ would be an encoding of an image
+and the label $y_i$ could be 1 if the image contains a cat and 0 if it does not.
+
+\paragraph{Neural Network} is a machine learning framework that is intended to
 solve the problem of prediction or classification of data. Suppose we have a
 dataset $(x_i, y_i)$ for $i = 1,...,N$ s.t $x_i$ is the input to the Neural
 Network and $y_i$ is the label or the value we want the neural network to
@@ -88,8 +98,8 @@ us to extract the activation of a specific layer as in \autoref{eq:layerL}, we
 will need to get access to intermediate layers in our experiments.
 
 \begin{figure}[H]
-  \[ t_m = f_{\theta}^m(f_{\theta}^{m-1}(...(f_{\theta}^1(x)))) \]
-  \caption{activation of layer m for input x}
+  \[ t_l = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x)))) \]
+  \caption{activation of layer l for input x}
   \label{eq:layerL}
 \end{figure}
 
@@ -103,6 +113,102 @@ algorithm advances epochs by one, this implies that $\theta$ function depends on
 which epoch we are currently at thus it must take the epoch number as an
 argument -- $\theta(e)$.
 
+\section{The Information plane}
+
+----------------------------
+
+Side note why did Tishby choose the information domain.
+
+----------------------------
+
+The Information plane is a way of visualizing the Neural Networks training
+process trough the information domain. By looking at mutual information between
+the input $X$ the intermediate neural network layer activations $T$ and the
+label $Y$ we can see how the information flows trough the network.
+
+Mutual Information, as we defined it, is only applicable to Probability
+distributions, however we currently only have the datset 
+$(x_i, y_i) \text{ for } i = 1...N$
+, if we assume that every input $x_i$ equally likely we can provide a routine
+that defines our probability distribution.
+
+For convenience lets define $F_{\theta}^t$ to be the activation of layer t given
+input $x$, i.e
+$$F_{\theta}^t(x) = f_{\theta}^t(f_{\theta}^{t-1}(...(f_{\theta}^1(x))))$$
+
+Consider the routine:
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def rxty(e, t):
+        pick i ;$\sim$; Uniform {1...N}
+        return ;$(x_i, F_{\theta(e)}^t(x_i), y_i)$;
+    \end{pythonfigure}
+    \label{fig:rxty}
+\end{figure}
+It defines
+
+
+
+
+
+
+
+
+
+
+
+\begin{itemize}
+  \item{
+      we are visualizing the neural networks training process trough the
+      information domain.
+    }
+  \item{
+      we are looking at mutual information between input data intermediate
+      neural network representation and the label
+    }
+  \item{
+      Mutual Information is defined for probability distributions, however we
+      currently only have the input label dataset, we need to generate
+      probability distributions that fit our needs.
+    }
+  \item{
+      for convenience lets define $F_{\theta}^l(x) =
+      f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x))))$
+    }
+  \item{
+      a reasonable assumption we can make is to assume the input dataset is
+      uniform and every input is equally likely.
+    }
+  \item{
+      using the assumption we can define a function rxty that defines correlated
+      random variables $ X, T_e^l, Y $
+    }
+  \item{
+      ---------------------------------
+    }
+  \item{
+      before we define the information plane, we need to explain what
+      probability distributions we are computing mutual information for and how
+      we generate them as at this point we have only introduced the input
+      dataset.
+    }
+  \item{
+      T - is the probability distribution for a specific layer i 
+      X - is the probability distribution generated from the input dataset 
+      Y - is the probability distribution generated from the label dataset
+      I(T, X), I(T, Y)
+    }
+  \item{
+      markov chain thing ???? is it usefull
+    }
+  \item{
+      explain how layers multiple layers are represented on a single graph.
+    }
+  \item{
+      trought the information plane we can see that there are two phases to the
+      training: the memorization phase and the compression phase.
+    }
+\end{itemize}
 
 ---------------------------------------------------------------
 
