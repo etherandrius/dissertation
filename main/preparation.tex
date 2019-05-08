@@ -1,6 +1,6 @@
 \section{Entropy and Mutual Information}
 
-\paragraph{Entropy}-- quantifies information content of a random variable. It's
+\textbf{Entropy} -- quantifies information content of a random variable. It's
 generally measured in bits and can be though of as the expected information
 content when we sample a random variable once. Entropy for a discrete random
 variable is defined in \autoref{eq:entropy}.
@@ -17,7 +17,7 @@ information.
 Similarly for a random variable $Y$ s.t $P(X=0) = 0.5, P(X=1) = P(X=2) = 0.25$,
 we have $H(Y) = 1.5$
 
-\paragraph{Conditional Entropy}-- quantifies the amount of information needed to
+\textbf{Conditional Entropy} -- quantifies the amount of information needed to
 describe an outcome of variable $Y$ given that value of another random variable
 $X$ is already known. Entropy of $Y$ given $X$ is written as $H(Y|X)$.
 Conditional Entropy for a discrete random variable is defined in
@@ -33,7 +33,7 @@ $$P(X=0,Y=0) = P(X=0,Y=1) = 0.25, P(X=1,Y=0) = 0.5, P(X=1,Y=1) = 0$$
 then $H(Y|X) = 0.5$ and $H(X|Y) \approx 0.6887$, while $H(X) = 1$ and $H(Y)
 \approx 0.8112$
 
-\paragraph{Mutual Information (MI)}-- is a measure between two random variables,
+\textbf{Mutual Information (MI)} -- is a measure between two random variables,
 it builds on top of entropy and measures how much information the variables have
 in common. It quantifies information gained about one variables when observing
 the other. Mutual information is generally computed either explicitly using the
@@ -58,7 +58,7 @@ Here we can see that $I(X,Y) \approx 0.3113$
 
 \section{Neural Network}
 
-\paragraph{Neural Network} is a machine learning framework that is intended to
+\textbf{Neural Networks} are a machine learning framework that is intended to
 solve the problem of prediction or classification of data. 
 
 Suppose we have a dataset:
@@ -67,16 +67,6 @@ where $x_i$ is the input to the Neural Network and $y_i$ is the label or the
 value we want the neural network to predict. Suppose we are trying to classify
 if an image contains a cat or no, then $x_i$ would be an encoding of an image
 and the label $y_i$ could be 1 if the image contains a cat and 0 if it does not.
-
-\paragraph{Neural Network} is a machine learning framework that is intended to
-solve the problem of prediction or classification of data. Suppose we have a
-dataset $(x_i, y_i)$ for $i = 1,...,N$ s.t $x_i$ is the input to the Neural
-Network and $y_i$ is the label or the value we want the neural network to
-predict. We have $x_i \in \mathbb{R}^d$ and $y_i \in \mathbb{R}^{d^\prime}$. $X$
-and $Y$ is representation of our input and label data for example -- $X$ could
-represent encoded images of handwritten digits and $Y$ could represent the truth
-value what the digit actually is, this is the case for the popular MNIST
-dataset.
 
 The network is structured in layers where every layer holds an intermediate
 representation of the final prediction output, lets call this intermediate
@@ -103,7 +93,7 @@ will need to get access to intermediate layers in our experiments.
   \label{eq:layerL}
 \end{figure}
 
-\paragraph{Stochastic Gradient Descent} Each of the transition function are
+\textbf{Stochastic Gradient Descent} Each of the transition function are
 parameterized by the weights function $\theta$. The $\theta$ function is
 directly controlled by Stochastic Gradient Descent (SGD) algorithm.  SGD is an
 algorithm for training a neural network it gradually updates the weights
@@ -115,11 +105,7 @@ argument -- $\theta(e)$.
 
 \section{The Information plane}
 
-----------------------------
-
-Side note why did Tishby choose the information domain.
-
-----------------------------
+\subsection{Setup}
 
 The Information plane is a way of visualizing the Neural Networks training
 process trough the information domain. By looking at mutual information between
@@ -136,79 +122,221 @@ For convenience lets define $F_{\theta}^t$ to be the activation of layer t given
 input $x$, i.e
 $$F_{\theta}^t(x) = f_{\theta}^t(f_{\theta}^{t-1}(...(f_{\theta}^1(x))))$$
 
-Consider the routine:
+
+Consider \autoref{fig:rxty}, the routine defines the random variables
+$X,T_e^t,Y$. Here $T_e^t$ is the distribution of layer $t$ for the epoch $e$,
+$X$ and $Y$ is the original data with assumption that it's uniformly
+distributed. 
+
+Using the probability distributions we now have values:
+\begin{itemize}
+  \item{
+      $I(T_e^t, X)$ -- Mutual Information between the input distribution and the
+      layer activations 
+    }
+  \item{
+      $I(T_e^t, Y)$ -- Mutual Information between the label distribution and the
+      layer activations.
+    }
+\end{itemize}
+This allows us to generate the Information plane.
+
+
 \begin{figure}[H]
     \begin{pythonfigure}
       def rxty(e, t):
         pick i ;$\sim$; Uniform {1...N}
         return ;$(x_i, F_{\theta(e)}^t(x_i), y_i)$;
     \end{pythonfigure}
+    \caption{Definition of correlated random variables $X, T_e^t$ and, $Y$}
     \label{fig:rxty}
 \end{figure}
-It defines
+
+\subsection{Visualization}
+
+The Information plane visualizes the whole training process, in order to
+generate the information plane we need $I(X,T_e^t)$ and $I(Y,T_e^t)$ for every
+epoch $e$ and every layer $t$.
+
+Consider for now that we only trained our neural network for one epoch, the
+\autoref{fig:Ip1} shows an example of this. 
+
+In this case the network consists of 5 layers, in the figure every node
+corresponds to a distinct layer. The lines between the nodes help us distinguish
+epochs from each other and gives helps us to see the order of the layers, the
+upper-right-most node corresponds to the first layer in the neural network, the
+lower-left-most node corresponds to the fifth and last layer of the network.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.60\textwidth]{figs/ip_1v2.png}
+  \caption{
+    information plane for a neural network with 5 layers, which was only trained
+    for one epoch.
+  }
+  \label{fig:Ip1}
+\end{figure}
+
+Consider now \autoref{fig:Ip2}, it shows an information plane for a full
+training phase. The color signifies what epoch the data belongs to and let's us
+see how the network progressed over time. We can see that at the start $I(Y,
+T_1^4) \approx 0$ meaning the network has not preserved any information about
+the label distribution $Y$, but by the end of the training we see $I(Y,
+T_{10,000}^4) \approx 1$ which means we have preserved almost all the information
+about the label.
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.60\textwidth]{figs/ip_10000.png}
+  \captionof{figure}{
+    Information plane for a neural network with 4 layers, which was trained for
+    approximately $ 10\,000 $ epochs. The Neural Network was trained on the same
+    dataset as used by Tishby, 2017, hence entropy of the input $H(X)$ is 12 and
+    entropy of the label $H(Y)$ is 1.
+  }
+  \label{fig:Ip2}
+\end{figure}
+
+\subsection{Interpretation of the Information Plane}
+
+Let's once again consider \autoref{fig:Ip2}, we can see two phases in the figure
+Tishby has named them The Fitting Phase and The Compression Phase.
+
+\subparagraph{The Fitting Phase} In \autoref{fig:Ip2} the neural network is in
+the fitting phase from the start of the training up until epoch $\sim$1500. The
+duration of the fitting phase varies heavily on the training parameters and is
+most influenced by the size of our input dataset. The fitting phase is
+characterized by:
+\begin{itemize}
+  \item{
+      A rapid increase in $I(Y, T_e^t)$, the information about the label, as we
+      advance trough the epochs $e$, the increase is especially visible in the
+      later layers, in our case layers 3 and 4.
+    }
+  \item{
+      Either an increase or no change in $I(X, T_e^t)$, the information about
+      the input, as we advance trough the epochs $e$, in our case we see very
+      little change in $I(X,T_e^t)$.
+    }
+\end{itemize}
+
+During the fitting phase a neural network tries to memorize the data and make
+predictions based on the observations, this means that the network may learn
+useless features that only superficially correlate with the correct label.
+
+\subparagraph{The Compression Phase} In \autoref{fig:Ip2} the neural network
+enters the compression phase when the fitting phase ends around epoch $\sim$1500
+and lasts until we finish the training process. The compression phase is
+characterized by:
+\begin{itemize}
+  \item{
+      A slowdown of how fast $I(Y, T_e^t)$ is increasing with respect to epochs
+      $e$. 
+    }
+  \item{
+      A slow decrease of $I(X, T_e^t)$ with respect to epoch $e$.
+    }
+\end{itemize}
+
+During the compression phase a neural network compresses representation of the
+input discarding more features that did not help with predicting correct labels.
+Discarding irrelevant features helps the neural network generalize and produce
+better predictions for new data. 
+
+\subsection{Compression In Neural Networks}
+
+\paragraph{Mutual Information} 
+Let's introduce two properties of mutual information 
+
+Let's revisit Mutual Information and introduce two properties that will be
+useful.
+
+\subparagraph{Invertible Transformation} 
+Let $u$ and $v$ be invertible functions; then,
+
+\begin{equation}
+  I(A, B) = I(u(A), v(B))
+\end{equation}
+
+\subparagraph{Data Processing Inequality} 
+Let $ A \rightarrow B \rightarrow C$ be a Markov chain; then,
+\begin{equation}
+  I(a,b) \geq I(a,c)
+\end{equation}
+
+In the neural network case this implies 
+\begin{equation}
+  H(X) \geq I(X,T_e^1) \geq I(X, T_e^2) \geq ... \geq I(X,T_e^N) \text{, and}
+\end{equation}
+\begin{equation}
+  I(X, Y) \geq I(T_e^1, Y) \geq I(T_e^2, Y) \geq ... \geq I(T_e^N, Y)
+\end{equation}
+
+i.e trough out the layers we can only lose or maintain information about the
+input distribution $X$ and label distribution $Y$, equality is achieved iff
+transformation functions $f_{\theta}^t$ are invertible.
+
+\subsubsection{Viability of Compression}
+
+We have defined neural networks to be a sequence of parameterized functions 
+$f_{\theta}^1, f_{\theta}^2, ...  ,f_{\theta}^N$
 
 
 
+----------------------------------------------------------
 
+\begin{itemize}
+  \item{
+      We have defined a NN to be a sequence of functions f, f, ... ,f. In real
+      neural networks an f is a matrix application that takes in a activation
+      vector of layer i and returns and activation of layer i+1
+    }
+  \item{
+      NN is a collection of functions, where every function is a matrix
+      application on a vector. => they are random 
 
+      A matrix application is invertible iff A matrix has a determinant zero
+    }
+  \item{
+      randomness
+    }
+\end{itemize}
 
-
-
-
+----------------------------------------------------------
 
 
 \begin{itemize}
   \item{
-      we are visualizing the neural networks training process trough the
-      information domain.
+      data processing inequality, every function f, can only lose information
+      about the input, they lose information via collisions
+
+      Then $I(T, X) = H(T) - H(T|X) = H(T)$
     }
   \item{
-      we are looking at mutual information between input data intermediate
-      neural network representation and the label
+      Transformation invariant $I(X, Y) = I(f(X), g(Y))$ , if f and g are
+      invertible
     }
   \item{
-      Mutual Information is defined for probability distributions, however we
-      currently only have the input label dataset, we need to generate
-      probability distributions that fit our needs.
+      f are matrices that transform a vector generated by SGD, they are random
+      so probability that they are invertible is 100%
     }
   \item{
-      for convenience lets define $F_{\theta}^l(x) =
-      f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x))))$
-    }
-  \item{
-      a reasonable assumption we can make is to assume the input dataset is
-      uniform and every input is equally likely.
-    }
-  \item{
-      using the assumption we can define a function rxty that defines correlated
-      random variables $ X, T_e^l, Y $
-    }
-  \item{
-      ---------------------------------
-    }
-  \item{
-      before we define the information plane, we need to explain what
-      probability distributions we are computing mutual information for and how
-      we generate them as at this point we have only introduced the input
-      dataset.
-    }
-  \item{
-      T - is the probability distribution for a specific layer i 
-      X - is the probability distribution generated from the input dataset 
-      Y - is the probability distribution generated from the label dataset
-      I(T, X), I(T, Y)
-    }
-  \item{
-      markov chain thing ???? is it usefull
-    }
-  \item{
-      explain how layers multiple layers are represented on a single graph.
-    }
-  \item{
-      trought the information plane we can see that there are two phases to the
-      training: the memorization phase and the compression phase.
+      
     }
 \end{itemize}
+
+----------------------------------------------
+
+\begin{itemize}
+  \item{
+      justifying compression
+    }
+  \item{
+      information plane
+    }
+\end{itemize}
+
 
 ---------------------------------------------------------------
 
