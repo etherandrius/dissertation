@@ -4,7 +4,7 @@ import termcolor
 sections = {
     "Intro": ("introduction.tex", 500, 0.05),
     "Prep": ("preparation.tex", 2500, 0.20),
-    "Impl": ("implementation.tex", 6500, 0.40),
+    "Impl": ("implementation.tex", 4500, 0.40),
     "Eval": ("evaluation.tex", 2000, 0.16),
     "Conc": ("conclusion.tex", 500, 0.04),
 }
