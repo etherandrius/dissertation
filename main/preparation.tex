@@ -70,9 +70,9 @@ and the label $y_i$ could be 1 if the image contains a cat and 0 if it does not.
 
 The network is structured in layers where every layer holds an intermediate
 representation of the final prediction output, lets call this intermediate
-representation an activation of that specific layer. For our purposes we will
-define a neural network to be a sequence of functions
-$f_{\theta}^1,f_{\theta}^2,... ,f_{\theta}^N$ that are parameterized by weights
+representation an \textbf{activation} of that specific layer. For our purposes
+we will define a neural network to be a sequence of functions
+$f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^N$ that are parameterized by weights
 $\theta$ s.t
 
 \begin{align*}
@@ -83,6 +83,10 @@ $\theta$ s.t
     t_{N-1} \rightarrow f_{\theta}^N(t_{N-1}) &= t_N,\\
     \text{let } y &= t_N
 \end{align*}
+\begin{align*}
+    \text{values } t_1,t_2,...,t_N 
+    \text{ here are } \textbf{activations } \text{of layers } 1,2,...,N
+\end{align*}
 
 We have one function for each layer transition of the neural network this allows
 us to extract the activation of a specific layer as in \autoref{eq:layerL}, we
@@ -90,7 +94,7 @@ will need to get access to intermediate layers in our experiments.
 
 \begin{figure}[H]
   \[ t_l = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x)))) \]
-  \caption{activation of layer l for input x}
+  \caption{\textbf{activation} of layer l for input x}
   \label{eq:layerL}
 \end{figure}
 
