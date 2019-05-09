@@ -79,7 +79,7 @@ $\theta$ s.t
   \text{let } t_0 &= x, \\
     t_0 \rightarrow f_{\theta}^1(t_0) &= t_1,\\
     t_1 \rightarrow f_{\theta}^2(t_1) &= t_2,\\
-    ...\\
+    &...\\
     t_{N-1} \rightarrow f_{\theta}^N(t_{N-1}) &= t_N,\\
     \text{let } y &= t_N
 \end{align*}
@@ -339,7 +339,7 @@ this implies
 \end{equation*}
 
 If equality is achieved in \autoref{eq:hh} and $F_\theta^t$ is invertible that
-would imply taht we have equalities in \autoref{eq:dpiIneq1} and
+would imply that we have equalities in \autoref{eq:dpiIneq1} and
 \autoref{eq:dpiIneq2}, this would imply that every layer contains the same
 information content as the input and no compression is can happen.
 
@@ -374,8 +374,16 @@ than an instance of a concrete value.
   &\text{Let us define } \theta^\prime \text{ to be a probability distribution
   defined by \autoref{fig:randomTheta}} \\
   &\text{Let us define } \theta(e) \text{ to be an instance of }
-  \theta^\prime(e) \text{ for any epoch } e
+  \theta^\prime(e) \text{ for any epoch } e \\
 \end{align*}
+
+N.B. Using this notation means: that $F_\theta^t$ is a function and
+$F_{\theta^\prime}^t$ is a probability distribution. This is due to the fact
+that the values represent the layer activation of a neural network, if we are
+using $\theta$ then the network is deterministic and $F_\theta^t$ is a function.
+However if the weights themselves are probabilistic like for $\theta^\prime$
+then every layer activation is probabilistic, hence $F_{\theta^\prime}^t$ is a
+probability distribution.
 
 \begin{figure}[H]
     \begin{pythonfigure}
@@ -392,7 +400,9 @@ than an instance of a concrete value.
     \label{fig:randomTheta}
 \end{figure}
 
-
+If we assume the neural network weights $\theta^\prime$ to be a probability
+distribution, then $F_{\theta^\prime}^t$ is not generally invertible as it is
+likely that $F_{\theta^\prime}^t$
 
 ----------------------------------------------------------
 
