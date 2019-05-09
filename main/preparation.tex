@@ -1,6 +1,6 @@
 \section{Entropy and Mutual Information}
 
-\textbf{Entropy} -- quantifies information content of a random variable. It's
+\textbf{Entropy} -- quantifies information content of a random variable. It is
 generally measured in bits and can be though of as the expected information
 content when we sample a random variable once. Entropy for a discrete random
 variable is defined in \autoref{eq:entropy}.
@@ -128,18 +128,18 @@ input $x$, i.e
 
 
 Consider \autoref{fig:rxty}, the routine defines the random variables
-$X,T_e^t,Y$. Here $T_e^t$ is the distribution of layer $t$ for the epoch $e$,
-$X$ and $Y$ is the original data with assumption that it's uniformly
+$X,T_{e,t},Y$. Here $T_{e,t}$ is the distribution of layer $t$ for the epoch $e$,
+$X$ and $Y$ is the original data with assumption that it is uniformly
 distributed. 
 
 Using the probability distributions we now have values:
 \begin{itemize}
   \item{
-      $I(T_e^t, X)$ -- Mutual Information between the input distribution and the
+      $I(T_{e,t}, X)$ -- Mutual Information between the input distribution and the
       layer activations 
     }
   \item{
-      $I(T_e^t, Y)$ -- Mutual Information between the label distribution and the
+      $I(T_{e,t}, Y)$ -- Mutual Information between the label distribution and the
       layer activations.
     }
 \end{itemize}
@@ -152,14 +152,14 @@ This allows us to generate the Information plane.
         pick i ;$\sim$; Uniform {1...N}
         return ;$(x_i, F_{\theta(e)}^t(x_i), y_i)$;
     \end{pythonfigure}
-    \caption{Definition of correlated random variables $X, T_e^t$ and, $Y$}
+    \caption{Definition of correlated random variables $X, T_{e,t}$ and, $Y$}
     \label{fig:rxty}
 \end{figure}
 
 \subsection{Visualization}
 
 The Information plane visualizes the whole training process, in order to
-generate the information plane we need $I(X,T_e^t)$ and $I(Y,T_e^t)$ for every
+generate the information plane we need $I(X,T_{e,t})$ and $I(Y,T_{e,t})$ for every
 epoch $e$ and every layer $t$.
 
 Consider for now that we only trained our neural network for one epoch, the
@@ -182,11 +182,11 @@ lower-left-most node corresponds to the fifth and last layer of the network.
 \end{figure}
 
 Consider now \autoref{fig:Ip2}, it shows an information plane for a full
-training phase. The color signifies what epoch the data belongs to and let's us
+training phase. The color signifies what epoch the data belongs to and let us
 see how the network progressed over time. We can see that at the start $I(Y,
-T_1^4) \approx 0$ meaning the network has not preserved any information about
+T_{1,4}) \approx 0$ meaning the network has not preserved any information about
 the label distribution $Y$, but by the end of the training we see $I(Y,
-T_{10,000}^4) \approx 1$ which means we have preserved almost all the information
+T_{10^4,4}) \approx 1$ which means we have preserved almost all the information
 about the label.
 
 
@@ -204,7 +204,7 @@ about the label.
 
 \subsection{Interpretation of the Information Plane}
 
-Let's once again consider \autoref{fig:Ip2}, we can see two phases in the figure
+Let us once again consider \autoref{fig:Ip2}, we can see two phases in the figure
 Tishby has named them The Fitting Phase and The Compression Phase.
 
 \subparagraph{The Fitting Phase} In \autoref{fig:Ip2} the neural network is in
@@ -214,14 +214,14 @@ most influenced by the size of our input dataset. The fitting phase is
 characterized by:
 \begin{itemize}
   \item{
-      A rapid increase in $I(Y, T_e^t)$, the information about the label, as we
+      A rapid increase in $I(Y, T_{e,t})$, the information about the label, as we
       advance trough the epochs $e$, the increase is especially visible in the
       later layers, in our case layers 3 and 4.
     }
   \item{
-      Either an increase or no change in $I(X, T_e^t)$, the information about
+      Either an increase or no change in $I(X, T_{e,t})$, the information about
       the input, as we advance trough the epochs $e$, in our case we see very
-      little change in $I(X,T_e^t)$.
+      little change in $I(X,T_{e,t})$.
     }
 \end{itemize}
 
@@ -235,11 +235,11 @@ and lasts until we finish the training process. The compression phase is
 characterized by:
 \begin{itemize}
   \item{
-      A slowdown of how fast $I(Y, T_e^t)$ is increasing with respect to epochs
+      A slowdown of how fast $I(Y, T_{e,t})$ is increasing with respect to epochs
       $e$. 
     }
   \item{
-      A slow decrease of $I(X, T_e^t)$ with respect to epoch $e$.
+      A slow decrease of $I(X, T_{e,t})$ with respect to epoch $e$.
     }
 \end{itemize}
 
@@ -251,9 +251,9 @@ better predictions for new data.
 \subsection{Compression In Neural Networks}
 
 \paragraph{Mutual Information} 
-Let's introduce two properties of mutual information 
+Let us introduce two properties of mutual information 
 
-Let's revisit Mutual Information and introduce two properties that will be
+Let us revisit Mutual Information and introduce two properties that will be
 useful.
 
 \subparagraph{Invertible Transformation} 
@@ -271,11 +271,13 @@ Let $ A \rightarrow B \rightarrow C$ be a Markov chain; then,
 
 In the neural network case this implies 
 \begin{equation}
-  H(X) \geq I(X,T_e^1) \geq I(X, T_e^2) \geq ... \geq I(X,T_e^N) \text{, and}
+  H(X) \geq I(X,T_{e,1}) \geq I(X, T_{e,2}) \geq ... \geq I(X,T_{e,N}) 
+  \text{ for all epochs } e \text{, and}
   \label{eq:dpiIneq1}
 \end{equation}
 \begin{equation}
-  I(X, Y) \geq I(T_e^1, Y) \geq I(T_e^2, Y) \geq ... \geq I(T_e^N, Y)
+  I(X, Y) \geq I(T_{e,1}, Y) \geq I(T_{e,2}, Y) \geq ... \geq I(T_{e,N}, Y) 
+  \text{ for all epochs } e 
   \label{eq:dpiIneq2}
 \end{equation}
 
@@ -285,40 +287,40 @@ transformation functions $f_{\theta}^t$ are invertible.
 
 \subsubsection{Viability of Compression}
 
-Let's consider the value $I(X, T_e^t)$, in order to generate the probability
-distribution $X$ we have assumed that it's uniform, i.e
+Let us consider the value $I(X, T_{e,t})$, in order to generate the probability
+distribution $X$ we have assumed that it is uniform, i.e
 \begin{equation*}
   P(X=x_i) = 1 / N \text{ for all } i = 1...N \implies H(X) = log_2(N)
 \end{equation*}
-we also know the probability distribution of $T_e^t$ given $X$, i.e
+we also know the probability distribution of $T_{e,t}$ given $X$, i.e
 \begin{equation*}
-  P(T_e^t=t|X=x) = \begin{cases}
+  P(T_{e,t}=t|X=x) = \begin{cases}
     1, & \text{if } t = F_{\theta(e)}^t(x). \\
     0, & \text{otherwise}.
   \end{cases}
 \end{equation*}
 This implies if we have observed the value of $X$ there is no uncertainty of the
-value of $T_e^t$, hence 
+value of $T_{e,t}$, hence 
 \begin{equation*}
-  H(T_e^t|X) = 0
+  H(T_{e,t}|X) = 0
 \end{equation*}
 this implies
 \begin{equation*}
-  I(X, T_e^t) = H(T_e^t) - H(T_e^t | X) = H(T_e^t)
+  I(X, T_{e,t}) = H(T_{e,t}) - H(T_{e,t} | X) = H(T_{e,t})
 \end{equation*}
 
-Consider now $H(T_e^t)$,
+Consider now $H(T_{e,t})$,
 \begin{align}
   &\text{we know from \autoref{eq:miEntropy} } \nonumber \\
-  &H(T_e^t) - H(T_e^t|X) = H(X) - H(X|T_e^t) \nonumber \\
-  &\implies H(T_e^t) = H(X) - H(X|T_e^t) \nonumber \\
-  &\implies H(T_e^t) + H(X|T_e^t) = H(X) \nonumber \\
-  &\implies H(T_e^t) \leq H(X)
+  &H(T_{e,t}) - H(T_{e,t}|X) = H(X) - H(X|T_{e,t}) \nonumber \\
+  &\implies H(T_{e,t}) = H(X) - H(X|T_{e,t}) \nonumber \\
+  &\implies H(T_{e,t}) + H(X|T_{e,t}) = H(X) \nonumber \\
+  &\implies H(T_{e,t}) \leq H(X)
 \label{eq:hh}
 \end{align}
-where equality is achieved iff $H(X|T_e^t)=0$, i.e
+where equality is achieved iff $H(X|T_{e,t})=0$, i.e
 \begin{equation*}
-  P(X=x|T_e^t=t) = \begin{cases}
+  P(X=x|T_{e,t}=t) = \begin{cases}
     1, & \text{if } t = F_{\theta(e)}^t(x). \\
     0, & \text{otherwise}.
   \end{cases}
@@ -341,7 +343,7 @@ would imply taht we have equalities in \autoref{eq:dpiIneq1} and
 \autoref{eq:dpiIneq2}, this would imply that every layer contains the same
 information content as the input and no compression is can happen.
 
-Let's consider a real world neural network, we have previously defined neural
+Let us consider a real world neural network, we have previously defined neural
 networks to be a sequence of parameterized functions
 $f_{\theta}^1, f_{\theta}^2, ...  ,f_{\theta}^N$. In actual neural networks
 $f_\theta^t$ is a matrix that when applied to an activation vector of layer $t$
@@ -353,7 +355,7 @@ random values, meaning we have completely random matrices, during every
 iteration process of SGD algorithm the weight are chosen at random and
 tweaked.
 
-A matrix M is invertible iff it's determinant is not zero $det(M) \neq 0$, A
+A matrix M is invertible iff its determinant is not zero $det(M) \neq 0$, A
 matrix determinant can take values in the range $(-\infty, \infty)$, thus if we
 consider a random matrix M the probability that it takes any specific value is
 0, 
@@ -389,6 +391,8 @@ than an instance of a concrete value.
     \caption{random distribution of $\theta^\prime(e)$, where $e$ is an epoch}
     \label{fig:randomTheta}
 \end{figure}
+
+
 
 ----------------------------------------------------------
 
@@ -499,7 +503,7 @@ has been achieved.
       their code public online via Github, we made 
 
       Online Resources: The two main papers we were looking at has made their
-      code available to the public via Github, the papers are Tishby's paper and
+      code available to the public via Github, the papers are Tishby`s paper and
       the main opposing paper by Saxe.
     }
   \item{
