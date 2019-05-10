@@ -5,6 +5,7 @@
 \usepackage[margin=20mm]{geometry}  % adjusts page layout
 \usepackage{graphicx}  % allows inclusion of PDF, PNG and JPG images
 \usepackage{minted}
+\usepackage{color, colortbl}
 \usepackage{diagbox}
 \usepackage{hyperref}
 \usepackage{verbatim}
@@ -22,6 +23,8 @@
 \sloppy
 \clubpenalty1000%
 \widowpenalty1000%
+
+\definecolor{Gray}{gray}{0.9}
       
 \newminted[pythonfigure]{python}{linenos, frame=single, framesep=2mm, autogobble, escapeinside=;;, mathescape}
 \newminted[monospacefigure]{text}{linenos, frame=single, framesep=2mm, autogobble, escapeinside=;;, mathescape=true}
