@@ -129,51 +129,55 @@ them in \autoref{eq:miEntropy} to compute $I(X,Y)$.
 
 \subsection{The Prediction problem} 
 
-\begin{itemize}
-  \item{
-      A common task 
-    }
-  \item{
-      we have data that and we want to know to extract some property from the
-      data
-    }
-  \item{
-      such problems are hard to solve
-    }
-  \item{
-      many examples
-      \begin{itemize}
-        \item{
-            medical symptoms, diagnosis
-          }
-        \item{
-            picture, object in the picture
-          }
-        \item{
-            face, identity
-          }
-        \item{
-            stock market history, future stock prices
-          }
-        \item{
-            mail, spam or not spam
-          }
-      \end{itemize}
-    }
-  \item{
-      we cannot construct an algorithm that always give the correct answer,
-      sometimes it's impossible to know the correct answer with the knowledge we
-      have.
-    }
-  \item{
-      we turn to machine learning frameworks, which learn from data in some form
-      or the other, make this a subparagraph
-    }
-\end{itemize}
+Suppose we have some dataset $(x_i, y_i)$ for $i = 1,...,N$. The prediction
+problem is finding a function $f$ s.t \autoref{eq:prediction} is satisfied.
+\begin{equation}
+  f(x_i) = y_i \text{ for } i = 1,...,N
+  \label{eq:prediction}
+\end{equation}
+Prediction task is a common task that involves having input data
+$\{x_i,...,x_N\}$ and finding the label, some desirable feature,
+$\{y_i,...,y_N\}$. 
+
+The prediction problem could be simple to extract: for example if our input is a
+natural number $x_i\in\mathbb{N}$, and our label is either $true$ or $false$
+depending if $x$ is even or odd -- in which case function defined by
+\autoref{eq:evenodd} satisfies the problem.  \begin{equation}
+  g(x) = \begin{cases}
+    True, & \text{if } \exists n\in\mathbb{N}.x = 2n , \\
+    False, & \text{otherwise}.
+  \end{cases}
+\label{eq:evenodd}
+\end{equation}
+The prediction problem also can be impossible to solve: for example the halting
+problem, if our $x`s$ are programs and $y`s$ boolean values corresponding if the
+program halts or not.
 
 
+Of course the prediction problem can be hard or impossible to solve as is the
+case for problems:
+\begin{table}[H]
+  \centering
+    \begin{tabular}{l|l|l}
+      input data & label & difficulty \\ 
+      \hline
+      \rowcolor{Gray}
+      medical symptoms & diagnosis & intractable \\ 
+      picture  & object in the picture &  \\ 
+      \rowcolor{Gray}
+      face photograph  & identity &  \\ 
+      stock market history  & future stock prices &  \\ 
+      \rowcolor{Gray}
+      program  & does the program halt & proved to be unsolvable \\ 
+      boolean equation  & is the equation satisfiable & expensive to compute 
+  \end{tabular}
+  \caption{Example of specific prediction problems }
+  \label{t:prediction}
+\end{table}
 
--------------------------------------
+Problems listed in \autoref{t:prediction} are either intractable, unsolvable or
+too expensive to compute -- hence we cannot produce an algorithm that always
+give the correct answer and runs in a reasonable time.
 
 \textbf{Neural Networks} are machine learning frameworks intended to learn from
 data, it has been used effectively in predicting and classifying data.
