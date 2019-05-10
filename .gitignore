@@ -1,4 +1,6 @@
 **/*.aux
+**/*.bbl
+**/*.blg
 **/*.pyg
 **/*.fdb_latexmk
 **/*.fdb_latexmk
