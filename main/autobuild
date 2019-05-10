@@ -1,3 +1,7 @@
 #!/bin/bash
 
-ls *.tex | entr -p ./build
+for file in *.tex ; do
+        file="$(basename -s .tex $file)"
+        (echo "$file.tex" | entr -p ./build "$file") &
+done
+wait
