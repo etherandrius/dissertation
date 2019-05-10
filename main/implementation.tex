@@ -1,3 +1,200 @@
+\documentclass[dissertation.tex]{subfiles}
+\begin{document}
+
+\section{Compression In Neural Networks}
+
+\paragraph{Mutual Information} 
+Let us introduce two properties of mutual information 
+
+Let us revisit Mutual Information and introduce two properties that will be
+useful.
+
+\subparagraph{Invertible Transformation} 
+Let $u$ and $v$ be invertible functions; then,
+
+\begin{equation}
+  I(A, B) = I(u(A), v(B))
+\end{equation}
+
+\subparagraph{Data Processing Inequality} 
+Let $ A \rightarrow B \rightarrow C$ be a Markov chain; then,
+\begin{equation}
+  I(a,b) \geq I(a,c)
+\end{equation}
+
+In the neural network case this implies 
+\begin{equation}
+  H(X) \geq I(X,T_{e,1}) \geq I(X, T_{e,2}) \geq ... \geq I(X,T_{e,N}) 
+  \text{ for all epochs } e \text{, and}
+  \label{eq:dpiIneq1}
+\end{equation}
+\begin{equation}
+  I(X, Y) \geq I(T_{e,1}, Y) \geq I(T_{e,2}, Y) \geq ... \geq I(T_{e,N}, Y) 
+  \text{ for all epochs } e 
+  \label{eq:dpiIneq2}
+\end{equation}
+
+i.e trough out the layers we can only lose or maintain information about the
+input distribution $X$ and label distribution $Y$, equality is achieved iff
+transformation functions $f_{\theta}^t$ are invertible.
+
+\subsection{Viability of Compression}
+
+Let us consider the value $I(X, T_{e,t})$, in order to generate the probability
+distribution $X$ we have assumed that it is uniform, i.e
+\begin{equation*}
+  P(X=x_i) = 1 / N \text{ for all } i = 1...N \implies H(X) = log_2(N)
+\end{equation*}
+we also know the probability distribution of $T_{e,t}$ given $X$, i.e
+\begin{equation*}
+  P(T_{e,t}=t|X=x) = \begin{cases}
+    1, & \text{if } t = F_{\theta(e)}^t(x). \\
+    0, & \text{otherwise}.
+  \end{cases}
+\end{equation*}
+This implies if we have observed the value of $X$ there is no uncertainty of the
+value of $T_{e,t}$, hence 
+\begin{equation*}
+  H(T_{e,t}|X) = 0
+\end{equation*}
+this implies
+\begin{equation*}
+  I(X, T_{e,t}) = H(T_{e,t}) - H(T_{e,t} | X) = H(T_{e,t})
+\end{equation*}
+
+Consider now $H(T_{e,t})$,
+\begin{align}
+  &\text{we know from \autoref{eq:miEntropy} } \nonumber \\
+  &H(T_{e,t}) - H(T_{e,t}|X) = H(X) - H(X|T_{e,t}) \nonumber \\
+  &\implies H(T_{e,t}) = H(X) - H(X|T_{e,t}) \nonumber \\
+  &\implies H(T_{e,t}) + H(X|T_{e,t}) = H(X) \nonumber \\
+  &\implies H(T_{e,t}) \leq H(X)
+\label{eq:hh}
+\end{align}
+where equality is achieved iff $H(X|T_{e,t})=0$, i.e
+\begin{equation*}
+  P(X=x|T_{e,t}=t) = \begin{cases}
+    1, & \text{if } t = F_{\theta(e)}^t(x). \\
+    0, & \text{otherwise}.
+  \end{cases}
+\end{equation*}
+this is the case when if $F_{\theta(e)}^t$ is invertible and every $x_i$
+generates a unique layer activation $t$.
+
+Recall the definition
+\begin{equation*}
+  F_{\theta}^t(x) = f_{\theta}^t(f_{\theta}^{t-1}(...(f_{\theta}^1(x))))
+\end{equation*}
+this implies 
+\begin{equation*}
+  F_\theta^t \text{ is invertible } \Leftrightarrow f_\theta^i 
+  \text{ is invertible for } i = 1...t
+\end{equation*}
+
+If equality is achieved in \autoref{eq:hh} and $F_\theta^t$ is invertible that
+would imply that we have equalities in the Data Processing equations --
+\autoref{eq:dpiIneq1} and \autoref{eq:dpiIneq2}, this would imply that every
+layer contains the same information content as the input and no compression can
+happen.
+
+Let us consider a real world neural network. We have previously defined neural
+networks to be a sequence of parameterized functions
+$f_{\theta}^1, f_{\theta}^2, ...  ,f_{\theta}^N$. In actual neural networks
+$f_\theta^t$ is a matrix that when applied to an activation vector of layer $t$
+produces the activation vector of layer $t+1$. 
+
+The matrix is parameterized by weights $\theta$ which are controlled by the SGD
+algorithm, at the start of the training process weights $\theta$ are assigned
+random values, meaning we have completely random matrices, during every
+iteration process of SGD algorithm the weight are chosen at random and
+tweaked.
+
+A matrix M is invertible iff its determinant is not zero $det(M) \neq 0$, A
+matrix determinant can take values in the range $(-\infty, \infty)$, thus if we
+consider a random matrix M the probability that it takes any specific value is
+0, 
+\begin{equation*}
+  P(det(M) = x) = 0, \text{ for } x \in \mathbb{R}
+\end{equation*}
+specifically $P(det(M) \neq 0) = 1$, hence $det(M) \neq 0$ and every random
+matrix M is invertible.
+
+Given that every random matrix is invertible and that SGD generates random
+matrices we might conclude that no compression is possible, however this issue
+is resolvable if we consider weights $\theta$ to be a random distribution rather
+than an instance of a concrete value. 
+
+\begin{align}
+  &\text{Let us define } \theta^\prime(e) \text{ to be a probability distribution
+  defined by \autoref{fig:randomTheta}} \label{def:thetaprime} \\
+  &\text{Let us define } \theta(e) \text{ to be an instance of }
+  \theta^\prime(e) \text{ for any epoch } e \label{def:theta}
+\end{align}
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def random_;$\theta^\prime$;(epoch):
+        if epoch == 1:
+          pick ;$\theta \sim$; multinomialGaussian(dimension = ;$d$;)
+          return ;$\theta$;
+        old_;$\theta$; = random_;$\theta$;(epoch - 1)
+        Let ;$\theta$; = One update step of SGD applied to old_;$\theta$;
+        return ;$\theta$;
+
+    \end{pythonfigure}
+    \caption{Probability distribution of $\theta^\prime(e)$, where $e$ is an
+    epoch}
+    \label{fig:randomTheta}
+\end{figure}
+
+The notation defined in \autoref{def:thetaprime} and in \autoref{def:theta}
+implies that $F_\theta^t(x)$ is a value (as before), however
+$F_{\theta^\prime}^t(x)$ is a probability distribution.  This is due to the fact
+that $F(x)$ represent a layer activation for a neural network.
+\begin{itemize}
+  \item{
+      If the networks weights are deterministic i.e $\theta$, then the whole
+      neural network is deterministic which implies that $F_\theta^t$ is a
+      deterministic function and $F_\theta^t(x)$ is a value.
+    }
+  \item{
+      If however the weights form a probability distribution i.e
+      $\theta^\prime$, then the whole neural network is probabilistic, as such
+      $F_{\theta^\prime}^t(x)$ does not return an exact value, but a
+      distribution of possible values. Probability distribution
+      $F_{\theta^\prime}^t(x)$ is defined by \autoref{fig:randomF}
+    }
+\end{itemize}
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def random_;$F_{\theta^\prime}^t$;(;$\theta^\prime$;,t,x):
+        pick ;$\theta\sim\theta^\prime$; 
+        return ;$F_{\theta}^t$(x);
+    \end{pythonfigure}
+    \caption{Probability distribution of $F_{\theta^\prime}^t(x)$, where
+    $\theta^\prime$ -- is probability distribution of the weights, t -- is the
+    layer number, x -- is the input to the neural network}
+    \label{fig:randomF}
+\end{figure}
+
+If we assume the neural network weights $\theta^\prime$ to be a probability
+distribution, then $F_{\theta^\prime}^t(x)$ is not generally invertible.  In
+order for $F_{\theta^\prime}^t$ to still be invertible the \autoref{eq:invF} has
+to be satisfied.
+  
+\begin{equation}
+  \forall i, j \in \{1,...,N\}.
+  P(F_{\theta^\prime}^t(x_i) = t) > 0 \wedge
+  P(F_{\theta^\prime}^t(x_j) = t) > 0 \Leftrightarrow
+  i = j
+  \label{eq:invF}
+\end{equation}
+If the equation is satisfied it would mean that for every x in the input data
+set the generated probability distribution is disjoint. 
+
+The degree to what the probability distributions $F_{\theta^\prime}^t(x_i), i =
+1,...,N$ overlap signify the degree of compression.
 
 \section{Mutual Information Estimation}
 
@@ -591,3 +788,5 @@ introducing a better notion of randomness. blah blah blah blah not finished.
 
 
 \section{Repository Structure}
+
+\end{document}
