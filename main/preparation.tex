@@ -179,8 +179,23 @@ Problems listed in \autoref{t:prediction} are either intractable, unsolvable or
 too expensive to compute -- hence we cannot produce an algorithm that always
 give the correct answer and runs in a reasonable time.
 
-\textbf{Neural Networks} are machine learning frameworks intended to learn from
-data, it has been used effectively in predicting and classifying data.
+\subsection{Machine Learning Frameworks}
+
+If the Prediction problem is too difficult and we are tolerant to errors in our
+labels we may want to use a supervised machine learning framework\footnote{In
+this thesis we are exclusively talking about supervised machine learning
+techniques, from now on the word "supervised" will be omitted for brevity} to
+tackle the problem. 
+
+A machine learning framework learns from data.  It requires that we have some
+subset $\hat{X} \subseteq \{x_i,...,x_N\} $ s.t that $ \forall x\in\hat{X}$ we
+know label the $y$.  The way any machine learning framework learns from data
+varies, but generally more data means an increase in prediction performance.
+
+\subsection{Neural Networks} 
+
+Neural Networks are a machine learning framework, they habe been used
+effectively in predicting and classifying data.
 
 Suppose we have a dataset:
 $$ (x_i, y_i) \text{ for } i = 1,...,N, x_i \in \mathbb{R}^d, y_i \in \mathbb{R}^{d^\prime}$$ 
