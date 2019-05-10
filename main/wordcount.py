@@ -12,7 +12,7 @@ sections = {
 total_wordcount = 0
 for section, (path, target, percentage) in sections.items():
     wordcount = (
-        subprocess.check_output(f"detex {path} | tr -cd '0-9A-Za-z \\n' | wc -w", shell=True)
+        subprocess.check_output(f"tail -n +3 {path} | detex | tr -cd '0-9A-Za-z \\n' | wc -w", shell=True)
         .decode()
         .strip()
     )
