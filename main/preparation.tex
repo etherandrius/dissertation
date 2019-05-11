@@ -127,6 +127,9 @@ them in \autoref{eq:miEntropy} to compute $I(X,Y)$.
 \section{Neural Networks}
 \label{sec:NN}
 
+Before we understand neural networks we need to understand The Prediction
+Problem and the purpose of Machine Learning Frameworks.
+
 \subsection{The Prediction problem} 
 
 Suppose we have some dataset $(x_i, y_i)$ for $i = 1,...,N$. The prediction
@@ -195,6 +198,20 @@ from data varies, but generally more data means an increase in prediction
 performance.
 
 \subsection{Neural Networks} 
+
+Neural Networks are an example of a machine learning framework. They learn from
+data and attempt to solve the prediction problem.
+
+A Neural Networks structure consists of layers of fully connected nodes as in
+\autoref{fig:nnOriginal}. 
+Every node takes a value in the real number space $\mathbb{R}$. Values for the
+Input nodes are provided, whereas values for the nodes in non-input layers are
+generated based on nodes from the preceding layer. 
+
+
+    
+
+------------------------------------------------------------------
 
 Neural Networks are a machine learning framework, they have been used
 effectively in predicting and classifying data.
