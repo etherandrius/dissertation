@@ -69,7 +69,7 @@ describe an outcome of variable $Y$ given that value of another random variable
 $X$ is already known. Conditional Entropy of $Y$ given $X$ is written as
 $H(Y|X)$. Let $X$ be defined as before, Let $Y$ be a discrete random variable
 that can take values in $\{y_i,...,y_n\}$. The conditional entropy $H(Y|X)$ is
-defined by \autoref{eq:condEntropy}
+defined by \autoref{eq:condEntropy}.
 
 \begin{equation}
 H(Y|X)\ =-\sum _{x\in {X},y\in {Y}}P(x,y)\log {\frac {P(x,y)}{P(x)}}
@@ -209,7 +209,7 @@ an image and the label $y_i$ could be 1 if the image contains a cat and 0 if it
 does not.
 
 The network is structured in layers where every layer holds an intermediate
-representation of the final prediction output -- lets call this intermediate
+representation of the final prediction output -- let us call this intermediate
 representation an \textbf{activation} of that specific layer. For our purposes
 we will define a neural network to be a sequence of functions
 $f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^L$ that are parameterized by weights
@@ -254,18 +254,17 @@ argument -- $\theta(e)$.
 
 \subsection{Setup}
 
-The Information plane is a way of visualizing the Neural Networks training
+The Information plane is a way of visualizing the Neural Network`s training
 process through the information domain. By looking at mutual information between
 the input $X$ the intermediate neural network layer activations $T$ and the
 label $Y$ we can see how the information flows through the network.
 
-Mutual Information, as we defined it, is only applicable to Probability
-distributions, however we currently only have the datset 
-$(x_i, y_i) \text{ for } i = 1...N$
-, if we assume that every input $x_i$ equally likely we can provide a routine
-that defines our probability distribution.
+Mutual Information is only applicable to Probability distributions, however we
+only have the dataset $(x_i, y_i) \text{ for } i = 1...N$ , if we assume that
+every input $x_i$ equally likely we can provide a routine that defines our
+probability distribution.
 
-For convenience lets define $F_{\theta}^t$ to be the activation of layer t given
+For convenience let us define $F_{\theta}^t$ to be the activation of layer t given
 input $x$, i.e
 \begin{equation}
   F_{\theta}^t(x) = f_{\theta}^t(f_{\theta}^{t-1}(...(f_{\theta}^1(x))))
