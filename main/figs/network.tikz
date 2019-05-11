@@ -19,8 +19,8 @@
 \draw [shift={(335.28,169.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
 
 %Straight Lines [id:da9984222042248518] 
-\draw    (480.28,168.54) -- (514.28,168.54) ;
-\draw [shift={(516.28,168.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (498.28,168.54) -- (532.28,168.54) ;
+\draw [shift={(534.28,168.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
 
 %Shape: Rectangle [id:dp7529094555455995] 
 \draw   (211,115) -- (299.28,115) -- (299.28,222.54) -- (211,222.54) -- cycle ;
@@ -29,10 +29,10 @@
 \draw [shift={(210.28,169.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
 
 %Shape: Rectangle [id:dp3082851546438703] 
-\draw   (377,115) -- (480.28,115) -- (480.28,222.54) -- (377,222.54) -- cycle ;
+\draw   (389,115) -- (500.28,115) -- (500.28,222.54) -- (389,222.54) -- cycle ;
 %Straight Lines [id:da29571517496636934] 
-\draw    (341.28,169.54) -- (374.28,169.54) ;
-\draw [shift={(376.28,169.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (353.28,169.54) -- (386.28,169.54) ;
+\draw [shift={(388.28,169.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
 
 
 % Text Node
@@ -42,13 +42,13 @@
 % Text Node
 \draw (131,185) node   {$f^{1}_{\theta }( t_{0}) \ =\ t_{1}$};
 % Text Node
-\draw (27,169) node   {$x\ =t_{0}$};
+\draw (24,169) node   {$x\ =t_{0}$};
 % Text Node
-\draw (344,170) node   {$...$};
+\draw (348,175) node   {$...$};
 % Text Node
 \draw (317,146) node   {$f^{3}_{\theta }$};
 % Text Node
-\draw (546,170) node   {$t_{L} \ =\ y$};
+\draw (570,169) node   {$t_{L} \ =\ \hat{y}$};
 % Text Node
 \draw (190,146) node   {$f^{2}_{\theta }$};
 % Text Node
@@ -56,11 +56,11 @@
 % Text Node
 \draw (256,185) node   {$f^{2}_{\theta }( t_{1}) \ =\ t_{2}$};
 % Text Node
-\draw (356,146) node   {$f^{L}_{\theta }$};
+\draw (368,146) node   {$f^{L}_{\theta }$};
 % Text Node
-\draw (429,141) node  [align=left] {activation \\of layer L: };
+\draw (443,141) node  [align=left] {activation \\of layer L: };
 % Text Node
-\draw (428,186) node   {$f^{L}_{\theta }( t_{L-1}) \ =\ t_{L}$};
+\draw (446,186) node   {$f^{L}_{\theta }( t_{L-1}) \ =\ t_{L}$};
 
 
 \end{tikzpicture}
