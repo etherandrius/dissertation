@@ -199,7 +199,7 @@ performance.
 
 \subsection{Neural Networks} 
 
-Neural Networks (\textbf{NN}) are an example of a machine learning framework. They learn
+\textbf{Neural Networks (NN)} are an example of a machine learning framework. They learn
 from data and attempt to solve the prediction problem.
 
 The structure of a NN consists of layers of nodes, where every consecutive
@@ -228,13 +228,22 @@ taken to be:
     }
 \end{itemize}
 
-For our purposes we will extract away the individual nodes in the network and
-only consider the layers -- as in \autoref{fig:nnModified}.
-\begin{figure}[H]
+
+\subparagraph{Stochastic Gradient Descent (SGD)} The NNs training algorithm is
+called Stochastic Gradient Descent. SGD periodically adjusts the parameters $w$
+according to some goal such as minimising the prediction error. 
+
+SGD is an iterative process -- it introduces a notion of epochs where one
+iteration of the algorithm advances the epochs by one. Notion of epochs implies
+that the parameters $w$ depends on which epoch we are currently at -- thus it
+must take the epoch number $e$ as an argument -- $w(e)$.
+
+
+\begin{figure}[h]
   \centering
   \begin{subfigure}[t]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.6\textwidth]{figs/neural_network.png}
+    \includegraphics[width=0.7\textwidth]{figs/neural_network.png}
     \caption{
       Structure of a typical neural network.
     }
@@ -243,7 +252,7 @@ only consider the layers -- as in \autoref{fig:nnModified}.
   \hfill
   \begin{subfigure}[t]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.6\textwidth]{figs/neural_network_abstraction.png}
+    \includegraphics[width=0.7\textwidth]{figs/neural_network_abstraction.png}
     \caption{
       Structure of our abstracted neural network.
     }
@@ -254,9 +263,20 @@ only consider the layers -- as in \autoref{fig:nnModified}.
     }
 \end{figure}
 
-We will formally define a neural network to be a sequence of functions
-$f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^L$ that are parameterized by
-$\theta$ s.t. Equations \ref{eq:nnTransitions}.
+\subsection{Abstracting the Neural Network}
+For our purposes we will abstract away the individual nodes in the NN and only
+consider the layer structure -- as in \autoref{fig:nnModified}.
+
+In our abstraction the NN is structured in layers where every layer holds
+an intermediate representation of the final prediction output - let us call this
+intermediate representation an \textbf{activation} of that specific layer.
+We will formally define a neural network with $L$ layers to be a sequence of $L$
+functions $f_{\theta(e)}^1,f_{\theta(e)}^2,...,f_{\theta(e)}^L$ that are
+parameterized by $\theta$ s.t. Equations \ref{eq:nnTransitions} hold.
+In our abstract the parameters $\theta$ correspond to the parameters $w$,
+therefore $\theta$ depends on the current epoch -- $\theta(e)$.
+Let us also define an \textbf{activation} of layer $l$ to be output of the
+function $f_\theta^l$.
 
 \vbox{
 \begin{align}
@@ -264,46 +284,35 @@ $\theta$ s.t. Equations \ref{eq:nnTransitions}.
   t_0 \rightarrow f_{\theta}^1(t_0) &= t_1, \nonumber \\
   t_1 \rightarrow f_{\theta}^2(t_1) &= t_2, \nonumber \\
   &... \nonumber \\
-  t_{N-1} \rightarrow f_{\theta}^N(t_{N-1}) &= t_N, \nonumber\\
-  \text{let } \hat{y} &= t_N
+  t_{L-1} \rightarrow f_{\theta}^L(t_{L-1}) &= t_L, \nonumber\\
+  \text{let } \hat{y} &= t_L \label{eq:nnTransitions}
 \end{align}
 \vspace*{-\baselineskip}
 \vspace*{-\baselineskip}
 \begin{gather}
-  \text{values } t_1,t_2,...,t_N 
-  \text{ here are } \textbf{activations } \text{of layers } 1,2,...,N,
+  \text{values } t_1,t_2,...,t_L 
+  \text{ here are } \textbf{activations } \text{of layers } 1,2,...,L,
 	\nonumber\\
 	x \text{ is any input to the NN from the set } \{x_i,...,x_N\}, \nonumber\\
 	\hat{y} \text{ is the prediction of the NN for the input,} x
 	\text{ which may or not be correct label,} \nonumber\\
-	\rightarrow\text{ signifies a transition from one NN layer to another.}
+	\text{the arrow `}\rightarrow\text{' signifies a transition from one NN layer to another.}
 	\nonumber
 \end{gather}
 }
 
+We now have one function for each layer transition of the NN this
+allows us to extract the activation of a specific layer as in
+\autoref{eq:layerL} -- we will need to get access to intermediate layers in our
+experiments.
 
-------------------------------------------------------------------
+\begin{figure}[H]
+  \[ t_l = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x)))) \]
+  \caption{\textbf{activation} of layer l for input x}
+  \label{eq:layerL}
+\end{figure}
 
-Neural Networks are a machine learning framework, they have been used
-effectively in predicting and classifying data.
-
-Suppose we have a dataset:
-\begin{align*}
-  &(x_i, y_i) \text{ for } i = 1,...,N \\
-  &\text{where, } x_i \in \mathbb{R}^d, y_i \in \mathbb{R}^{d^\prime}
-\end{align*}
-where $x_i$ is the input to the Neural Network and $y_i$ is the label or the
-value we want the neural network to predict. For example suppose we are trying
-to classify if an image contains a cat or no, then $x_i$ would be an encoding of
-an image and the label $y_i$ could be 1 if the image contains a cat and 0 if it
-does not.
-
-The network is structured in layers where every layer holds an intermediate
-representation of the final prediction output -- let us call this intermediate
-representation an \textbf{activation} of that specific layer. For our purposes
-we will define a neural network to be a sequence of functions
-$f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^L$ that are parameterized by weights
-$\theta$ s.t
+\autoref{fig:network} summarizes our NN definition.
 
 \vbox{
 \input{figs/network.tex}
@@ -312,7 +321,7 @@ $\theta$ s.t
 \begin{figure}[H]
   \centering
   \caption{
-    Visualization of a neural networks structure.  $x$ here is any input to the
+    Visualization of a neural networks structure. $x$ here is any input to the
     network from the set $\{x_i,...,x_N\}$.  $\hat{y}$ is the prediction of the
     network for the input $x$ which may or may not be to the correct label. The
     values $t_1,...,t_L$ here are \textbf{activations} of layers $1,...,L$.
@@ -320,26 +329,6 @@ $\theta$ s.t
   \label{fig:network}
 \end{figure}
 }
-
-We have one function for each layer transition of the neural network this allows
-us to extract the activation of a specific layer as in \autoref{eq:layerL} -- we
-will need to get access to intermediate layers in our experiments.
-
-\begin{figure}[H]
-  \[ t_l = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x)))) \]
-  \caption{\textbf{activation} of layer l for input x}
-  \label{eq:layerL}
-\end{figure}
-
-\textbf{Stochastic Gradient Descent} Each of the transition function are
-parameterized by the weights function $\theta$. The $\theta$ function is
-directly controlled by Stochastic Gradient Descent (SGD) algorithm.  SGD is an
-algorithm for training a neural network it gradually updates the weights
-$\theta$ according to some goal such as minimising the prediction error.  SGD is
-an iterative process, it has a notion of epochs where one iteration of the
-algorithm advances epochs by one, this implies that $\theta$ function depends on
-which epoch we are currently at thus it must take the epoch number as an
-argument -- $\theta(e)$.
 
 \section{The Information plane}
 \label{sec:IP}
