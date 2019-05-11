@@ -211,10 +211,21 @@ The network is structured in layers where every layer holds an intermediate
 representation of the final prediction output, lets call this intermediate
 representation an \textbf{activation} of that specific layer. For our purposes
 we will define a neural network to be a sequence of functions
-$f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^N$ that are parameterized by weights
+$f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^L$ that are parameterized by weights
 $\theta$ s.t
 
 \input{figs/network.tikz}
+\vspace*{-\baselineskip}
+\vspace*{-\baselineskip}
+\begin{figure}[H]
+  \centering
+  \caption{
+    figure showing the abstract structure of a neural network, $(x, y)$ pair are
+    some input and prediction of the network, values $t_1,...,t_L$ here are
+    \textbf{activations} of layers $1,...,L$
+  }
+  \label{fig:network}
+\end{figure}
 
 \begin{align*}
   \text{let } t_0 &= x, \\
