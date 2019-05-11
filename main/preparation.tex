@@ -206,7 +206,31 @@ A Neural Networks structure consists of layers of fully connected nodes as in
 \autoref{fig:nnOriginal}. 
 Every node takes a value in the real number space $\mathbb{R}$. Values for the
 Input nodes are provided, whereas values for the nodes in non-input layers are
-generated based on nodes from the preceding layer. 
+generated based on nodes from the preceding layer. Let $n_{l,i}$ be the value
+that the $i'th$ node in layer $l$ takes. Let $w_{l,j,i}$ be a parameter that
+influences how relevant a node in layer $l$ index $j$ is to the node in layer
+$l+1$ index $i$.
+\begin{equation}
+  n_{l+1,i} = f(\sum_{j = 0}^{\text{layer }l\text{ size}} w_{l,j,i}*n_{l,j})
+  \label{eq:nextNode}
+\end{equation}
+$f$ in \autoref{eq:nextNode} is called the activation function and is generally 
+taken to be:
+\begin{itemize}
+  \item{
+      ReLu: $f(x) = max(0, x)$
+    }
+  \item{
+      Sigmoid: $f(x) = \frac{1}{1+e^x}$
+    }
+  \item{
+      Tanh: $f(x) = tanh(x)$
+    }
+\end{itemize}
+
+
+For our purposes we will
+extract away the individual nodes in the network and 
 
 ------------------------------------------------------------------
 
