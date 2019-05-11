@@ -203,12 +203,13 @@ Suppose we have a dataset:
   &\text{where, } x_i \in \mathbb{R}^d, y_i \in \mathbb{R}^{d^\prime}
 \end{align*}
 where $x_i$ is the input to the Neural Network and $y_i$ is the label or the
-value we want the neural network to predict. Suppose we are trying to classify
-if an image contains a cat or no, then $x_i$ would be an encoding of an image
-and the label $y_i$ could be 1 if the image contains a cat and 0 if it does not.
+value we want the neural network to predict. For example suppose we are trying
+to classify if an image contains a cat or no, then $x_i$ would be an encoding of
+an image and the label $y_i$ could be 1 if the image contains a cat and 0 if it
+does not.
 
 The network is structured in layers where every layer holds an intermediate
-representation of the final prediction output, lets call this intermediate
+representation of the final prediction output -- lets call this intermediate
 representation an \textbf{activation} of that specific layer. For our purposes
 we will define a neural network to be a sequence of functions
 $f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^L$ that are parameterized by weights
@@ -220,28 +221,16 @@ $\theta$ s.t
 \begin{figure}[H]
   \centering
   \caption{
-    figure showing the abstract structure of a neural network, $(x, y)$ pair are
-    some input and prediction of the network, values $t_1,...,t_L$ here are
-    \textbf{activations} of layers $1,...,L$
+    Visualization of a neural networks structure.  $x$ here is any input to the
+    network from the set $\{x_i,...,x_N\}$.  $\hat{y}$ is the prediction of the
+    network for the input $x$ which may or may not be to the correct label. The
+    values $t_1,...,t_L$ here are \textbf{activations} of layers $1,...,L$.
   }
   \label{fig:network}
 \end{figure}
 
-\begin{align*}
-  \text{let } t_0 &= x, \\
-    t_0 \rightarrow f_{\theta}^1(t_0) &= t_1,\\
-    t_1 \rightarrow f_{\theta}^2(t_1) &= t_2,\\
-    &...\\
-    t_{N-1} \rightarrow f_{\theta}^N(t_{N-1}) &= t_N,\\
-    \text{let } y &= t_N
-\end{align*}
-\begin{align*}
-    \text{values } t_1,t_2,...,t_N 
-    \text{ here are } \textbf{activations } \text{of layers } 1,2,...,N
-\end{align*}
-
 We have one function for each layer transition of the neural network this allows
-us to extract the activation of a specific layer as in \autoref{eq:layerL}, we
+us to extract the activation of a specific layer as in \autoref{eq:layerL} -- we
 will need to get access to intermediate layers in our experiments.
 
 \begin{figure}[H]
