@@ -19,6 +19,12 @@ for section, (path, target, percentage) in sections.items():
     total_wordcount += int(wordcount)
     print(f"{section.ljust(5)}:\t{wordcount.rjust(5)}/{str(target).rjust(5)}\t({percentage * 100}%)")
 
+total = (
+        subprocess.check_output(f"detex **/*.tex | tr -cd '0-9A-Za-z \\n' | wc -w", shell=True)
+        .decode()
+        .strip()
+)
+print("Total + tikz : ", total)
 target_total_wordcount = 12000
 okay_string = ""
 if total_wordcount < target_total_wordcount:

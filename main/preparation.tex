@@ -319,7 +319,7 @@ lower-left-most node corresponds to the fifth and last layer of the network.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.60\textwidth]{figs/ip_1v2.png}
+  \includegraphics[width=0.60\textwidth]{figs/ip_1v3.png}
   \caption{
     information plane for a neural network with 5 layers, which was only trained
     for one epoch.
@@ -328,20 +328,25 @@ lower-left-most node corresponds to the fifth and last layer of the network.
 \end{figure}
 
 Consider now \autoref{fig:Ip2}, it shows an information plane for a full
-training phase. The color signifies what epoch the data belongs to and let us
+training phase. The color signifies what epoch the data belongs to and lets us
 see how the network progressed over time. We can see that at the start $I(Y,
 T_{1,4}) \approx 0$ meaning the network has not preserved any information about
 the label distribution $Y$, but by the end of the training we see $I(Y,
 T_{10^4,4}) \approx 1$ which means we have preserved almost all the information
 about the label.
 
-
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.60\textwidth]{figs/ip_10000.png}
+  \includegraphics[width=0.60\textwidth]{figs/ip_10000v3.png}
   \captionof{figure}{
     Information plane for a neural network with 4 layers, which was trained for
-    approximately $ 10\,000 $ epochs. The Neural Network was trained on the same
+    approximately $10\,000$ epochs. Some Nodes are labeled $T_{e,l}$, where $e$
+    is the epoch number and $l$ is the layer the node belongs to. Consider
+    $T_{1,3}$ it's the node for layer 3 and epoch one, the $x-axis$ value
+    $\approx{8}$ is $I(X, T_{1,3})$, while the $y-axis$ value $\approx{0.1}$ is
+    $I(Y, T_{1,3})$
+    Information plane for a neural network with 4 layers, which was trained for
+    approximately $10\,000$ epochs. The Neural Network was trained on the same
     dataset as used by Tishby, 2017, hence entropy of the input $H(X)$ is 12 and
     entropy of the label $H(Y)$ is 1.
   }
