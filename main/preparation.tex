@@ -199,17 +199,17 @@ performance.
 
 \subsection{Neural Networks} 
 
-Neural Networks are an example of a machine learning framework. They learn from
-data and attempt to solve the prediction problem.
+Neural Networks (\textbf{NN}) are an example of a machine learning framework. They learn
+from data and attempt to solve the prediction problem.
 
-A Neural Networks structure consists of layers of fully connected nodes as in
-\autoref{fig:nnOriginal}. 
-Every node takes a value in the real number space $\mathbb{R}$. Values for the
-Input nodes are provided, whereas values for the nodes in non-input layers are
-generated based on nodes from the preceding layer. Let $n_{l,i}$ be the value
-that the $i'th$ node in layer $l$ takes. Let $w_{l,j,i}$ be a parameter that
-influences how relevant a node in layer $l$ index $j$ is to the node in layer
-$l+1$ index $i$.
+The structure of a NN consists of layers of nodes, where every consecutive
+layer is fully connected as in \autoref{fig:nnOriginal}.  When we try to
+predict a label of a specific input every node gets assigned a value in the
+real number space $\mathbb{R}$. Values for the Input nodes are provided,
+whereas values for the nodes in non-input layers are generated based on nodes
+from the preceding layer. Let $n_{l,i}$ be the value that the $i'th$ node in
+layer $l$ takes. Let $w_{l,j,i}$ be a parameter that influences how relevant
+the $j'th$ node in layer $l$ is to the $i'th$ node in layer $l+1$.
 \begin{equation}
   n_{l+1,i} = f(\sum_{j = 0}^{\text{layer }l\text{ size}} w_{l,j,i}*n_{l,j})
   \label{eq:nextNode}
@@ -228,26 +228,8 @@ taken to be:
     }
 \end{itemize}
 
-
-For our purposes we will
-extract away the individual nodes in the network and 
-
-------------------------------------------------------------------
-
-Neural Networks are a machine learning framework, they have been used
-effectively in predicting and classifying data.
-
-Suppose we have a dataset:
-\begin{align*}
-  &(x_i, y_i) \text{ for } i = 1,...,N \\
-  &\text{where, } x_i \in \mathbb{R}^d, y_i \in \mathbb{R}^{d^\prime}
-\end{align*}
-where $x_i$ is the input to the Neural Network and $y_i$ is the label or the
-value we want the neural network to predict. For example suppose we are trying
-to classify if an image contains a cat or no, then $x_i$ would be an encoding of
-an image and the label $y_i$ could be 1 if the image contains a cat and 0 if it
-does not.
-
+For our purposes we will extract away the individual nodes in the network and
+only consider the layers -- as in \autoref{fig:nnModified}.
 \begin{figure}[H]
   \centering
   \begin{subfigure}[t]{0.49\textwidth}
@@ -271,6 +253,50 @@ does not.
       Source: Wikimedia Commons 
     }
 \end{figure}
+
+We will formally define a neural network to be a sequence of functions
+$f_{\theta}^1,f_{\theta}^2,...,f_{\theta}^L$ that are parameterized by
+$\theta$ s.t. Equations \ref{eq:nnTransitions}.
+
+\vbox{
+\begin{align}
+	\text{let } t_0 &= x, \nonumber \\
+  t_0 \rightarrow f_{\theta}^1(t_0) &= t_1, \nonumber \\
+  t_1 \rightarrow f_{\theta}^2(t_1) &= t_2, \nonumber \\
+  &... \nonumber \\
+  t_{N-1} \rightarrow f_{\theta}^N(t_{N-1}) &= t_N, \nonumber\\
+  \text{let } \hat{y} &= t_N
+\end{align}
+\vspace*{-\baselineskip}
+\vspace*{-\baselineskip}
+\begin{gather}
+  \text{values } t_1,t_2,...,t_N 
+  \text{ here are } \textbf{activations } \text{of layers } 1,2,...,N,
+	\nonumber\\
+	x \text{ is any input to the NN from the set } \{x_i,...,x_N\}, \nonumber\\
+	\hat{y} \text{ is the prediction of the NN for the input,} x
+	\text{ which may or not be correct label,} \nonumber\\
+	\rightarrow\text{ signifies a transition from one NN layer to another.}
+	\nonumber
+\end{gather}
+}
+
+
+------------------------------------------------------------------
+
+Neural Networks are a machine learning framework, they have been used
+effectively in predicting and classifying data.
+
+Suppose we have a dataset:
+\begin{align*}
+  &(x_i, y_i) \text{ for } i = 1,...,N \\
+  &\text{where, } x_i \in \mathbb{R}^d, y_i \in \mathbb{R}^{d^\prime}
+\end{align*}
+where $x_i$ is the input to the Neural Network and $y_i$ is the label or the
+value we want the neural network to predict. For example suppose we are trying
+to classify if an image contains a cat or no, then $x_i$ would be an encoding of
+an image and the label $y_i$ could be 1 if the image contains a cat and 0 if it
+does not.
 
 The network is structured in layers where every layer holds an intermediate
 representation of the final prediction output -- let us call this intermediate
