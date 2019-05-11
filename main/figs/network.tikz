@@ -1,0 +1,61 @@
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Rectangle [id:dp11557839760136379] 
+\draw   (86,115) -- (194.28,115) -- (194.28,222.54) -- (86,222.54) -- cycle ;
+%Straight Lines [id:da1142035093360374] 
+\draw    (50.28,169.54) -- (83.28,169.54) ;
+\draw [shift={(85.28,169.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Shape: Rectangle [id:dp8535129506639174] 
+\draw   (243,115) -- (351.28,115) -- (351.28,222.54) -- (243,222.54) -- cycle ;
+%Straight Lines [id:da6474611183792474] 
+\draw    (194.28,169.54) -- (240.28,169.54) ;
+\draw [shift={(242.28,169.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da3402708303870947] 
+\draw    (351.28,167.54) -- (385.28,167.54) ;
+\draw [shift={(387.28,167.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Shape: Rectangle [id:dp36778088597422554] 
+\draw   (443,115) -- (561.28,115) -- (561.28,222.54) -- (443,222.54) -- cycle ;
+%Straight Lines [id:da36638278521792755] 
+\draw    (411.28,166.54) -- (442.28,166.54) ;
+\draw [shift={(444.28,166.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da9984222042248518] 
+\draw    (562.28,169.54) -- (596.28,169.54) ;
+\draw [shift={(598.28,169.54)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+
+% Text Node
+\draw (65,146) node   {$f^{1}_{\theta }$};
+% Text Node
+\draw (134,143) node  [align=left] {activation of\\layer 1: };
+% Text Node
+\draw (140,182) node   {$f^{1}_{\theta }( t_{0}) \ =\ t_{1}$};
+% Text Node
+\draw (27,169) node   {$x\ =t_{0}$};
+% Text Node
+\draw (217,146) node   {$f^{2}_{\theta }$};
+% Text Node
+\draw (291,143) node  [align=left] {activation of\\layer 2: };
+% Text Node
+\draw (297,182) node   {$f^{2}_{\theta }( t_{1}) \ =\ t_{2}$};
+% Text Node
+\draw (403,160) node   {$...$};
+% Text Node
+\draw (369,144) node   {$f^{3}_{\theta }$};
+% Text Node
+\draw (426,147) node   {$f^{N}_{\theta }$};
+% Text Node
+\draw (501,144) node  [align=left] {activation of\\layer N: };
+% Text Node
+\draw (504,183) node   {$f^{N}_{\theta }( t_{N-1}) \ =\ t_{N}$};
+% Text Node
+\draw (628,171) node   {$t_{N} \ =\ y$};
+
+
+\end{tikzpicture}
