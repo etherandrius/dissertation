@@ -460,78 +460,30 @@ distributions:
 \end{itemize}
 
 The routine in \autoref{fig:rxty} defines the correlated random variables
-$X,T_{e,t},Y$. Given the probability distribution we now have needed MI values:
-$I(T_{e,t}, X)$ and $I(T_{e,t}, Y)$.
+$X,T_{e,l},Y$. The probability distributions define the needed MI values:
+$I(T_{e,l}, X)$ and $I(T_{e,l}, Y)$.
 
 \begin{figure}[H]
     \begin{pythonfigure}
-      def rxty(e, t):
+      def rxty(e, l):
         pick i ;$\sim$; Uniform {1...N}
-        return ;$(x_i, F_{\theta(e)}^t(x_i), y_i)$;
+        return ;$(x_i, F_{\theta(e)}^l(x_i), y_i)$;
     \end{pythonfigure}
     \caption{
-      Definition of correlated random variables $X, T_{e,t}$ and, $Y$. The
-      Probability distributions are generated using the dataset
-      $(x_i, y_i)$ for $i = 1,...,N$, with the assumption that every input is
-      equally likely.
+      Definition of correlated random variables $X, T_{e,l}$ and, $Y$. The
+      Probability distributions are generated using the dataset $(x_i, y_i)$ for
+      $i = 1,...,N$ -- as the dataset has no inherent probability distribution
+      we will assume that every input is equally likely. $F_{\theta(e)}^l$ is
+      defined by \autoref{eq:bigF}
     }
     \label{fig:rxty}
-\end{figure}
-
---------------------------
-
-The Information plane is a way of visualizing the Neural Network`s training
-process through the information domain. By looking at mutual information between
-the input $X$ the intermediate neural network layer activations $T$ and the
-label $Y$ we can see how the information flows through the network.
-
-Mutual Information is only applicable to Probability distributions, however we
-only have the dataset $(x_i, y_i) \text{ for } i = 1...N$ , if we assume that
-every input $x_i$ equally likely we can provide a routine that defines our
-probability distribution.
-
-For convenience let us define $F_{\theta}^t$ to be the activation of layer t given
-input $x$, i.e
-\begin{equation}
-  F_{\theta}^t(x) = f_{\theta}^t(f_{\theta}^{t-1}(...(f_{\theta}^1(x))))
-  \label{eq:bigFf}
-\end{equation}
-
-
-Consider \autoref{fig:rxty2}, the routine defines the random variables
-$X,T_{e,t},Y$. Here $T_{e,t}$ is the distribution of layer $t$ for the epoch $e$,
-$X$ and $Y$ is the original data with assumption that it is uniformly
-distributed. 
-
-Using the probability distributions we now have values:
-\begin{itemize}
-  \item{
-      $I(T_{e,t}, X)$ -- Mutual Information between the input distribution and the
-      layer activations 
-    }
-  \item{
-      $I(T_{e,t}, Y)$ -- Mutual Information between the label distribution and the
-      layer activations.
-    }
-\end{itemize}
-This allows us to generate the Information plane.
-
-
-\begin{figure}[H]
-    \begin{pythonfigure}
-      def rxty(e, t):
-        pick i ;$\sim$; Uniform {1...N}
-        return ;$(x_i, F_{\theta(e)}^t(x_i), y_i)$;
-    \end{pythonfigure}
-    \caption{Definition of correlated random variables $X, T_{e,t}$ and, $Y$}
-    \label{fig:rxty2}
 \end{figure}
 
 \subsection{Visualization}
 
 The Information plane visualizes the whole training process, in order to
-generate the information plane we need $I(X,T_{e,t})$ and $I(Y,T_{e,t})$ for every
-epoch $e$ and every layer $t$.
+generate the information plane we need $I(X,T_{e,l})$ and $I(Y,T_{e,l})$ for every
+epoch $e$ and every layer $l$.
 
 Consider for now that we only trained our neural network for one epoch, the
 \autoref{fig:Ip1} shows an example of this. 
@@ -598,14 +550,14 @@ most influenced by the size of our input dataset. The fitting phase is
 characterized by:
 \begin{itemize}
   \item{
-      A rapid increase in $I(Y, T_{e,t})$, the information about the label, as we
+      A rapid increase in $I(Y, T_{e,l})$, the information about the label, as we
       advance through the epochs $e$, the increase is especially visible in the
       later layers, in our case layers 3 and 4.
     }
   \item{
-      Either an increase or no change in $I(X, T_{e,t})$, the information about
+      Either an increase or no change in $I(X, T_{e,l})$, the information about
       the input, as we advance through the epochs $e$, in our case we see very
-      little change in $I(X,T_{e,t})$.
+      little change in $I(X,T_{e,l})$.
     }
 \end{itemize}
 
@@ -619,11 +571,11 @@ and lasts until we finish the training process. The compression phase is
 characterized by:
 \begin{itemize}
   \item{
-      A slowdown of how fast $I(Y, T_{e,t})$ is increasing with respect to epoch
+      A slowdown of how fast $I(Y, T_{e,l})$ is increasing with respect to epoch
       $e$. 
     }
   \item{
-      A slow decrease of $I(X, T_{e,t})$ with respect to epoch $e$.
+      A slow decrease of $I(X, T_{e,l})$ with respect to epoch $e$.
     }
 \end{itemize}
 
