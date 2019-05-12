@@ -267,7 +267,7 @@ that the parameters $w$ depends on which epoch we are currently at -- thus it
 must take the epoch number $e$ as an argument -- $w(e)$.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{subfigure}[t]{0.49\textwidth}
     \centering
@@ -430,7 +430,49 @@ and none of the noise inherent in the input.
 
 \subsection{Setup}
 
-In order to
+We want to compute what information about the label and the input the network is
+retaining -- that is we want to compute the mutual information:
+\begin{itemize}
+  \item{
+      Between the input distribution and all of the network layers,
+    }
+  \item{
+      Between the label distribution and all of the network layers.
+    }
+\end{itemize}
+
+In order to compute the needed MI values we need to define the probability
+distributions:
+\begin{itemize}
+  \item{
+      $X$ - probability distribution of the input,
+    }
+  \item{
+      $Y$ - probability distribution of the label,
+    }
+  \item{
+      $T_{e,l}$ - probability distribution of the layer $l$ for the epoch $e$.
+    }
+\end{itemize}
+
+The routine in \autoref{fig:rxty} defines the correlated random variables
+$X,T_{e,t},Y$. Given the probability distribution we now have needed MI values:
+$I(T_{e,t}, X)$ and $I(T_{e,t}, Y)$.
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def rxty(e, t):
+        pick i ;$\sim$; Uniform {1...N}
+        return ;$(x_i, F_{\theta(e)}^t(x_i), y_i)$;
+    \end{pythonfigure}
+    \caption{
+      Definition of correlated random variables $X, T_{e,t}$ and, $Y$. The
+      Probability distributions are generated using the dataset
+      $(x_i, y_i)$ for $i = 1,...,N$, with the assumption that every input is
+      equally likely.
+    }
+    \label{fig:rxty}
+\end{figure}
 
 --------------------------
 
@@ -452,7 +494,7 @@ input $x$, i.e
 \end{equation}
 
 
-Consider \autoref{fig:rxty}, the routine defines the random variables
+Consider \autoref{fig:rxty2}, the routine defines the random variables
 $X,T_{e,t},Y$. Here $T_{e,t}$ is the distribution of layer $t$ for the epoch $e$,
 $X$ and $Y$ is the original data with assumption that it is uniformly
 distributed. 
@@ -478,7 +520,7 @@ This allows us to generate the Information plane.
         return ;$(x_i, F_{\theta(e)}^t(x_i), y_i)$;
     \end{pythonfigure}
     \caption{Definition of correlated random variables $X, T_{e,t}$ and, $Y$}
-    \label{fig:rxty}
+    \label{fig:rxty2}
 \end{figure}
 
 \subsection{Visualization}
