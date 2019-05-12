@@ -606,8 +606,34 @@ discard features that do not help with predicting the correct labels. Discarding
 irrelevant features helps the neural network to generalize and produce better
 prediction for new data.
 
----------------------------------------------------------------
+\section{Testability}
 
+Software related to NN tends to be very compact as it heavily relies on external
+libraries that are extensively tested. In our case the most effective way to
+test the software is to provide tools that help examine the data. I have
+provided such tools in form of data visualization -- such as a tool to generate
+a video of the training process, which lets a human detect anomalies.
+
+\section{Software Engineering}
+
+The project was build using the Spiral model. I needed to build a working
+version as fast as possible in order to verify the validity of Tishby's
+experiments. Once the Minimal Viable Product was build I added features as
+needed. Features such as different experiments, performance optimizations,
+visualization tools.
+
+\section{Starting Point}
+
+In order to understand the theory required I had learn the ideas presented in
+papers by Tishby\cite{TISHBY}\cite{TISHBY2} and Saxe\cite{SAXE}. I had to have a
+strong understanding of Neural Networks and Information Theory.
+
+The starting for implementation was knowledge of \emph{Python 3}. For this
+project I had to learn the Machine Learning Frameworks: \emph{Keras} and
+\emph{Tensorflow}.
+
+
+---------------------------------------------------------------
 
 Before developing a plan for how we are going to realize the project in code we
 needed to fully understand the ideas presented in the paper:
