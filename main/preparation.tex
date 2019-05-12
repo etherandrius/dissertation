@@ -1,48 +1,28 @@
 \documentclass[dissertation.tex]{subfiles}
 \begin{document}
 
----------------------------------------------------------------
+Neural Networks (NN) are an extremely successful tool, they are widely adopted
+commercially and closely studied academically, however even given the attention
+they have there is no comprehensive understanding of how these models generalize
+data and provide such impressive performance -- in fact very little is known
+about how NN learn or about their inner workings. Recently Prof.\ Tishby
+\cite{TISHBY} produced a paper claiming to understand the basic principles of
+how NN work. He decided to examine NNs through the information domain. Tishby
+made the claim that the incredible performance of NNs is due to their ability to
+compress information. Compressing data means the network is only able to keep
+relevant input features and it must discard the irrelevant bits of information,
+leading to ability to generalize. 
 
-\begin{itemize}
-  \item{
-      Tishby produced a paper \cite{TISHBY} claiming to understand the basic
-      principles of how DNNs work. 
-    }
-  \item{
-      He decided to examine neural networks through the information domain,
-      visualizing the results via Information Plane method \autoref{sec:IP}.
-    }
-  \item{
-      Tishby made the claim that the incredible performance DNNs are able to
-      achieve is due to the their ability to compress information inherent in
-      the input data. Compressing data means the network is only able to keep
-      relevant input features and it must forget the irrelevant bits of
-      information, leading to the ability to generalize.
-    }
-  \item{
-      Tishby made interesting claims and provided experimental evidence to
-      support his claims, however he did not provide a formal proof leaving his
-      results up for debate.
-    }
-  \item{
-      Paper released by Saxe has contested the claims made by Tishby arguing
-      that compression cannot happen in Neural Networks and the results are a
-      consequence of the hyper parameters Tishby used.     
-    }
-  \item{
-      However Saxes problem suffers from the same problem as Tishby's as it does
-      not provide a formal proof only experimental evidence, as such it doesn't
-      settle the rebuttal.
-    }
-  \item{
-      To fully understand the discussion we need to understand the following
-      topics Entropy and Mutual Information, Neural Networks, and Information
-      Plane, described in \autoref{sec:EaMI}, \autoref{sec:NN}, and
-      \autoref{sec:IP}.
-    }
-\end{itemize}
-
----------------------------------------------------------------
+Tishby made interesting claims and provided experimental evidence to support his
+claims, however he did not provide a formal proof leaving his results up for
+debate. A paper release by Saxe \cite{SAXE} has contested the claim made by
+Tishby arguing that compression cannot happen in Neural Networks and the results
+are a consequence of the hyper parameters Tishby used. However, Saxe's paper
+suffers from the same problem as Tishby's as it does not provide a formal proof
+only experimental evidence -- as such ti does not settle the rebuttal.  To fully
+understand the discussion we need to understand the following topics Entropy and
+Mutual Information, Neural Networks, and Information Plane, described in
+\autoref{sec:EaMI}, \autoref{sec:NN}, and \autoref{sec:IP}.
 
 \section{Entropy and Mutual Information}
 \label{sec:EaMI}
@@ -578,8 +558,10 @@ features:
 Let us once again consider \autoref{fig:Ip2} -- we can see two general phases in
 the neural network. Tishby has named them \emph{The Fitting Phase} and \emph{The
 Compression Phase}. 
-Tishby gave no clear definition of the phases, however they seem to follow the
-properties outlined bellow.
+
+These phases are observations made by Tishby and seem to be reproducible in by
+experiments. Even though Tishby gave no clear definition of how to identify the
+phases, they seem to follow the properties outlined bellow.
 
 \subparagraph{The Fitting Phase} In \autoref{fig:Ip2} the neural network is in
 the fitting phase from the start of the training up until epoch $\sim$1500. The
@@ -588,9 +570,9 @@ most influenced by the size of our input dataset. The fitting phase is
 characterized by:
 \begin{itemize}
   \item{
-      A rapid increase in $I(Y, T_{e,l})$, the information about the label, as we
-      advance through the epochs $e$, the increase is especially visible in the
-      later layers, in our case layers 3 and 4.
+      A rapid increase in $I(Y, T_{e,l})$, the information about the label, as
+      we advance through the epochs $e$. The increase is especially visible in
+      the later layers, in our case layers 3 and 4.
     }
   \item{
       Either an increase or no change in $I(X, T_{e,l})$, the information about
@@ -599,9 +581,10 @@ characterized by:
     }
 \end{itemize}
 
-During the fitting phase a neural network tries to memorize the data and make
-predictions based on the observations, this means that the network may learn
-useless features that only superficially correlate with the correct label.
+Tishby's understanding of the Fitting phase is that the network tries to
+memorize the data and makes predictions based on the observations, this means
+that the network may learn features that only superficially correlate with the
+correct label.
 
 \subparagraph{The Compression Phase} In \autoref{fig:Ip2} the neural network
 enters the compression phase when the fitting phase ends around epoch $\sim$1500
@@ -617,11 +600,11 @@ characterized by:
     }
 \end{itemize}
 
-During the compression phase a neural network compresses representation of the
-input discarding more features that did not help with predicting correct labels.
-Discarding irrelevant features helps the neural network generalize and produce
-better predictions for new data. 
-
+Tishby's understanding of the Compression phase is that the network learns how
+to compress the representation of the input. This means the network has to
+discard features that do not help with predicting the correct labels. Discarding
+irrelevant features helps the neural network to generalize and produce better
+prediction for new data.
 
 ---------------------------------------------------------------
 
