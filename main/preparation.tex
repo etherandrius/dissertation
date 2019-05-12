@@ -360,6 +360,73 @@ experiments.
 
 \section{The Information plane}
 \label{sec:IP}
+The information plane is a way of visualizing the Neural Network's
+training process through the information domain. Meaning we are looking
+what information the NN is retaining through out the layers and how the
+information retained changes through out the training process.
+
+We are interested see what information about the input and the label is retained
+-- as having this information would help us understand how the neural network
+learns.  Suppose we have this data available then we can examine this data with
+respect to:
+\begin{itemize}
+  \item{
+      Epochs -- lets us ask questions such as:
+      \begin{itemize}
+        \item{
+            Is the network getting rid of noise in the network.
+          }
+        \item{
+            Does the network ever retain all the information about the label.
+          }
+        \item{
+            If the network does retain all the information about the label does
+            training it after the point lead to performance increase.
+          }
+      \end{itemize}
+    }
+  \item{
+      Layer -- lets us ask questions such as:
+      \begin{itemize}
+        \item{
+            Is there a difference between how much information the layers are
+            discarding.
+          }
+        \item{
+            How does the information dynamics change if we add more layers.
+          }
+      \end{itemize}
+    }
+\end{itemize}
+
+Suppose we are examining a specific NN. At the start of the training process we
+expect the network to perform poorly -- meaning it does not retain information
+about the label. Through the training process we expect: 
+\begin{itemize}
+  \item{
+      The information about the label to rise until it saturates. If we train
+      past this saturation point we don't expect the information about the label
+      to change much.
+    }
+  \item{
+      The information about the input to rise until we have saturated the
+      information about the label. At this point we either expect:
+      \begin{itemize}
+        \item{
+            The information about the input to keep rising if we believe the
+            network starts to learn noise about the data.
+          }
+        \item{
+            The information about the input to start reducing until the networks
+            does not retain any noise about the input if we believe the network
+            generalizes the data.
+          }
+      \end{itemize}
+    }
+\end{itemize}
+
+Ideally a neural network would retain all the information relevant to the label
+and none of the information that is just noise in the input.
 
 \subsection{Setup}
 
