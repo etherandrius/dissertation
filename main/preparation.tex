@@ -331,14 +331,18 @@ function $f_\theta^l$.
 
 We now have one function for each layer transition of the NN this
 allows us to extract the activation of a specific layer as in
-\autoref{eq:layerL} -- we will need to get access to intermediate layers in our
-experiments.
-
-\begin{figure}[H]
-  \[ t_l = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x)))) \]
-  \caption{\textbf{activation} of layer l for input x}
-  \label{eq:layerL}
-\end{figure}
+\autoref{eq:layerL}.
+\begin{gather}
+  t_l = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x))))
+  \label{eq:layerL} \\
+  \textbf{activtion}\text{ of later }l\text{ for input }x \nonumber
+\end{gather}
+Let us define $F_\theta^t$ to be the activation of layer $l$ given input x
+i.e
+\begin{equation}
+  F_{\theta}^l(x) = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x))))
+  \label{eq:bigF}
+\end{equation}
 
 \autoref{fig:network} summarizes our NN definition.
 
@@ -490,7 +494,7 @@ For convenience let us define $F_{\theta}^t$ to be the activation of layer t giv
 input $x$, i.e
 \begin{equation}
   F_{\theta}^t(x) = f_{\theta}^t(f_{\theta}^{t-1}(...(f_{\theta}^1(x))))
-  \label{eq:bigF}
+  \label{eq:bigFf}
 \end{equation}
 
 
