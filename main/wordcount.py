@@ -25,10 +25,10 @@ total = (
         .strip()
 )
 print("Total + tikz : ", total)
-target_total_wordcount = 12000
+target_total_wordcount = 9000
 okay_string = ""
 if total_wordcount < target_total_wordcount:
-    okay_string = termcolor.colored("✓", "green")
-else:
     okay_string = termcolor.colored("❌", "red")
+else:
+    okay_string = termcolor.colored("✓", "green")
 print(f"Total:\t{total_wordcount}/{target_total_wordcount}\t{okay_string}")
