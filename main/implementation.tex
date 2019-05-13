@@ -1,7 +1,87 @@
 \documentclass[dissertation.tex]{subfiles}
 \begin{document}
 
+
+
+
+
+
+
+
+
+\begin{itemize}
+  \item{
+      Rebuttal -- kindof written
+      \begin{itemize}
+        \item{
+            Tishby -- compression does happen. Experimental evidence
+          }
+        \item{
+            Saxe -- compression cannot happen. Deterministic
+          }
+        \item{
+            Us -- compression happens, if we assume random weights.
+          }
+      \end{itemize}
+    }
+  \item{
+      MIE is hard, how can we measure it -- rewrite
+      \begin{itemize}
+        \item{
+            Discrete
+          }
+        \item{
+            KDE
+          }
+        \item{
+            Advanced
+          }
+        \item{
+            AIR
+          }
+      \end{itemize}
+    }
+  \item{
+      compression phase 
+      \begin{itemize}
+        \item{
+            we don't have the tools to say if the compression phase is actually
+            happening
+          }
+        \item{
+            Tishby says compression phase happens but he is using a toy dataset,
+            which was shown to not have a compression phase by Saxe.
+          }
+      \end{itemize}
+    }
+  \item{
+      optimizations
+    }
+\end{itemize}
+
+------------------------------
+
 \section{Compression In Neural Networks}
+
+\begin{itemize}
+  \item{
+      what is compression
+    }
+  \item{
+      tishby's experiment how he measures compression
+    }
+  \item{
+      saxe's experiment, simillar 
+    }
+  \item{
+      viability of compression 
+    }
+  \item{
+      my experiment
+    }
+\end{itemize}
+
+---------------------------------
 
 \paragraph{Mutual Information} 
 Let us introduce two properties of mutual information 
@@ -34,7 +114,7 @@ In the neural network case this implies
   \label{eq:dpiIneq2}
 \end{equation}
 
-i.e trough out the layers we can only lose or maintain information about the
+i.e through out the layers we can only lose or maintain information about the
 input distribution $X$ and label distribution $Y$, equality is achieved iff
 transformation functions $f_{\theta}^t$ are invertible.
 
@@ -195,6 +275,9 @@ set the generated probability distribution is disjoint.
 
 The degree to what the probability distributions $F_{\theta^\prime}^t(x_i), i =
 1,...,N$ overlap signify the degree of compression.
+
+
+------------------------------------
 
 \section{Mutual Information Estimation}
 
