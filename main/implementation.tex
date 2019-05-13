@@ -3,46 +3,33 @@
 
 \section{The Compression Rebuttal}
 
-\begin{itemize}
-  \item{
-      This section talks about if NN can compress\footnote{
-        N.B This section does not talk about the compression phase, just about
-        compression in the network for a single epoch
-      } data, i.e is it
-      possible to lose information from layer to layer.
-    }
-  \item{
-      We can construct a NN that looses information. If we take the layer
-      transition function $f_\theta^l$ to be:
-      \begin{equation*}
-        f_\theta^{l}(x) = 0
-      \end{equation*}
-      Then we would not be able to distinguish the input given the output, hence
-      the NN must have discarded some information.  Therefore compression is
-      definitely possible. 
-    }
-  \item{
-      however it is also possible to preserve all the information. Every layer
-      is just a number in $\mathbb{R}^{d_l}$, where $d_l$ is the dimension of
-      layer $l$. We know there is a one to one mapping between $\mathbb{R}$ and
-      $\mathbb{R}^{d}$ for any dimension $d$. Therefore we can construct a
-      neural network that loses no information if we take the layer transition
-      function $f_\theta^l$ to be:
-      \begin{equation*}
-        f_\theta^{l}(x) =
-        \text{map}\_\mathbb{R}\_\text{to}\_\mathbb{R}^{d_l}(
-        \text{map}\_\mathbb{R}^{d_{l-1}}\_\text{to}\_\mathbb{R}(x))
-      \end{equation*}
-      That is mapping the value of previous layer to $\mathbb{R}$ and mapping it
-      back to $\mathbb{R}^{d_l}$.
-    }
-  \item{
-      There is a disagreement about this in the scientific community. Tishby
-      makes the claim that 
-    }
-\end{itemize}
+This section talks about if a NN can compress\footnote{ N.B This section does
+not talk about the compression phase, just about compression in the network for
+a single epoch } data -- i.e is it possible to lose information from layer to
+layer. There is an argument to be made for both sides. We can easily construct a
+NN that loses information. If we take the layer transition function $f_\theta^l$
+to be
+\begin{equation*}
+  f_\theta^{l}(x) = 0
+\end{equation*}
+This function would lose information as we are not able to recover the input
+given the output, hence the NN must have discarded some information. Therefore
+compression is definitely possible. However, it is equally possible to create a
+function that preserves all the information about the input. Every layer in a NN
+is just a number $\mathbb{R}^{d_l}$,where $d_l$ is the dimension of layer $l$.
+We know there is a one to one mapping between $\mathbb{R}$ and $\mathbb{R}^{d}$
+for any dimension $d$. Therefore we can construct a neural network that loses no
+information if we take the layer transition function $f_\theta^l$ to be
+\begin{equation*}
+  f_\theta^{l}(x) =
+  \text{map}\_\mathbb{R}\_\text{to}\_\mathbb{R}^{d_l}(
+  \text{map}\_\mathbb{R}^{d_{l-1}}\_\text{to}\_\mathbb{R}(x))
+\end{equation*}
+That is mapping the value of previous layer to $\mathbb{R}$ and mapping it back
+to $\mathbb{R}^{d_l}$. It is important to understand if NN can compress data if
+we are to study how NN manipulate information.
 
-\subsection{Viability of compression}
+\subsection{Viability of compression} \label{subViabilityOfCompression}
 
 Viability of compression inside a NN. Asking if a NN compresses data is
 equivalent to asking if \autoref{eqIlH} holds.
@@ -61,15 +48,16 @@ Form \autoref{eqIlH} and \autoref{eqIdef} we have,
   I(X, T_{e,l}) < H(X) 
   \Leftrightarrow 
   H(X|T_{e,l}) > 0
+  \label{eqIHH}
 \end{equation}
 
 Consider the value $H(X|T_{e,l})$. $H(X|T_{e,l})$ is 0 iff the value of
 $T_{e,l}$ uniquely identifies the value of $X$ i.e
 \begin{equation} 
-  H(T_{e,l}) = 0
+  H(X|T_{e,l}) = 0
   \Leftrightarrow 
   P(X=x|T_{e,t}=t) = \begin{cases}
-    1, & \text{if } t = F_{\theta}^l(x). \\
+    1, & \text{if } t = F_{\theta(e)}^l(x). \\
     0, & \text{otherwise}.
   \end{cases}
   \label{eqHisZ}
@@ -87,7 +75,7 @@ Recall the definition of $F_{\theta}^l(x)$
   \forall{i}\in{\{1...l\}}. f_\theta^i \text{ is invertible} 
 \end{equation*}
 
-Putting it all together we get the bi implication
+Putting it all together we get the bi implications
 \begin{align}
   I(X, T_{e,l}) < H(X) 
   &\Leftrightarrow 
@@ -100,6 +88,7 @@ Putting it all together we get the bi implication
   \exists{i}\in{\{1...l\}}\exists{u,v}\in{\{x_1,...,x_N\}}.
   f_\theta^t(u)=f_\theta^t(v) \land u \neq v 
 \end{align}
+and 
 
 This implies that compression can only happen if at least on transition
 function $f_\theta^l$ is not invertible.
@@ -134,14 +123,165 @@ This function decomposition implies that
   m_\theta^l \text{ is invertible} 
 \end{equation}
     
-\paragraph{Invertible Matrices}
- 
+\subsubsection{A Note on Invertible Matrices}
+
 Let $M$ be a matrix and $M^{-1}$ be the inverse, then;
 \begin{equation}
   M^{-1} \text{ is defined }
   \Leftrightarrow 
   det(M) \neq 0
+  \label{eqMa}
 \end{equation}
+Let $M$ be a random matrix, then;
+\begin{equation}
+  P(det(M)=0)=0
+  \label{eqMb}
+\end{equation}
+Let $M$ be random matrix, then from \autoref{eqMa} and \autoref{eqMb} we have
+\begin{equation}
+  P(M^{-1} \text{ is defined}) = 1 
+  \label{eqMc}
+\end{equation}
+i.e every random matrix has an inverse.
+
+\paragraph{Randomness in SGD} 
+Consider the matrix $m_\theta^l$. The Matrix is defined by the parameters
+$\theta$ which are controlled by Stochastic Gradient Descent (SGD). At the start
+of the training period the parameters $\theta$ are initialized to random values.
+Every iteration of SGD we update the parameters -- this update can also be
+considered random due to the Stochastic nature of the algorithm. From this we
+can treat the parameters $\theta$ and consequently the matrix $m_\theta^l$ as
+random throughout the training process.
+
+Having $m_\theta^l$ be an instance of a random matrix would mean that
+\autoref{eqMc} holds -- which would imply that every transition function is
+invertible, which in turn means that there cannot be any compression in a NN.
+
+This would mean having discussion about Information in NN is moot. However, we
+can still have a meaningful discussion about neural networks if consider the
+parameters $\theta$ to be a random distribution rather than an instance of a
+concrete value. This is not agreed upon fully within the scientific community --
+Tishby assumes this is inherent in SGD, while Saxe has contested the claim.
+
+Let us refer to the parameters as probability distribution with notation
+$\hat\theta$. $\hat\theta$ is a sequence of probability distributions that
+depend s.t $\hat\theta(e+1)$ depends on $\hat\theta(e)$, where $e$ is the epoch.
+
+Let us formally define $\hat\theta$. Since at the start of the training period
+SGD initializes parameters at random -- let the start of the sequence
+$\hat\theta(1)$ be defined by \autoref{eqMultinomial}, where: $\mathcal{N}_k$ --
+is the Multivariate Normal distribution with dimension $k$, $\mu$ -- is a vector
+in $k$'th dimension defining the mean of the distribution, $\Sigma$ -- is a
+$k*k$ matrix defining the variance of the distribution.
+\begin{equation}
+  \hat\theta(1)\sim\mathcal{N}_k(\mu,\Sigma)
+  \label{eqMultinomial}
+\end{equation}
+Let the sequence be defined as;
+\begin{gather}
+  P(\hat\theta(e+1) = t | \hat\theta(e) = \hat{t}) = P(\phi = t), \\
+  \text{where }\phi
+  \text{ is }\hat\theta(e)
+  \text{ with one SGD step applied, we can assume }
+  \phi\sim\mathcal{N}_k
+  \label{eqSequence}
+\end{gather}
+
+We have shown that parameters of a NN can be though as being a probability
+distribution.
+
+\paragraph{Impact of $\hat\theta$ -- parameters as probability distributions}
+With the idea that parameters $\hat\theta$ are a probability distribution let us
+again consider the question of compression in neural networks. From
+\autoref{subViabilityOfCompression} we know that no compression in NN is
+equivalent to 
+\begin{equation*} 
+  I(X, T_{e,l}) = H(X)
+\end{equation*}
+which is equivalent 
+\begin{equation*} 
+  H(X|T_{e,l}) = 0
+\end{equation*}
+$H(X|T_{e,l}) = 0$ means by observing $T_{e,l}$ we can deduce the exact value of
+$X$. i.e
+\begin{align} 
+  &(\forall{t}.\;P(T_{e,l}=t)>0 \implies P(X=x|T_{e,l}=t)=1)
+  \nonumber\\\implies
+  &(\forall{t}.\;P(T_{e,l}=t)>0 \implies P(T_{e,l}=t|X\neq{x})=0)
+  \label{eqUnsatisfiable}
+\end{align}
+Notice from \autoref{eqMultinomial} and \autoref{eqSequence} that 
+\begin{equation} 
+  \forall{e}.\;\hat\theta(e)\sim\mathcal{N}_k
+  \text{, where }e\text{ is an epoch}
+  \label{eqAllMultinomial}
+\end{equation}
+Equations \ref{eqUnsatisfiable} and \ref{eqAllMultinomial} are unsatisfiable
+together. Proof:
+Consider $x$ and $\hat{x}$ s.t $\hat{x}\neq{x}$.
+Let $\phi$ be s.t. $f_\phi^1(x)=t$
+\begin{align}
+  &f_\phi^1(x)=t,
+  \nonumber \\ \implies&
+  P(T_{e,1}=t)>0,
+  \nonumber \\ \implies&
+  P(T_{e,1}=t|X\neq{x})=0, \text{ by \autoref{eqUnsatisfiable}}
+  \nonumber \\ \implies&
+  P(T_{e,1}=t|X=\hat{x})=0
+\end{align}
+however, we can construct $\hat\phi$ s.t $f_{\hat\phi^1}(\hat{x})=t$
+\begin{equation}
+  P(T_{e,1}=t|X=\hat{x})=
+  P(\hat\theta(e)=\hat\phi) > 0, \text{ by \autoref{eqAllMultinomial}}
+\end{equation}
+hence, we get a contradiction 
+\begin{equation}
+  P(T_{e,1}=t|X=\hat{x})=0\land
+  P(T_{e,1}=t|X=\hat{x})>0
+\end{equation}
+and \autoref{eqUnsatisfiable} is unsatisfiable, this implies
+\begin{equation}
+  H(X|T_{e,l}) > 0
+\end{equation}
+which finally implies 
+\begin{equation*} 
+  I(X, T_{e,l}) < H(X)
+\end{equation*}
+and proves that if we consider parameters to be random distributions the
+compression happens inside NN.
+
+\subsection{Recap}
+
+There is contention if NN are actually capable of compressing information. 
+I have shown that if we assume the parameters of a NN to be concrete values
+compression is not possible and discussion about Information within them is
+moot. However, if we make the assumptions that parameters are actually random
+variables then compression does happen.
+
+
+
+-------------------
+
+
+, and that if NN
+compresses then 
+\begin{equation*} 
+  I(X, T_{e,l}) < H(X)
+\end{equation*}
+holds, which by \autoref{eqIHH} and \autoref{eqHisZ} is equivalent to
+\begin{equation} 
+  P(X=x|T_{e,t}=t) = \begin{cases}
+    1, & \text{if } t = F_{\hat\theta(e)}^l(x). \\
+    0, & \text{otherwise}.
+  \end{cases}
+\end{equation}
+
+N.B. Since $\hat\theta(e)$ is a probability distribution 
+
+
+
+---------------------------
+
 
 
 Knowing this
@@ -355,7 +495,7 @@ In the neural network case this implies
   \label{eq:dpiIneq2}
 \end{equation}
 
-i.e through out the layers we can only lose or maintain information about the
+i.e throughout the layers we can only lose or maintain information about the
 input distribution $X$ and label distribution $Y$, equality is achieved iff
 transformation functions $f_{\theta}^t$ are invertible.
 
