@@ -275,6 +275,8 @@ variables then compression does happen.
           }
         \item{
             AIR
+
+
           }
       \end{itemize}
     }
@@ -282,6 +284,43 @@ variables then compression does happen.
       project structure
     }
 \end{itemize}
+\section{As-If-Random Experiment}
+
+Tishby's paper relies heavily on the notion that weights of a neural network
+behave `as if' they are random, however his and Saxe's experiments don't capture
+this idea as much as they could -- refer to \autoref{ssection:rename}. 
+
+An experiment that better captures the ideas of random is instead of 
+
+
+\begin{itemize}
+  \item{
+      Tishby and Saxe didn't capture randomness incredibly well 
+    }
+  \item{
+      We have a bettter way
+    }
+  \item{
+      How we've done it, only measure compression at the end of the training
+      period when the network is stable and only "brownian randomness
+      happens"(refer paper what randomness).
+    }
+  \item{
+      the problem is every x in X is unique, if we sample multiple epochs
+      instead of only one we have more compresssion
+    }
+  \item{
+      we rely on the property of the network that there is very little change at
+      the end of the training period
+    }
+  \item{
+      Achieves compression even with ReLu yay!!!!!!!!!
+    }
+\end{itemize}
+
+
+We believe that Tishby's experiments Saxe's experiments could be improved, with
+introducing a better notion of randomness. blah blah blah blah not finished.
 
 
 ------------------------------------
@@ -384,8 +423,6 @@ about in \autoref{ssection:advanced}
       trough the neural network and recording the activations.
     }
 \end{itemize}
-
-\newpage
 
 \subsection{Discrete method} 
 
@@ -579,7 +616,7 @@ wasn't able to remove.
 
 Even when using all the systems resources the calculations take a very long
 time to complete as such we need to find a way to speed it up. If we consider an
-information plane graph for ex. \autoref{fig:ip1}, we see that from epoch to
+information plane graph for ex. \autoref{fig:Ip2}, we see that from epoch to
 epoch there is very little change that is occurring, skipping some epochs might
 be a good way to reduce workload while keeping the overall result unchanged. We
 have implemented a couple of ways to skip the epochs 
@@ -837,45 +874,6 @@ have implemented a couple of ways to skip the epochs
 \end{figure}
 
 -----------------------------------------------------------------------------
-
-\section{As-If-Random Experiment}
-
-Tishby's paper relies heavily on the notion that weights of a neural network
-behave `as if' they are random, however his and Saxe's experiments don't capture
-this idea as much as they could -- refer to \autoref{ssection:rename}. 
-
-An experiment that better captures the ideas of random is instead of 
-
-
-\begin{itemize}
-  \item{
-      Tishby and Saxe didn't capture randomness incredibly well 
-    }
-  \item{
-      We have a bettter way
-    }
-  \item{
-      How we've done it, only measure compression at the end of the training
-      period when the network is stable and only "brownian randomness
-      happens"(refer paper what randomness).
-    }
-  \item{
-      the problem is every x in X is unique, if we sample multiple epochs
-      instead of only one we have more compresssion
-    }
-  \item{
-      we rely on the property of the network that there is very little change at
-      the end of the training period
-    }
-  \item{
-      Achieves compression even with ReLu yay!!!!!!!!!
-    }
-\end{itemize}
-
-
-We believe that Tishby's experiments Saxe's experiments could be improved, with
-introducing a better notion of randomness. blah blah blah blah not finished.
-
 
 \section{Repository Structure}
 
