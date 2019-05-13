@@ -1,13 +1,238 @@
 \documentclass[dissertation.tex]{subfiles}
 \begin{document}
 
+\section{The Compression Rebuttal}
+
+\begin{itemize}
+  \item{
+      This section talks about if NN can compress\footnote{
+        N.B This section does not talk about the compression phase, just about
+        compression in the network for a single epoch
+      } data, i.e is it
+      possible to lose information from layer to layer.
+    }
+  \item{
+      We can construct a NN that looses information. If we take the layer
+      transition function $f_\theta^l$ to be:
+      \begin{equation*}
+        f_\theta^{l}(x) = 0
+      \end{equation*}
+      Then we would not be able to distinguish the input given the output, hence
+      the NN must have discarded some information.  Therefore compression is
+      definitely possible. 
+    }
+  \item{
+      however it is also possible to preserve all the information. Every layer
+      is just a number in $\mathbb{R}^{d_l}$, where $d_l$ is the dimension of
+      layer $l$. We know there is a one to one mapping between $\mathbb{R}$ and
+      $\mathbb{R}^{d}$ for any dimension $d$. Therefore we can construct a
+      neural network that loses no information if we take the layer transition
+      function $f_\theta^l$ to be:
+      \begin{equation*}
+        f_\theta^{l}(x) =
+        \text{map}\_\mathbb{R}\_\text{to}\_\mathbb{R}^{d_l}(
+        \text{map}\_\mathbb{R}^{d_{l-1}}\_\text{to}\_\mathbb{R}(x))
+      \end{equation*}
+      That is mapping the value of previous layer to $\mathbb{R}$ and mapping it
+      back to $\mathbb{R}^{d_l}$.
+    }
+  \item{
+      There is a disagreement about this in the scientific community. Tishby
+      makes the claim that 
+    }
+\end{itemize}
+
+\subsection{Viability of compression}
+
+Viability of compression inside a NN. Asking if a NN compresses data is
+equivalent to asking if \autoref{eqIlH} holds.
+\begin{equation} 
+  I(X, T_{e,l}) < H(X)
+  \label{eqIlH}
+\end{equation}
+Lets examine the value $I(X, T_{e,l})$ more closely. From
+\autoref{eq:miEntropy} we know,
+\begin{equation} 
+  I(X,T_{e,l})=H(X)-H(X|T_{e,l})
+  \label{eqIdef}
+\end{equation}
+Form \autoref{eqIlH} and \autoref{eqIdef} we have,
+\begin{equation} 
+  I(X, T_{e,l}) < H(X) 
+  \Leftrightarrow 
+  H(X|T_{e,l}) > 0
+\end{equation}
+
+Consider the value $H(X|T_{e,l})$. $H(X|T_{e,l})$ is 0 iff the value of
+$T_{e,l}$ uniquely identifies the value of $X$ i.e
+\begin{equation} 
+  H(T_{e,l}) = 0
+  \Leftrightarrow 
+  P(X=x|T_{e,t}=t) = \begin{cases}
+    1, & \text{if } t = F_{\theta}^l(x). \\
+    0, & \text{otherwise}.
+  \end{cases}
+  \label{eqHisZ}
+\end{equation}
+\autoref{eqHisZ} holds iff $F_{\theta}^l(x)$ is an invertible function.
+Recall the definition of $F_{\theta}^l(x)$
+\begin{equation}
+  F_{\theta}^l(x) = f_{\theta}^l(f_{\theta}^{l-1}(...(f_{\theta}^1(x))))
+  \label{eqBigFdef}
+\end{equation}
+\autoref{eqBigFdef} implies 
+\begin{equation*}
+  F_\theta^l \text{ is invertible } 
+  \Leftrightarrow 
+  \forall{i}\in{\{1...l\}}. f_\theta^i \text{ is invertible} 
+\end{equation*}
+
+Putting it all together we get the bi implication
+\begin{align}
+  I(X, T_{e,l}) < H(X) 
+  &\Leftrightarrow 
+  \neg(\forall{i}\in{\{1...l\}}. f_\theta^i \text{ is invertible})
+  \nonumber\\
+  &\Leftrightarrow 
+  \exists{i}\in{\{1...l\}}. f_\theta^i \text{ is not invertible} 
+  \nonumber\\
+  &\Leftrightarrow 
+  \exists{i}\in{\{1...l\}}\exists{u,v}\in{\{x_1,...,x_N\}}.
+  f_\theta^t(u)=f_\theta^t(v) \land u \neq v 
+\end{align}
+
+This implies that compression can only happen if at least on transition
+function $f_\theta^l$ is not invertible.
+
+\subsection{Determinism of the Transition Function}
+
+\paragraph{Decomposing the Transition Function}
+Lets break away from our NN abstraction and consider the transition function
+$f_\theta^l$ and how it is defined in concrete implementations of NNs -- recall
+the \autoref{eq:nextNode}.
+\begin{equation*}
+  n_{l+1,i} = g(\sum_{j = 0}^{\text{layer }l\text{ size}} w_{l,j,i}*n_{l,j})
+\end{equation*}
+Where $g$ is an invertible function such as Leaky ReLu, Sigmoid, Tanh.
+This means we can consider the function $f_\theta^l$ to be a composition
+of two different functions:
+\begin{itemize}
+  \item{
+      A matrix multiplication -- which is responsible for the
+      weighted sum of previous layers activations $\sum_{j = 0}^{\text{layer
+      }l\text{ size}} w_{l,j,i}*n_{l,j}$. Let us call this matrix $m_\theta^l$.
+    }
+  \item{
+      An application of the invertible function $g$ to every element of
+      the vector produced by the matrix multiplication.
+    }
+\end{itemize}
+This function decomposition implies that 
+\begin{equation}
+  f_\theta^l \text{ is invertible} 
+  \Leftrightarrow 
+  m_\theta^l \text{ is invertible} 
+\end{equation}
+    
+\paragraph{Invertible Matrices}
+ 
+Let $M$ be a matrix and $M^{-1}$ be the inverse, then;
+\begin{equation}
+  M^{-1} \text{ is defined }
+  \Leftrightarrow 
+  det(M) \neq 0
+\end{equation}
+
+
+Knowing this
+let us consider the Matrix $m_\theta^l$. The matrix is defined by the
+parameters $\theta$ which are controlled by Stochastic Gradient Descent (SGD)
+algorithm.
+
+\begin{itemize}
+  \item{
+      $\theta$ is random at first 
+    }
+  \item{
+      Hence we can consider $m_\theta^l$ to be random at the start of the
+      training process
+    }
+  \item{
+      the determinant of a random matrix $M$ is 0
+    }
+\end{itemize}
+
+\begin{itemize}
+  \item{
+      Let us consider the Matrix $m_\theta^l$. The matrix is fully defined by
+      the parameters $\theta$ which are controlled by the Stochastic Gradient
+      Descent (SGD) algorithm. 
+    }
+  \item{
+      Matrix is invertible if $det(M) = 0$
+    }
+  \item{
+      a random matrix is invertible if M is random $P(det(M) = 0) = 0$ holds.
+    }
+\end{itemize}
+
+
+\subsection{Randomness of the Parameters}
+
+\begin{itemize}
+  \item{
+      Tishby claims that compression must happen in neural networks 
+    }
+  \item{
+      He support his claims by experiments
+    }
+  \item{
+      Here are the results
+    }
+\end{itemize}
+
+\subsection{Saxe's argument}
+
+\begin{itemize}
+  \item{
+      Compression does not happen 
+    }
+  \item{
+      Because - weights are deterministic and invertible
+    }
+\end{itemize}
+
+\subsection{Randomness in The Neural Network}
+
+\begin{itemize}
+  \item{
+      Rebuttal
+      \begin{itemize}
+        \item{
+            Tishby -- compression does happen. Experimental evidence. 
+          }
+        \item{
+            Tishby's experiment structure -- reproduces the Information Plane.
+          }
+        \item{
+            Saxe -- compression cannot happen. Deterministic
+          }
+        \item{
+            Us -- compression happens, if we assume random weights.
+          }
+      \end{itemize}
+    }
+  \item{
+      <++>
+    }
+\end{itemize}
 
 
 
 
 
 
-
+------------------------------------------------------
 
 \begin{itemize}
   \item{
@@ -47,6 +272,16 @@
   \item{
       compression phase 
       \begin{itemize}
+        \item{
+            judging if the networks have a compression phase is moot point as of
+            yet as tools for measuring information are not good enough. Case and
+            point Saxe argues that there cannot be compression in NN but every
+            every experiments show that compression exists.
+          }
+        \item{
+            Saxe states that there is no compression in NN, however their
+            experiments disagree. 
+          }
         \item{
             we don't have the tools to say if the compression phase is actually
             happening

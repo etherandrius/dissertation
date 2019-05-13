@@ -219,20 +219,27 @@ from the preceding layer. Let $n_{l,i}$ be the value that the $i'th$ node in
 layer $l$ takes. Let $w_{l,j,i}$ be a parameter that influences how relevant
 the $j'th$ node in layer $l$ is to the $i'th$ node in layer $l+1$.
 \begin{equation}
-  n_{l+1,i} = f(\sum_{j = 0}^{\text{layer }l\text{ size}} w_{l,j,i}*n_{l,j})
+  n_{l+1,i} = g(\sum_{j = 0}^{\text{layer }l\text{ size}} w_{l,j,i}*n_{l,j})
   \label{eq:nextNode}
 \end{equation}
-$f$ in \autoref{eq:nextNode} is called the activation function and is generally 
+$g$ in \autoref{eq:nextNode} is called the activation function and is generally 
 taken to be:
 \begin{itemize}
   \item{
-      ReLu: $f(x) = max(0, x)$
+      Leaky ReLu: 
+      \begin{equation*}
+        g(x) = \begin{cases}
+          x, & if x > 0 \\
+          \alpha{x}, & \text{otherwise}.
+        \end{cases}
+      \end{equation*}
+      $\alpha$ here is some small value such as $\alpha = 0.01$
     }
   \item{
-      Sigmoid: $f(x) = \frac{1}{1+e^x}$
+      Sigmoid: $g(x) = \frac{1}{1+e^x}$
     }
   \item{
-      Tanh: $f(x) = tanh(x)$
+      Tanh: $g(x) = tanh(x)$
     }
 \end{itemize}
 
