@@ -14,7 +14,10 @@
       Rebuttal -- kindof written
       \begin{itemize}
         \item{
-            Tishby -- compression does happen. Experimental evidence
+            Tishby -- compression does happen. Experimental evidence. 
+          }
+        \item{
+            Tishby's experiment structure -- reproduces the Information Plane.
           }
         \item{
             Saxe -- compression cannot happen. Deterministic
@@ -56,6 +59,9 @@
     }
   \item{
       optimizations
+    }
+  \item{
+      project structure
     }
 \end{itemize}
 
@@ -762,7 +768,7 @@ have implemented a couple of ways to skip the epochs
   compute it or to \autoref{fig:ip_pair} for a graphical representation.
 
   \begin{equation}
-    D = max_{t\in T} [max( I_e(X, t) - I_{\hat{e}}(X, t), I_e(Y, t) - I_{\hat{e}}(Y, t))]
+    D = \max_{t\in T} [\max( I_e(X, t) - I_{\hat{e}}(X, t), I_e(Y, t) - I_{\hat{e}}(Y, t))]
     \label{eq:distance}
   \end{equation} 
 
@@ -776,7 +782,7 @@ have implemented a couple of ways to skip the epochs
   in \autoref{eq:distance2}.
 
   \begin{equation}
-    D = max_{s\in\{X, Y\}} max_{t\in T} [(I_e(s, t) - I_{\hat{e}}(s, t)) / H(s)]
+    D = \max_{s\in\{X, Y\}} \max_{t\in T} [(I_e(s, t) - I_{\hat{e}}(s, t)) / H(s)]
     \label{eq:distance2}
   \end{equation} 
 
