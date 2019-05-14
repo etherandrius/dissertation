@@ -182,7 +182,7 @@ Let the sequence be defined as;
   P(\hat\theta(e+1) = t | \hat\theta(e) = \hat{t}) = P(\phi = t), \\
   \text{where }\phi
   \text{ is }\hat\theta(e)
-  \text{ with one SGD step applied, we can assume }
+  \text{ with one SGD iteration applied, we can assume }
   \phi\sim\mathcal{N}_k
   \label{eqSequence}
 \end{gather}
@@ -359,12 +359,6 @@ Examples of hyper parameters:
             Discrete MIE.
           }
       \end{itemize}
-    }
-  \item{
-      Even the implementation of the mathematical ideas can be considered a
-      hyper parameter -- as it is unlikely that implementations follow the
-      mathematical model exactly. This is the reason why independent
-      verification is important and partly the reason of this thesis.
     }
 \end{itemize}
 
