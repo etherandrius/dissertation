@@ -260,37 +260,115 @@ variables then compression does happen.
 
 ------------------------------------------------------
 
+\section{Measuring Mutual Information within NN}
+
+\subsection{Theoretical setup}
+
 \begin{itemize}
   \item{
-      MIE is hard, how can we measure it -- rewrite
+      General algorithm
+    }
+  \item{
+      we are estimating -- the calculations are not exact i.e we only have a
+      subset $\hat{X}\subseteq\{x_i,...,x_N\}$
+    }
+  \item{
+      As discussed previously every mutual information estimator
+    }
+  \item{
+      consider training and full dataset. -- we train for on a subset of all the
+      data but measure mutual information about the whole dataset, this lets us
+      understand if the network is learning
+    }
+  \item{
+      hyperparameters available to be tuned 
       \begin{itemize}
         \item{
-            Discrete
+            data sets
           }
         \item{
-            KDE
+            training set
           }
         \item{
-            Advanced
+            activation function
           }
         \item{
-            AIR
-
-
+            network shape
+          }
+        \item{
+            batch size
+          }
+        \item{
+            number of epochs
+          }
+        \item{
+            MIE
+          }
+        \item{
+            bins -- discrete, air
+          }
+        \item{
+            saved epochs -- air
+          }
+        \item{
+            noise -- KDE
           }
       \end{itemize}
     }
   \item{
-      project structure
+      Notes on comparing MIEs need to run on the same NN as they vary, need to
+      run in real time as saving the whole network
     }
 \end{itemize}
-\section{As-If-Random Experiment}
 
-Tishby's paper relies heavily on the notion that weights of a neural network
-behave `as if' they are random, however his and Saxe's experiments don't capture
-this idea as much as they could -- refer to \autoref{ssection:rename}. 
+\subsection{Discrete Method}
 
-An experiment that better captures the ideas of random is instead of 
+\begin{itemize}
+  \item{
+      By Tishby
+    }
+  \item{
+      Discrete Method
+    }
+  \item{
+      Reimplemented 
+    }
+\end{itemize}
+
+\subsection{KDE}
+
+\begin{itemize}
+  \item{
+      Saxe
+    }
+  \item{
+      KDE
+    }
+  \item{
+      Same implementation as Saxe
+    }
+\end{itemize}
+
+\subsection{AIR}
+
+\begin{itemize}
+  \item{
+      I, novel
+    }
+  \item{
+      Tishby's method is not ideal
+    }
+  \item{
+      consider the perfect method teh new rxty
+    }
+  \item{
+      hopefully a better way to measure mutual information, more computationally
+      expensive. Only applicable for later epochs.
+    }
+  \item{
+      AIR
+    }
+\end{itemize}
 
 
 \begin{itemize}
@@ -324,6 +402,8 @@ introducing a better notion of randomness. blah blah blah blah not finished.
 
 
 ------------------------------------
+
+
 
 \subsection{Theoretically undefined}
 
