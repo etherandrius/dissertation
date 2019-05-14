@@ -325,45 +325,6 @@ introducing a better notion of randomness. blah blah blah blah not finished.
 
 ------------------------------------
 
-\section{Mutual Information Estimation}
-
-As stated before we are trying to validate the fact that compression is
-happening within the hidden layers in a neural network as such having robust
-tools to measure mutual information is of utmost importance. 
-
-\subsection{Mutual Information Definition}
-
-Mutual information is a measure of dependence between two variables $ X $ and $
-Y $, it quantifies the number of bits obtained about one when observing the
-other.
-
-Suppose we have two random variables $ X $ and $ Y $ if we want to measure
-mutual information between the two of them we usually refer to one of the
-following equations:
-
-\medskip
-
-Using the entropy of the distributions to infer the value
-\begin{equation}
-  I(X, Y) = H(X) - H(X|Y)
-\end{equation}
-\begin{equation}
-  I(X, Y) = H(X) + H(Y) - H(X,Y)
-\end{equation}
-
-Or calculating the mutual information explicitly from probabilities, for
-discrete and continuous distributions respectively
-\begin{equation}
-      {I} (X;Y)=\sum _{y\in {\mathcal {Y}}}\sum _{x\in {\mathcal
-      {X}}}{p(x,y)\log {\left({\frac {p(x,y)}{p(x)\,p(y)}}\right)}} 
-\end{equation}
-
-\begin{equation}
-    {I} (X;Y)=\int _{\mathcal {Y}}\int _{\mathcal {X}}{p(x,y)\log {\left({\frac
-    {p(x,y)}{p(x)\,p(y)}}\right)}}\;dx\,dy
-\end{equation}
-
-
 \subsection{Theoretically undefined}
 
 Calculating mutual information is mathematically defined for both continuous and
