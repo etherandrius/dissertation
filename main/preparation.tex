@@ -140,8 +140,9 @@ Problem and the purpose of Machine Learning Frameworks.
 
 \subsection{The Prediction problem} 
 
-Suppose we have some dataset $(x_i, y_i)$ for $i = 1,...,N$. The prediction
-problem is finding a function $f$ s.t \autoref{eq:prediction} is satisfied.
+Suppose we have some dataset $D$ defined as $(x_i, y_i)$ for $i = 1,...,N$. The
+prediction problem is finding a function $f$ s.t \autoref{eq:prediction} is
+satisfied.
 \begin{equation}
   f(x_i) = y_i \text{ for } i = 1,...,N
   \label{eq:prediction}
@@ -447,7 +448,7 @@ distributions:
     }
 \end{itemize}
 
-The routine in \autoref{fig:rxty} defines the correlated random variables
+The routine in \autoref{fig:rxty} defines the correlated random variables:
 $X,T_{e,l},Y$. The probability distributions define the needed MI values:
 $I(X, T_{e,l})$ and $I(Y, T_{e,l})$.
 
