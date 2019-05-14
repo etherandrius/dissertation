@@ -262,11 +262,154 @@ variables then compression does happen.
 
 \section{Measuring Mutual Information within NN}
 
-\subsection{Theoretical setup}
+\subsection{General Algorithm}
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def informationNN(Data, Hyper, MIE):
+      # Measures how much information is retained in the NN. Aggregates the data
+      # over epochs and layers.
+      # Input:
+      # Data  - Training data $(x_i, y_i)$ for $i=1,..,N$,
+      # Hyper - Hyper-parameters - refer to $\autoref{subHyperParameters}$.
+      # MIE   - Mutual Information Estimator - refer to $\autoref{subMIE}$.
+      # Output:
+      # $I_x(e, l)$ - Information content about the $\textbf{input}$ in layer $l$ and epoch $e$,
+      # $I_y(e, l)$ - Information content about the $\textbf{label}$  in layer $l$ and epoch $e$.
+      ;$I_x,\ I_y$; = {}, {}
+      N = len(Data) # Number of data points
+      NN = Instanciate_Neural_Network(Hyper)
+      L = NN.layer_count()
+      for ;$e$; in range(0,N):
+        NN.run_SGD_once(Data)
+        for ;$l$; in range(0,L)
+          data = []
+          for ;$x\in$; Data.X:
+            ;$\hat{l}$; = NN.layer(;$l$;).predict(;$x$;)
+            data.append(;$\hat{l}$;)
+          ;$I_x(e,l)$; = MIE.estimate(data, Data.X) # Data.X = $\{x_1,...,x_N\}$
+          ;$I_y(e,l)$; = MIE.estimate(data, Data.Y) # Data.Y = $\{y_1,...,y_N\}$
+      return ;$I_x(e,l),\ I_y(e,l)$;
+    \end{pythonfigure}
+    \caption{The general algorithm for calculating mutual information inside a
+    neural network.}
+    \label{figGeneral}
+\end{figure}
+
+We need a way to measure information content in NN throughout the training
+period -- \autoref{figGeneral} shows an algorithm that achieves this. It does
+this by explicitly running the SGD algorithm iteration by iteration and
+estimating information for every epoch and layer.
+
+\subsection{Hyper Parameters}
+\label{subHyperParameters}
+
+\autoref{figGeneral} mentions Hyper Parameters -- these are parameters that do
+not change over the course of the training period and are usually set by Person
+conducting the experiment.  
+
+Hyper parameters can have a large impact on our results. It is important to vary
+our hyper parameters -- by doing so we make sure that the results we see are
+robust and not just an epiphenomenon of our specific hyper parameters.
+
+Examples of hyper parameters:
+\begin{itemize}
+  \item{
+      Data Set Used -- for example if we use Tishby's\cite{DATATISHBY}
+      or the MNIST\cite{DATAMNIST} dataset.
+    }
+  \item{
+      Size of the training set -- how much of the dataset should we use for the
+      training of the neural network.
+    }
+  \item{
+      Activation Function of the Network -- activation function between layers,
+      examples given previously: Leaky ReLu, Sigmoid, Tanh.
+    }
+  \item{
+      Batch size for SGD -- At every iteration SGD only consider a subset of the
+      dataset the size of this subset is determined by the Batch Size.
+    }
+  \item{
+      Number of training Epochs -- How long we train the neural network, can be
+      considered a hyper parameter. However, in our case it is less important as
+      we measure information for individual epochs.
+    }
+  \item{
+      Network shape -- Network shape refers to number of layers and dimension of
+      every layer. 
+    }
+  \item{
+      We can also consider the MIE and their hyper parameters to be hyper
+      parameter as it affects our results. As for example of MIEs hyper
+      parameters: 
+      \begin{itemize}
+        \item{
+            Discrete \autoref{subDiscrete} -- defines \emph{bins}: which assigns
+            activations of individual nodes to one of these \emph{bins}.
+          }
+        \item{
+            Kernel Density Estimators \autoref{subKDE} -- defines \emph{Noise
+            variance}: which tunes the added Gaussian Noise
+          }
+        \item{
+            As If Random \autoref{subAIR} -- defines \emph{Batches}: which defines how
+            many epochs will be aggregated together to perform Mutual
+            Information Estimation. It also defines \emph{bins} as in the
+            Discrete MIE.
+          }
+      \end{itemize}
+    }
+  \item{
+      Even the implementation of the mathematical ideas can be considered a
+      hyper parameter -- as it is unlikely that implementations follow the
+      mathematical model exactly. This is the reason why independent
+      verification is important and partly the reason of this thesis.
+    }
+\end{itemize}
+
+\subsection{Mutual Information Estimators}
+\label{subMIE}
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def rxty(e, l):
+        pick i ;$\sim$; Uniform {1...N}
+        return ;$(x_i, F_{\theta(e)}^l(x_i), y_i)$;
+    \end{pythonfigure}
+    \caption{
+    }
+\end{figure}
+
+The ideal way to simulate randomness.
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def rxty(;$\hat\theta$;, l):
+        Let ;$\phi$; be one update step of SGD on ;$\hat\theta$;
+        pick i ;$\sim$; Uniform {1...N}
+        return ;$(x_i, F_\phi^l(x_i), y_i)$;
+    \end{pythonfigure}
+    \caption{
+    }
+\end{figure}
 
 \begin{itemize}
   \item{
-      General algorithm
+      recall figure rxty, let us redefine it to incorporate the notion of our
+      random parameters.
+    }
+  \item{
+      we cannot fully capture the randomness of parameters inside a specific
+      instance of a NN
+    }
+  \item{
+      so we only have a discrete sample of the probability space.
+    }
+  \item{
+      therefore every MI estimator has to simulate randomness, how they simulate
+      randomness essentially defines the estimator. Every MIE we present does it
+      differently.
     }
   \item{
       we are estimating -- the calculations are not exact i.e we only have a
@@ -281,29 +424,28 @@ variables then compression does happen.
       understand if the network is learning
     }
   \item{
+      <++>
+    }
+  \item{
+      <++>
+    }
+\end{itemize}
+
+
+------------------------
+
+\subsection{MIE - Discrete} \label{subDiscrete}
+\subsection{MIE - Kernel Density Estimation} \label{subKDE}
+\subsection{MIE - As If Random} \label{subAIR}
+
+-------------------------------------
+
+\subsection{Theoretical setup}
+
+\begin{itemize}
+  \item{
       hyperparameters available to be tuned 
       \begin{itemize}
-        \item{
-            data sets
-          }
-        \item{
-            training set
-          }
-        \item{
-            activation function
-          }
-        \item{
-            network shape
-          }
-        \item{
-            batch size
-          }
-        \item{
-            number of epochs
-          }
-        \item{
-            MIE
-          }
         \item{
             bins -- discrete, air
           }
