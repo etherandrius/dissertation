@@ -460,19 +460,19 @@ $I(X, T_{e,l})$ and $I(Y, T_{e,l})$.
     \end{pythonfigure}
     \caption{
       Definition of correlated random variables $X, T_{e,l}$ and, $Y$. The
-      Probability distributions are generated from the dataset $(x_i, y_i)$ for
-      $i = 1,...,N$. $F_{\theta(e)}^l$ is defined by \autoref{eq:bigF}
+      Probability distributions are generated from the dataset $D=\{(x_i,
+      y_i)|i=1,..,N\}$. $F_{\theta(e)}^l$ is defined by \autoref{eq:bigF}
     }
     \label{fig:rxty}
 \end{figure}
 
 \subparagraph{Input Probability Distribution} The probability distribution $X$
-is generated from the input dataset $\{x_i,...,x_N\}$. The probability
-distribution has an inherent probability distribution but often we don't know
-it. We have not made any assumption about the input distribution -- as such the
-\autoref{fig:rxty} takes every input value to be equally likely. If we had a
-specific dataset adjust our assumption and assign a different probability to the
-input dataset.
+is generated from the input dataset $D$.  Any input dataset $D$ has an inherent
+probability distribution but most of the time we don't know it exactly.
+\autoref{fig:rxty} makes the assumption that $D$ is uniformly distributed and
+thus takes every input value to be equally likely.  If we had a specific dataset
+we could adjust our assumption and assign a different probability distribution
+to the input dataset.
 
 \subsection{Visualization}
 
