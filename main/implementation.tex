@@ -93,7 +93,7 @@ and
 This implies that compression can only happen if at least on transition
 function $f_\theta^l$ is not invertible.
 
-\subsection{Determinism of the Transition Function}
+\subsection{Determinism of the Transition Function} \label{subDTF}
 
 \paragraph{Decomposing the Transition Function}
 Lets break away from our NN abstraction and consider the transition function
@@ -270,7 +270,7 @@ variables then compression does happen.
       # Measures how much information is retained in the NN. Aggregates the data
       # over epochs and layers.
       # Input:
-      # Data  - Training data $(x_i, y_i)$ for $i=1,..,N$,
+      # Data  - Training data $D$ defined as $(x_i, y_i)$ for $i=1,..,N$,
       # Hyper - Hyper-parameters - refer to $\autoref{subHyperParameters}$.
       # MIE   - Mutual Information Estimator - refer to $\autoref{subMIE}$.
       # Output:
@@ -301,18 +301,18 @@ period -- \autoref{figGeneral} shows an algorithm that achieves this. It does
 this by explicitly running the SGD algorithm iteration by iteration and
 estimating information for every epoch and layer.
 
-\subsection{Hyper Parameters}
+\subsection{Hyperparameters}
 \label{subHyperParameters}
 
-\autoref{figGeneral} mentions Hyper Parameters -- these are parameters that do
+\autoref{figGeneral} mentions Hyperparameters -- these are parameters that do
 not change over the course of the training period and are usually set by Person
 conducting the experiment.  
 
-Hyper parameters can have a large impact on our results. It is important to vary
-our hyper parameters -- by doing so we make sure that the results we see are
-robust and not just an epiphenomenon of our specific hyper parameters.
+Hyperparameters can have a large impact on our results. It is important to vary
+our hyperparameters -- by doing so we make sure that the results we see are
+robust and not just an epiphenomenon of our specific hyperparameters.
 
-Examples of hyper parameters:
+Examples of hyperparameters:
 \begin{itemize}
   \item{
       Data Set Used -- for example if we use Tishby's\cite{DATATISHBY}
@@ -332,7 +332,7 @@ Examples of hyper parameters:
     }
   \item{
       Number of training Epochs -- How long we train the neural network, can be
-      considered a hyper parameter. However, in our case it is less important as
+      considered a hyperparameter. However, in our case it is less important as
       we measure information for individual epochs.
     }
   \item{
@@ -340,7 +340,7 @@ Examples of hyper parameters:
       every layer. 
     }
   \item{
-      We can also consider the MIE and their hyper parameters to be hyper
+      We can also consider the MIE and their hyperparameters to be hyper
       parameter as it affects our results. As for example of MIEs hyper
       parameters: 
       \begin{itemize}
@@ -365,6 +365,8 @@ Examples of hyper parameters:
 \subsection{Mutual Information Estimators}
 \label{subMIE}
 
+
+
 \begin{figure}[H]
     \begin{pythonfigure}
       def rxty(e, l):
@@ -379,16 +381,82 @@ The ideal way to simulate randomness.
 
 \begin{figure}[H]
     \begin{pythonfigure}
-      def rxty(;$\hat\theta$;, l):
+      def rxty(;$\hat\theta$;, ;$l$;):
         Let ;$\phi$; be one update step of SGD on ;$\hat\theta$;
         pick i ;$\sim$; Uniform {1...N}
         return ;$(x_i, F_\phi^l(x_i), y_i)$;
     \end{pythonfigure}
     \caption{
     }
+    \label{figRxty2}
 \end{figure}
 
+
 \begin{itemize}
+  \item{
+      Recall \autoref{subIPsetup} It talks about how we can measure information
+      within NN.
+    }
+  \item{
+      We note that in order to measure mutual information we need a probability
+      distributions.
+    }
+  \item{
+      Input:
+      \begin{itemize}
+        \item{
+            We have data set $D$ which is: $(x_i, y_i)$ for $i=1,...,N$. Let
+            $D_x=\{x_1,...,x_N\}$, $D_x=\{y_1,...,y_N\}$
+          }
+        \item{
+            Which is a subset of all possible $(x_i, y_i)$ pairs, which could be
+            infinite.
+          }
+        \item{
+            We train our NN on a subset of $D$. 
+          }
+        \item{
+            We measure the NNs information retention on the $D$
+          }
+      \end{itemize}
+    }
+  \item{
+      However, we only have a discrete empirical sample ${}$
+    }
+  \item{
+      We note that in order to measure mutual information we need probability
+      distributions, which we generate via routine described in
+      \autoref{fig:rxty}. Given the results of \autoref{subDTF} we need to
+      redefine the results as in \autoref{figRxty2}.
+    }
+  \item{
+      \autoref{figRxty2} defines correlated random variables: $X,T_{e,l},Y$ --
+      and hence the MI values: $I(X,T_{e,l})$ and $I(Y,T_{e,l})$.
+    }
+  \item{
+      However, computing the MI values exactly is a computationally infeasible
+      task -- as we cannot capture the full randomness produced by
+      \monospace{line 2}.
+    }
+  \item{
+      As such we need a way to estimate the MI values. Fundamentally we need
+      make assumptions about the Input distributions that allows us to
+      efficiently compute the values. 
+    }
+  \item{
+      We will consider 3 different MIE techniques: Discrete, KDE, AIR -- all of
+      which simulate randomness in a different way.
+    }
+\end{itemize}
+
+
+------------------
+
+\begin{itemize}
+  \item{
+      Recall \autoref{subIPsetup} It talks about how we can measure information
+      within NN.
+    }
   \item{
       recall figure rxty, let us redefine it to incorporate the notion of our
       random parameters.
