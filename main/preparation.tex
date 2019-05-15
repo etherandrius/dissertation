@@ -50,20 +50,23 @@ we have $H(Y) = 1.5$.
 describe an outcome of variable $Y$ given that value of another random variable
 $X$ is already known. Conditional Entropy of $Y$ given $X$ is written as
 $H(Y|X)$. Let $X$ be defined as before, Let $Y$ be a discrete random variable
-that can take values in $\{y_i,...,y_n\}$. Equations \ref{eq:condEntropy} and
+that can take values in $\{y_i,...,y_m\}$. Equations \ref{eq:condEntropy} and
 \ref{eq:condEntropy2} are two examples how we can compute conditional entropies
 -- using explicit probabilities or entropies of or entropies of random variables
 conditioned on an event.
 
 \begin{equation}
-H(Y|X)\ =-\sum _{i=1}^nP(x_i,y_i)\log {\frac {P(x_i,y_i)}{P(x_i)}}
+H(Y|X)\ =-\sum _{i=1}^n\sum _{j=1}^mP(x_i,y_j)\log {\frac {P(x_i,y_j)}{P(x_i)}}
 \label{eq:condEntropy}
 \end{equation}
 
-\begin{equation}
+\begin{gather}
   H(Y|X)\ =-\sum _{i=1}^nP(x_i)H(Y|X=x_i)
-\label{eq:condEntropy2}
-\end{equation}
+  \label{eq:condEntropy2} \\
+  \text{where }
+  H(Y|X=x)=-\sum _{i=1}^{m}{P(y_i|X=x)\log P(y_i|X=x)}
+  \label{eq:condEntropy3}
+\end{gather}
 
 Let the correlated variables $X$ and $Y$ be defined by \autoref{t:prob}.
 \begin{table}[H]
