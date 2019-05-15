@@ -61,10 +61,10 @@ H(Y|X)\ =-\sum _{i=1}^n\sum _{j=1}^mP(x_i,y_j)\log {\frac {P(x_i,y_j)}{P(x_i)}}
 \end{equation}
 
 \begin{gather}
-  H(Y|X)\ =-\sum _{i=1}^nP(x_i)H(Y|X=x_i)
+  H(Y|X)\ =\sum _{i=1}^nP(x_i)H(Y|X=x_i),
   \label{eq:condEntropy2} \\
   \text{where }
-  H(Y|X=x)=-\sum _{i=1}^{m}{P(y_i|X=x)\log P(y_i|X=x)}
+  H(Y|X=x)=\sum _{i=1}^{m}{P(y_i|X=x)\log P(y_i|X=x)}
   \label{eq:condEntropy3}
 \end{gather}
 
