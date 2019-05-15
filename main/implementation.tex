@@ -258,11 +258,14 @@ compression is not possible and discussion about Information within them is
 moot. However, if we make the assumptions that parameters are actually random
 variables then compression does happen.
 
-------------------------------------------------------
-
 \section{Measuring Mutual Information within NN}
 
 \subsection{General Algorithm}
+
+We need a way to measure information content in NN throughout the training
+period -- \autoref{figGeneral} shows an algorithm that achieves this. It does
+this by explicitly running the SGD algorithm iteration by iteration and
+estimating information for every epoch and layer.
 
 \begin{figure}[H]
     \begin{pythonfigure}
@@ -270,7 +273,7 @@ variables then compression does happen.
       # Measures how much information is retained in the NN. Aggregates the data
       # over epochs and layers.
       # Input:
-      # Data  - Training data $D$ defined as $(x_i, y_i)$ for $i=1,..,N$,
+      # Data  - Training data $D=\{(x_i, y_i)|i=1,..,N\}$,
       # Hyper - Hyper-parameters - refer to $\autoref{subHyperParameters}$.
       # MIE   - Mutual Information Estimator - refer to $\autoref{subMIE}$.
       # Output:
@@ -287,19 +290,14 @@ variables then compression does happen.
           for ;$x\in$; Data.X:
             ;$\hat{l}$; = NN.layer(;$l$;).predict(;$x$;)
             data.append(;$\hat{l}$;)
-          ;$I_x(e,l)$; = MIE.estimate(data, Data.X) # Data.X = $\{x_1,...,x_N\}$
-          ;$I_y(e,l)$; = MIE.estimate(data, Data.Y) # Data.Y = $\{y_1,...,y_N\}$
+          ;$I_x(e,l)$; = MIE.estimateX(data, Data.X) # Data.X = $\{x_1,...,x_N\}$
+          ;$I_y(e,l)$; = MIE.estimateY(data, Data.Y) # Data.Y = $\{y_1,...,y_N\}$
       return ;$I_x(e,l),\ I_y(e,l)$;
     \end{pythonfigure}
     \caption{The general algorithm for calculating mutual information inside a
     neural network.}
     \label{figGeneral}
 \end{figure}
-
-We need a way to measure information content in NN throughout the training
-period -- \autoref{figGeneral} shows an algorithm that achieves this. It does
-this by explicitly running the SGD algorithm iteration by iteration and
-estimating information for every epoch and layer.
 
 \subsection{Hyperparameters}
 \label{subHyperParameters}
@@ -345,18 +343,18 @@ Examples of hyperparameters:
       parameters: 
       \begin{itemize}
         \item{
-            Discrete \autoref{subDiscrete} -- defines \emph{bins}: which assigns
+            Binning \autoref{subBatch} -- defines \emph{bins}: which assigns
             activations of individual nodes to one of these \emph{bins}.
           }
         \item{
-            Kernel Density Estimators \autoref{subKDE} -- defines \emph{Noise
+            Kernel Density Estimator \autoref{subKDE} -- defines \emph{Noise
             variance}: which tunes the added Gaussian Noise
           }
         \item{
             As If Random \autoref{subAIR} -- defines \emph{Batches}: which defines how
             many epochs will be aggregated together to perform Mutual
             Information Estimation. It also defines \emph{bins} as in the
-            Discrete MIE.
+            Binning MIE.
           }
       \end{itemize}
     }
@@ -365,21 +363,26 @@ Examples of hyperparameters:
 \subsection{Mutual Information Estimators}
 \label{subMIE}
 
+Recall \autoref{subIPsetup} -- which talks about how we can measure information
+within a NN. We note that in order to measure MI we need random variables,
+however we only have the empirical dataset $D=\{(x_i,y_i)|i=1,..,N\}$.  We would
+like to use the random variables defined by the routine in \autoref{fig:rxty}.
+However, in \autoref{subDTF} we prove that parameters $\theta$ have to be
+treated as random variables -- a property which is missing from the current
+definition. \autoref{figRxty2} updates the definition of our random variable to
+capture the missing property. 
 
+\autoref{figRxty2} defines the correlated random variables: $X,T_{e,l},Y$ --
+which specify the MI values: $I(X,T_{e,l})$ and $I(Y,T_{e,l})$. However,
+computing the MI values exactly is a computationally infeasible task -- as we
+cannot capture the full randomness produced by \monospace{line 2}. As such we
+need a way to estimate the MI values.  Fundamentally we need to make assumptions
+about the input distribution -- which would allow us to efficiently compute the
+values. We will consider 3 different Mutual Information Estimators
+\textbf{(MIE)}, all of which simulate randomness in a different way: Binning,
+KDE, and AIR.
 
-\begin{figure}[H]
-    \begin{pythonfigure}
-      def rxty(e, l):
-        pick i ;$\sim$; Uniform {1...N}
-        return ;$(x_i, F_{\theta(e)}^l(x_i), y_i)$;
-    \end{pythonfigure}
-    \caption{
-    }
-\end{figure}
-
-The ideal way to simulate randomness.
-
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{pythonfigure}
       def rxty(;$\hat\theta$;, ;$l$;):
         Let ;$\phi$; be one update step of SGD on ;$\hat\theta$;
@@ -387,171 +390,242 @@ The ideal way to simulate randomness.
         return ;$(x_i, F_\phi^l(x_i), y_i)$;
     \end{pythonfigure}
     \caption{
+      Updated definition of correlated random variables $X, T_{e,l}$ and, $Y$.
+      The Probability distributions are generated from the dataset
+      $D=\{(x_i,y_i)|i=1,...,N\}$. $F_{\theta(e)}^l$ is defined by \autoref{eq:bigF}
     }
     \label{figRxty2}
 \end{figure}
 
 
-\begin{itemize}
-  \item{
-      Recall \autoref{subIPsetup} It talks about how we can measure information
-      within NN.
+\subsubsection{A Note on The Input Dataset}
+We have previously defined the data set $D=\{(x_i, y_i)|i=1,..,N\}$ -- it
+is the sequence of pairs where $x$ is the input and $y$ is the label. This
+is the dataset available to us when we are training the NN.
+However, often $D$ is a subset of $D_{global}$, where $D_{global}$ is all
+valid possible $(x, y)$ pairs, which in most interesting cases is
+infinite.
+Take for example the MNIST dataset. The MNIST dataset is a collection of
+labeled handwritten digits -- where every input $x$ is an image and every
+label $y$ is digit in the image. In this case $D$ is a set containing
+about 70,000 (image, label) pairs and $D_{global}$ is the set of all
+images containing a handwritten image and the labels associated with the
+image.
+
+The task of a NN is to predict the labels given any $x\in{D_{global}}$,
+regardless if $x\in{D}$ holds or not. Hence, we are fundamentally
+interested in how much information is retained in the NN about the inputs
+from the dataset $D_{global}$.
+However, we can only make an attempt to measure information retained about
+inputs from the dataset $D$.
+Therefore, even if we were able to exactly compute MI values defined by
+\autoref{figRxty2}, they would still be only estimates.
+
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def getProbabilitiesOfData(A):
+        # A = [a_1,...,a_N]
+        # $Unique(A)$ - returns A with duplicate elements removed
+        for ;$\alpha$; in ;$Unique(A)$;: 
+          count = 0
+          for a in A:
+            if ;$\alpha$; == a:
+              count = count + 1
+          ;$P_\alpha$; = count / N
+        return P
+    \end{pythonfigure}
+    \caption{
     }
-  \item{
-      We note that in order to measure mutual information we need a probability
-      distributions.
-    }
-  \item{
-      Input:
-      \begin{itemize}
-        \item{
-            We have data set $D$ which is: $(x_i, y_i)$ for $i=1,...,N$. Let
-            $D_x=\{x_1,...,x_N\}$, $D_x=\{y_1,...,y_N\}$
-          }
-        \item{
-            Which is a subset of all possible $(x_i, y_i)$ pairs, which could be
-            infinite.
-          }
-        \item{
-            We train our NN on a subset of $D$. 
-          }
-        \item{
-            We measure the NNs information retention on the $D$
-          }
-      \end{itemize}
-    }
-  \item{
-      However, we only have a discrete empirical sample ${}$
-    }
-  \item{
-      We note that in order to measure mutual information we need probability
-      distributions, which we generate via routine described in
-      \autoref{fig:rxty}. Given the results of \autoref{subDTF} we need to
-      redefine the results as in \autoref{figRxty2}.
-    }
-  \item{
-      \autoref{figRxty2} defines correlated random variables: $X,T_{e,l},Y$ --
-      and hence the MI values: $I(X,T_{e,l})$ and $I(Y,T_{e,l})$.
-    }
-  \item{
-      However, computing the MI values exactly is a computationally infeasible
-      task -- as we cannot capture the full randomness produced by
-      \monospace{line 2}.
-    }
-  \item{
-      As such we need a way to estimate the MI values. Fundamentally we need
-      make assumptions about the Input distributions that allows us to
-      efficiently compute the values. 
-    }
-  \item{
-      We will consider 3 different MIE techniques: Discrete, KDE, AIR -- all of
-      which simulate randomness in a different way.
-    }
-\end{itemize}
+    \label{figGetProbabilities}
+\end{figure}
+
+\subsection{MIE - Binning} \label{subBatch}
+
+\subsubsection{The Assumptions}
 
 
-------------------
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def rxty(;$e$;, ;$l$;):
+        pick i ;$\sim$; Uniform {1...N}
+        ;$t$; = ;$F_{\theta(e)}^l(x_i)$;
+        ;$\hat{t}$; = batchVector(;$t$;)
+        return ;$(x_i, \hat{t}, y_i)$;
+    \end{pythonfigure}
+    \caption{
+    }
+    \label{figRxtyBinning}
+\end{figure}
 
-\begin{itemize}
-  \item{
-      Recall \autoref{subIPsetup} It talks about how we can measure information
-      within NN.
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def batchVector(;$t$;): 
+        # applies batchValue to every value of vector $t$
+        # Input: t - a value in $\mathbb{R}^d$
+        ;$\hat{t}$; = [batchValue(a) for a in ;$t$;]
+        return ;$\hat{t}$;
+
+      def batchValue(;$t$;):
+        # If we separate the range $[low, high]$ into $bins$ number of intervals 
+        # batch returns the interval index that $t$ would fall into.
+        # Input: $t$ - a value in $\mathbb{R}$, s.t. $low\leq{t}\leq{high}$
+        # Globally defined values:
+        # $bins$  - number of intervals to separate the range $[low, high]$ into.
+        # $low$   - lowest  expected value of $t$
+        # $high$  - highest expected value of $t$
+        ;$s = (low - high) / bins$;
+        return ;$\lfloor{(t - low)/s}\rfloor$;
+    \end{pythonfigure}
+    \caption{
     }
-  \item{
-      recall figure rxty, let us redefine it to incorporate the notion of our
-      random parameters.
+    \label{figBatch}
+\end{figure}
+
+\newpage
+\subsubsection{The Algorithm}
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def binning.estimateX(T, X): 
+        # Estimates mutual information between the observed states T and input X
+        # $\forall{i}\in{\{0,..,N-1\}}.\ $T[i] is the observed state for X[i].
+        # Since every x$\in$X is equally likely and unique $H$(T|X) = 0.
+        # hence, $I$(T,X) = $H$(T)
+        ;$\hat{T}$; = binning.batchData(T)
+        return binning.entropy(;$\hat{T}$;)
+
+      def binning.estimateY(T, Y): 
+        # Estimates mutual information between the observed states T and Y
+        ;$\hat{T}$; = binning.batchData(T)
+        H(;$\hat{T}$;) = binning.entropy(;$\hat{T}$;)
+        H(;$\hat{T}$;|Y) = binning.conditionalEntropy(;$\hat{T}$;, Y)
+        return H(;$\hat{T}$;) - H(;$\hat{T}$;|Y)
+
+      def binning.entropy(A):
+        # A = [a_1,...,a_N]
+        # $Unique(A)$ - returns A with duplicate elements removed
+        ;$P$; = getProbabilitiesOfData(A) # refer to $\autoref{figGetProbabilities}$
+        H(A) = - ;$\sum_{\alpha\in{Unique(A)}}P_\alpha{log_2}(P_\alpha)$;
+        return H(A)
+
+      def binning.conditionalEntropy(A, B):
+        # Returns H(A|B)
+        # A = [a_1,...,a_N]
+        # B = [b_1,...,b_N]
+        ;$P$; = getProbabilitiesOfData(B) # refer to $\autoref{figGetProbabilities}$
+        H(A|B) = 0
+        for ;$\beta$; in ;$Unique(B)$;
+          ;$\hat{A}$; = []
+          for a, b in zip(A, B) # zip(A, B) = [(a_1, b_1),...,(a_N, b_N)]
+            if b == ;$\beta$;
+              ;$\hat{A}$;.append(a)
+            H(A|B) += ;$P_\beta$;*binning.entropy(;$\hat{A}$;)
+        return H(A|B)
+
+      def binning.batchData(T):
+        ;$\hat{T}$; = [batchVector(t) for t in T] # refer to $\autoref{figBatch}$
+        return ;$\hat{T}$;
+    \end{pythonfigure}
+    \caption{
     }
-  \item{
-      we cannot fully capture the randomness of parameters inside a specific
-      instance of a NN
-    }
-  \item{
-      so we only have a discrete sample of the probability space.
-    }
-  \item{
-      therefore every MI estimator has to simulate randomness, how they simulate
-      randomness essentially defines the estimator. Every MIE we present does it
-      differently.
-    }
-  \item{
-      we are estimating -- the calculations are not exact i.e we only have a
-      subset $\hat{X}\subseteq\{x_i,...,x_N\}$
-    }
-  \item{
-      As discussed previously every mutual information estimator
-    }
-  \item{
-      consider training and full dataset. -- we train for on a subset of all the
-      data but measure mutual information about the whole dataset, this lets us
-      understand if the network is learning
-    }
-  \item{
-      <++>
-    }
-  \item{
-      <++>
-    }
-\end{itemize}
+    \label{figBinning}
+\end{figure}
+\newpage
 
 
-------------------------
-
-\subsection{MIE - Discrete} \label{subDiscrete}
-\subsection{MIE - Kernel Density Estimation} \label{subKDE}
-\subsection{MIE - As If Random} \label{subAIR}
-
--------------------------------------
-
-\subsection{Theoretical setup}
-
-\begin{itemize}
-  \item{
-      hyperparameters available to be tuned 
-      \begin{itemize}
-        \item{
-            bins -- discrete, air
-          }
-        \item{
-            saved epochs -- air
-          }
-        \item{
-            noise -- KDE
-          }
-      \end{itemize}
-    }
-  \item{
-      Notes on comparing MIEs need to run on the same NN as they vary, need to
-      run in real time as saving the whole network
-    }
-\end{itemize}
-
-\subsection{Discrete Method}
 
 \begin{itemize}
   \item{
       By Tishby
     }
   \item{
-      Discrete Method
+      Binning Method
     }
   \item{
       Reimplemented 
     }
-\end{itemize}
-
-\subsection{KDE}
-
-\begin{itemize}
   \item{
-      Saxe
+      Assumes input is uniformly distributed
     }
   \item{
-      KDE
+      By treating grouping values together we are simulating overlapping values
+      generated by different $\theta$ values. This is a very crude method to
+      simulate randomness.
     }
   \item{
-      Same implementation as Saxe
+      two values that are very close together but are separated by a boundary
+      are treated as if they have nothing in common.
     }
 \end{itemize}
+
+
+
+
+------------------
+
+\subsection{MIE - Kernel Density Estimation} \label{subKDE}
+ 
+\subsubsection{The Assumptions}
+
+Gaussian
+
+
+
+
+\newpage
+\subsubsection{The Algorithm}
+\begin{figure}[H]
+    \begin{pythonfigure}
+      def KDE.estimateX(T, X): 
+        # Estimates mutual information between the observed states T and input X
+        # $\forall{i}\in{\{0,..,N-1\}}.\ $T[i] is the observed state for X[i].
+        # Globally defined : $\sigma$ - is the assumed noise of the observations T
+        ;$d$; = T[0].dimension # an observation t of T is a value in $\mathbb{R}^d$
+        # KDE assumes H(T|X) is a Gaussian distribution
+        # we can compute entropy of a Gaussian analytically as follows
+        H(T|X) = ;$\frac{d}{2}(log_2(2\pi)+1)$;
+        H(T) = KDE.entropy(T)
+        return H(T) - H(T|X)
+
+      def KDE.estimateY(T, Y): 
+        # Estimates mutual information between the observed states T and Y
+        H(T) = KDE.entropy(T)
+        H(T|Y) = KDE.conditionalEntropy(T, Y)
+        return H(T) - H(T|Y)
+
+      def KDE.entropy(A):
+        # See Kolchinsky and Tracey$\cite{KOLCHINSKY}$ Section 4, and Kolchinsky
+        # and Tracey$\cite{KOLCHINSKY2}$ Eq. 10
+        # Code Implementation$\cite{KDEENTROPY}$
+
+      def KDE.conditionalEntropy(A, B)
+        # Returns H(A|B)
+        # A = [a_1,...,a_N]
+        # B = [b_1,...,b_N]
+        ;$P$; = getProbabilitiesOfData(B) # refer to $\autoref{figGetProbabilities}$
+        H(A|B) = 0
+        for ;$\beta$; in ;$Unique(B)$;
+          ;$\hat{A}$; = []
+          for a, b in zip(A, B) # zip(A, B) = [(a_1, b_1),...,(a_N, b_N)]
+            if b == ;$\beta$;
+              ;$\hat{A}$;.append(a)
+            H(A|B) += ;$P_\beta$;*KDE.entropy(;$\hat{A}$;)
+        return H(A|B)
+    \end{pythonfigure}
+    \caption{
+    }
+    \label{figKDE}
+\end{figure}
+\newpage
+
+\subsection{MIE - As If Random} \label{subAIR}
+ 
+\subsubsection{The Assumptions}
+
+\subsubsection{The Algorithm}
+
+
+-------------------------------------
+
 
 \subsection{AIR}
 
@@ -607,69 +681,7 @@ introducing a better notion of randomness. blah blah blah blah not finished.
 
 ------------------------------------
 
-
-
-\subsection{Theoretically undefined}
-
-Calculating mutual information is mathematically defined for both continuous and
-discrete distributions by using one of the functions above. However since we are
-looking at neural networks we do not have the full distribution -- only an
-empirical sample of the unknown joint distribution $ P(X,Y) $. As such we cannot
-use conventional methods to calculate the mutual information and instead have to
-use tools to estimate it.
-
-The field of estimating mutual information is relatively new as a result the
-tools that are available are quite primitive. There has been some papers
-published that use more advanced techniques to tackle the problem, we will talk
-about in \autoref{ssection:advanced}
-
-\section{Calculating Mutual Information}
-
-\subsection{Experimental setup}
-
-\begin{figure}[H]
-    \begin{pythonfigure}
-      Algorithm: Generate Information Plane Data
-      Input:
-      ;$T$; = number of layers
-      ;$X$; = training data
-      ;$Y$; = label data
-      N = number of epochs
-      Output: 
-      ;$I_x$;(epoch, layer), # mutual information with $X$ 
-      ;$I_y$;(epoch, layer)  # mutual information with $Y$ 
-      Algorithm:
-      NN = setup_neural_network(;$T$;, ;$X$;, ;$Y$;)
-      for e in 0..N:
-        NN.run_SGD_once()
-        for t in 0..;$T$;:
-          data = []
-          for ;$x \in X$;:
-            ;$\hat{t}$; = NN.predict(;$x$;).layer_activation(t)
-            data.append(;$\hat{t}$;)
-          ;$I_x$;(e, t) = calculate_mutual_information(data, ;$X$;)
-          ;$I_y$;(e, t) = calculate_mutual_information(data, ;$Y$;)
-    \end{pythonfigure}
-    \caption{The general algorithm for calculating mutual information inside a
-    neural network.}
-    \label{fig:general}
-\end{figure}
-
-\begin{itemize}
-  \item{
-      X input is an empirical sample of all possible inputs.
-    }
-  \item{
-      Y label data. Every $x \in X$ has a corresponding label $y \in Y$. 
-    }
-  \item{
-      $T_{e,i}$ data for a specific epoch $e$ and specific layer $i$ in the
-      neural network. The dataset is  generated by feeding every $x \in X$
-      trough the neural network and recording the activations.
-    }
-\end{itemize}
-
-\subsection{Discrete method} 
+\subsection{Binning method} 
 
   The method used by Tishby in his paper. The method estimates mutual
   information between the $X$ or $Y$ and the hidden layer $T$ by assuming the
@@ -694,15 +706,6 @@ about in \autoref{ssection:advanced}
 \begin{figure}[H]
     \begin{pythonfigure}
       Algorithm: Mutual Information
-      Input: 
-      ;$X = x_1, x_2,...,x_n$;
-      ;$Y = y_1, y_2,...,y_n$;
-      Output: ;$I(X:Y)$;
-      ;$X$; = Bin close values of ;$X$; together
-      ;$Y$; = Bin close values of ;$Y$; together
-      ;$H(X)$; = Calculate entropy of X
-      ;$H(X|Y)$; = Calculate conditional entropy of X given Y
-      ;$I = H(X) - H(X|Y)$;
     \end{pythonfigure}
     \caption{Pseudo code for computing mutual information refer to
     \autoref{fig:entropy1} and \autoref{fig:entropy2} for entropy computation.}
@@ -711,35 +714,15 @@ about in \autoref{ssection:advanced}
 
 \begin{figure}[H]
     \begin{pythonfigure}
-      Algorithm: Entropy - Discrete Method
-      Input: ;$X = x_1, x_2,...,x_n$;
-      Output: ;$H(X)$;
-      for ;$ \hat{x}\in Unique(X)$;:
-        count = 0       
-        for ;$x \in X$;:
-          if ;$\hat{x} = x$;:
-            count = count + 1
-        ;$P_x$; = count / len;$(X)$;
-      ;$H(X) = - \sum _{x\in Unique(X)} P_x log(P_x)$; 
+      Algorithm: Entropy - Binning Method
     \end{pythonfigure}
-    \caption{Algorithm for computing entropy -- Discrete method}
+    \caption{Algorithm for computing entropy -- Binning method}
     \label{fig:entropy1}
 \end{figure} 
 
 \begin{figure}[H]
     \begin{pythonfigure}
       Algorithm: Conditional Entropy
-      Input: 
-      ;$X = x_1, x_2,...,x_n$;
-      ;$Y = y_1, y_2,...,y_n$;
-      Output: ;$H(X|Y)$;
-      ;$H(X|Y) = H(X)$;
-      for ;$ \hat{y}\in Unique(Y)$;:
-        ;$\hat{X}$; = []
-        for ;$x, y \in zip(X, Y)$;:
-          if ;$\hat{y} = y$;:
-            ;$\hat{X}$;.append(;$x$;)
-          ;$H(X|Y) = H(X|Y) - H(\hat{X})$;
     \end{pythonfigure}
     \caption{Algorithm for computing conditional entropy}
     \label{fig:entropy2}
@@ -762,7 +745,7 @@ This does not affect the result but increases performance of our algorithm.
 \subsection{Kernel Density Estimation}
 
   The KDE method used in Saxe's paper but originally devised by Kolchinsky \&
-  Tracey (2017); Kolchinsky et al. (2017). As well as the Discrete method KDE
+  Tracey (2017); Kolchinsky et al. (2017). As well as the Binning method KDE
   assumes that the observed empirical distribution in the hidden layer $T$ is
   the true distribution. 
 
@@ -778,20 +761,6 @@ This does not affect the result but increases performance of our algorithm.
 \begin{figure}[H]
     \begin{pythonfigure}
       Algorithm: Entropy - KDE
-      Input: 
-      ;$X = x_1, x_2,...,x_n$;  
-      var = noise variance 0.05 by default
-      Output: ;$H(X)$;
-      dists = compute distance matrix of ;$X$;
-      dists = dists / 2*var # divide every distance by a value
-      # an $x$ is an observation of a hidden layer so, hence it's a vector 
-      # which has an associated dimension
-      dim = ;$x_1$;.dimension
-      normconst = (dim / 2)*log(2*;$\pi$;*var)
-      lprobs = []
-      for row in dists:
-        lprobs.append(log(sum(exp(-row))) - log(n) - normconst
-      H(X) = mean(lprobs) + (dim / 2)
     \end{pythonfigure}
     \caption{Algorithm for computing entropy -- Kernel Density Estimation method.
     The same algorithm as used by Saxe.}
@@ -854,7 +823,7 @@ method has a  bonus that uses minimal amounts of memory improving performance
 for bigger datasets such as MNIST. However implementing this option might be
 hard as it heavily depends on the maths of the method, or impossible if the
 method has an inherently linear part to it. In our case KDE parallel performance
-is very good, however Tishby's Discrete method has some bottlenecks that I
+is very good, however Tishby's Binning method has some bottlenecks that I
 wasn't able to remove.
 
 \subsection{Minimising the Workload}
