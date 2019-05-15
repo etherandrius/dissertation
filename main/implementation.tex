@@ -685,12 +685,43 @@ Gaussian
       Let $V$ be a discrete random variable that takes values in $\{v_1,..,v_M\}$ and let $C$ be a continuous
       distribution. Consider $I(V, C)$ 
       \begin{align}
-        I(V, C)&=H(C)-H(C|V)
-        \\&=
+        I(V, C)&=H(C)-H(C|V) \nonumber\\&=
         H(C)-\sum_{i=1}^M\;P(v_i)H(C|V=v_i)
+        \text{, \autoref{eq:condEntropy2}}
+        \label{eqDiscreteContinuous}
       \end{align}
-
-
+    }
+  \item{
+      \autoref{eqDiscreteContinuous} shows that in order to compute MI between a
+      discrete and continuous random variables, we can instead compute a sum of
+      entropies for different continuous random variables.
+    }
+  \item{
+      For our specific MI values $I(X, T_{e,l})$ and $I(Y, T_{e,l})$ -- we need to
+      compute:
+      \begin{align}
+        I(X, T_{e,l})&=H(T_{e,l})-H(T_{e,l}|X) 
+        \nonumber\\&=
+        H(T_{e,l})-\sum_{i=1}^N\;P(X=x_i)H(T_{e,l}|X=x_i)
+        \nonumber\\&=
+        H(T_{e,l})-\frac{1}{N}\sum_{i=1}^N\;H(T_{e,l}|X=x_i)
+        \label{eqDiscreteContinuousX}
+      \end{align}
+      and
+      \begin{align}
+        I(Y, T_{e,l})&=H(T_{e,l})-H(T_{e,l}|Y) 
+        \nonumber\\&=
+        H(T_{e,l})-\sum_{i=1}^C\;P(Y=y_i)H(T_{e,l}|Y=y_i)
+        \label{eqDiscreteContinuousY}
+      \end{align}
+      we cannot reduce \autoref{eqDiscreteContinuousY} further as the labels in
+      the dataset might be imbalanced.
+    }
+  \item{
+      In how to compute the upper and lower bounds for these Continuous
+      entropies see Kolchinsky and Tracey$\cite{KOLCHINSKY}$ Section 4, and
+      Kolchinsky and Tracey$\cite{KOLCHINSKY2}$ Eq. 10. Or for the
+      implementation see$\cite{KDEENTROPY}$
     }
 \end{itemize}
 
