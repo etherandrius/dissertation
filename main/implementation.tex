@@ -574,20 +574,17 @@ Therefore, even if we were able to exactly compute MI values defined by
     \end{pythonfigure}
     \caption{
       Implementation of binning MIE. Functions estimateX and estimateY are
-      what is called by Algorithm from \autoref{figGeneral}.
+      called by Algorithm from \autoref{figGeneral}.
     }
     \label{figBinning}
 \end{figure}
 \newpage
 
-\pargraph
-
-
-
-
-
-
-------------------
+\paragraph{binning.entropy}
+\autoref{eq:entropy}
+\paragraph{binning.conditionalEntropy}
+\autoref{eq:condEntropy2} and
+\autoref{eq:condEntropy3}
 
 \subsection{MIE - Kernel Density Estimation} \label{subKDE}
  
@@ -762,6 +759,8 @@ Gaussian
         return H(A|B)
     \end{pythonfigure}
     \caption{
+      Implementation of KDE MIE. Functions estimateX and estimateY are
+      called by Algorithm from \autoref{figGeneral}.
     }
     \label{figKDE}
 \end{figure}
@@ -771,6 +770,26 @@ Gaussian
  
 \subsubsection{The Assumptions}
 
+
+\begin{itemize}
+  \item{
+      X is uniform
+    }
+  \item{
+      want a better way estimate randomness
+    }
+  \item{
+      In the later phases of training the NNs weights changes very little.
+    }
+  \item{
+      The hypothesis is that aggregating multiple layers together can give a
+      better estimation for MI as for a specific $P(T|X=x)=1/batch$
+    }
+  \item{
+      only trusted in the later epochs as in the early period of training there
+      are allot of changes
+    }
+\end{itemize}
 \subsubsection{The Algorithm}
 
 
