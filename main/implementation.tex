@@ -443,13 +443,45 @@ Therefore, even if we were able to exactly compute MI values defined by
 
 \subsubsection{The Assumptions}
 
+\begin{itemize}
+  \item{
+      assumes X is uniform
+    }
+  \item{
+      simulates randomness by binning. What is binning?? takes in hyperparameter
+      $bins$
+    }
+  \item{
+      low and high are usually decided by the activation function
+      Sigmoid 0 to 1, Tanh -1 to 1, as for Leaky ReLu we first need to aggregate
+      we take it to be the minimum and maximum values for the observed
+      layer activations
+    }
+  \item{
+      Consider value $\hat{t}$ in \autoref{figRxtyBinning}, it can only obtain
+      values in the range $1,...,bins$
+    }
+  \item{
+      using binning to simulate randomness implies T can only take values in the
+      range {1,...,bins} -- that is rather than being a continuous variable T
+      is discrete. 
+    }
+  \item{
+      Which implies we can use the discrete entropy functions
+      \autoref{eq:entropy} and \autoref{eq:condEntropy} to compute $H(T)$
+      $H(T|X)$. Which in turn lets use the MI function \autoref{eq:miEntropy}.
+    }
+  \item{
+      <++>
+    }
+\end{itemize}
 
 \begin{figure}[H]
     \begin{pythonfigure}
       def rxty(;$e$;, ;$l$;):
         pick i ;$\sim$; Uniform {1...N}
         ;$t$; = ;$F_{\theta(e)}^l(x_i)$;
-        ;$\hat{t}$; = batchVector(;$t$;)
+        ;$\hat{t}$; = batchVector(;$t$;) # refer to $\autoref{figBatch}$
         return ;$(x_i, \hat{t}, y_i)$;
     \end{pythonfigure}
     \caption{
@@ -568,7 +600,99 @@ Therefore, even if we were able to exactly compute MI values defined by
 
 Gaussian
 
+\begin{itemize}
+  \item{
+      as well as the binning method -- KDE as assumes that X is uniform.
+    }
+  \item{
+      In this section let $log$ refer to the natural logarithm
+    }
+  \item{
+      KDE assumes T to have Gaussian noise.
+      \begin{equation}
+        T_{e,l} = f_{\theta(e)}^l(X) + \epsilon
+        \text{, where }\epsilon\sim\mathcal{N}_{d_l}(0,\Sigma)
+        \label{eqTwithNoise}
+      \end{equation}
+      $\Sigma$ here is the covariance matrix. In the implementation $\Sigma$ is
+      taken to be the identity matrix $I$ multiplied by some $\sigma$. $\sigma$
+      - is just a number in $\mathbb{R}$
 
+    }
+  \item{
+      Consider $H(T|X)$ Under this assumption we get
+      \begin{equation}
+        P(T_{e,l} = f_{\theta(e)}^l(x) + t | X = x)
+        =
+        P(\mathcal{N}_{d_l}(0, \Sigma) = t)
+        \label{eqTwithNoiseProbability}
+      \end{equation}
+    }
+  \item{
+      \autoref{eqTwithNoiseProbability} implies that
+      \begin{equation}
+        H(T_{e,l}|X)
+        =
+        H(\mathcal{N}_{d_l}(0, \Sigma))
+        \label{eqEqualToGaussianEntropy}
+      \end{equation}
+    }
+  \item{
+      The entropy of a Gaussian is analytically computable
+      \begin{equation}
+        H(\mathcal{N}_{d_l}(0, \Sigma))
+        =
+        \frac{d_l}{2log(2)}(log(2\pi) + log_e({det(\Sigma)})+1)
+        \label{eqGaussianEntropy}
+      \end{equation}
+    }
+  \item{
+      Let us assume that $\Sigma = \sigma I$, where $\sigma\in\mathbb{R}$ is
+      value representing noise and $I$ is the identity matrix. This implies
+      $det(\Sigma) = \sigma$ and hence \autoref{eqGaussianEntropy} can be
+      simplified to
+      \begin{equation}
+        H(\mathcal{N}_{d_l}(0, \Sigma))
+        =
+        \frac{d_l}{2log(2)}(log(2\pi\sigma)+1)
+        \label{eqGaussianEntropy2}
+      \end{equation}
+    }
+  \item{
+      Hence, from Equations \ref{eqEqualToGaussianEntropy} and
+      \ref{eqGaussianEntropy2} -- \autoref{eqKDEEntropyFormulae} holds
+      \begin{equation}
+        H(T_{e,l}|X)
+        =
+        \frac{d_l}{2log(2)}(log(2\pi\sigma)+1)
+        \label{eqKDEEntropyFormulae}
+      \end{equation}
+    }
+\end{itemize}
+
+\subsection{Discrete vs Continuous Distributions}
+
+\begin{itemize}
+  \item{
+      KDE defines the random variable $T_{e,l}$ as a continuous distribution,
+      while $X$ and $Y$ are still defined to be discrete.
+    }
+  \item{
+      This means that we need to compute MI between between a continuous and a
+      discrete distribution: $I(X, T_{e,l})$ and $I(Y, T_{e,l})$.
+    }
+  \item{
+      Let $V$ be a discrete random variable that takes values in $\{v_1,..,v_M\}$ and let $C$ be a continuous
+      distribution. Consider $I(V, C)$ 
+      \begin{align}
+        I(V, C)&=H(C)-H(C|V)
+        \\&=
+        H(C)-\sum_{i=1}^M\;P(v_i)H(C|V=v_i)
+      \end{align}
+
+
+    }
+\end{itemize}
 
 
 \newpage
@@ -582,7 +706,7 @@ Gaussian
         ;$d$; = T[0].dimension # an observation t of T is a value in $\mathbb{R}^d$
         # KDE assumes H(T|X) is a Gaussian distribution
         # we can compute entropy of a Gaussian analytically as follows
-        H(T|X) = ;$\frac{d}{2}(log_2(2\pi)+1)$;
+        H(T|X) = ;$\frac{d}{2}(log_e(2\pi\sigma)+1)/log_e(2)$;
         H(T) = KDE.entropy(T)
         return H(T) - H(T|X)
 
