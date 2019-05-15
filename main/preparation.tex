@@ -50,12 +50,19 @@ we have $H(Y) = 1.5$.
 describe an outcome of variable $Y$ given that value of another random variable
 $X$ is already known. Conditional Entropy of $Y$ given $X$ is written as
 $H(Y|X)$. Let $X$ be defined as before, Let $Y$ be a discrete random variable
-that can take values in $\{y_i,...,y_n\}$. The conditional entropy $H(Y|X)$ is
-defined by \autoref{eq:condEntropy}.
+that can take values in $\{y_i,...,y_n\}$. Equations \ref{eq:condEntropy} and
+\ref{eq:condEntropy2} are two examples how we can compute conditional entropies
+-- using explicit probabilities or entropies of or entropies of random variables
+conditioned on an event.
 
 \begin{equation}
-H(Y|X)\ =-\sum _{x\in {X},y\in {Y}}P(x,y)\log {\frac {P(x,y)}{P(x)}}
+H(Y|X)\ =-\sum _{i=1}^nP(x_i,y_i)\log {\frac {P(x_i,y_i)}{P(x_i)}}
 \label{eq:condEntropy}
+\end{equation}
+
+\begin{equation}
+  H(Y|X)\ =-\sum _{i=1}^nP(x_i)H(Y|X=x_i)
+\label{eq:condEntropy2}
 \end{equation}
 
 Let the correlated variables $X$ and $Y$ be defined by \autoref{t:prob}.
@@ -82,14 +89,14 @@ Let the correlated variables $X$ and $Y$ be defined by \autoref{t:prob}.
 \subsection{Mutual Information}
 \textbf{Mutual Information (MI)} -- measures how much information two random
 variables have in common. It quantifies information gained about one variable
-when observing the other.  \autoref{eq:miExplicit} and \autoref{eq:miEntropy}
-are two examples of how we can compute MI, using explicit probability
+when observing the other. Equations \ref{eq:miExplicit} and \ref{eq:miEntropy}
+are two examples of how we can compute MI -- using explicit probability
 computations or entropies of the random variables respectively, here $X$ and $Y$
 are as previously defined.
 
 \begin{equation}
-      I(X,Y)=\sum _{y\in Y}\sum _{x\in X}{P(x,y)\log {\left({\frac
-      {P(x,y)}{P(x)\,P(y)}}\right)}} 
+      I(X,Y)=\sum _{i=1}^n\sum _{j=1}^n{P(x_i,y_j)\log {\left({\frac
+      {P(x_i,y_j)}{P(x_i)\,P(y_j)}}\right)}} 
 \label{eq:miExplicit}
 \end{equation}
 
