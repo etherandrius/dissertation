@@ -1,6 +1,6 @@
 
 % Template for a Computer Science Tripos Part II project dissertation
-\documentclass[12pt,a4paper,twoside,openright]{report}
+\documentclass[12pt,a4paper]{report}
 \usepackage[pdfborder={0 0 0}]{hyperref}    % turns references into hyperlinks
 \usepackage[margin=20mm]{geometry}  % adjusts page layout
 \usepackage[utf8]{inputenc}
@@ -28,6 +28,12 @@
 \widowpenalty1000%
 
 \definecolor{Gray}{gray}{0.9}
+
+% Reduce spacing around the chapter names
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{10pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
       
 \newmintinline[monospace]{text}{escapeinside=\#\#, mathescape, fontsize=\normalsize}
 \newmintinline[ms]{text}{escapeinside=\#\#, mathescape, fontsize=\normalsize}
