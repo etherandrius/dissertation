@@ -445,7 +445,7 @@ Therefore, even if we were able to exactly compute MI values defined by
     \label{figGetProbabilities}
 \end{figure}
 
-\subsection{MIE - Binning} \label{subBinning}
+\subsection{MIE - Binning (Used by Tishby)} \label{subBinning}
 
 \subsubsection{Simulating Randomness by Binning}
 
@@ -526,7 +526,7 @@ Recall every $X$ is unique so $H(X|T)=0$, then by equation
 \begin{equation}
   I(T_{e,l}, X) = H(T_{e,l})
 \end{equation}
-See \autoref{figBinning} routine binning.estimateX
+See \autoref{figBinning} routine \ms{binning.estimateX}
 
 \paragraph{MI with label Y}
 We have not made any assumption about the label distribution, so by
@@ -534,7 +534,7 @@ We have not made any assumption about the label distribution, so by
 \begin{equation}
   I(T_{e,l}, Y) = H(T_{e,l}) - H(T_{e,l}|Y)
 \end{equation}
-See \autoref{figBinning} routine binning.estimateY
+See \autoref{figBinning} routine \ms{binning.estimateY}
 
 \paragraph{Entropy of Data}
 The general algorithm provides us with a list of observations \ms{T}.
@@ -556,7 +556,7 @@ Using this definition we can calculate the entropy explicitly, by
 \begin{equation}
   H(T_{e,l})=-\sum _{t\in{Unique(\ms{T})}}{P (T_{e,l}=t)\log P(T_{e,l}=t)}
 \end{equation}
-See \autoref{figBinning} routine binning.Entropy for implementation details
+See \autoref{figBinning} routine \ms{binning.Entropy} for implementation details
 
 \paragraph{Conditional Entropy of Data}
 We have a sequence of paired observations \ms{(t_i, y_i)} for \ms{i=1,...,N},
@@ -577,7 +577,7 @@ variable associated with the dataset $\ms{T}_y$, where $\ms{T}_y$ is defined by
 \end{equation}
 we know how to do this from the previous paragraph.
 
-See \autoref{figBinning} routine binning.conditionalEntropy for implementation
+See \autoref{figBinning} routine \ms{binning.conditionalEntropy} for implementation
 details
 
 \begin{figure}[H]
@@ -630,12 +630,12 @@ details
         # $\forall{i}\in{\{0,..,N-1\}}.\ $T[i] is the observed state for X[i].
         # Since every x$\in$X is equally likely and unique $H$(T|X) = 0.
         # hence, $I$(T,X) = $H$(T)
-        ;$\hat{T}$; = binning.binData(T)
-        return binning.entropy(;$\hat{T}$;)
+        ;$\hat{T}$; = binning.addNoise(T)
+        return binning.entropy(T)
 
       def binning.estimateY(T, Y): 
         # Estimates mutual information between the observed states T and Y
-        ;$\hat{T}$; = binning.binData(T)
+        ;$\hat{T}$; = binning.addNoise(T)
         H(;$\hat{T}$;) = binning.entropy(;$\hat{T}$;)
         H(;$\hat{T}$;|Y) = binning.conditionalEntropy(;$\hat{T}$;, Y)
         return H(;$\hat{T}$;) - H(;$\hat{T}$;|Y)
@@ -661,19 +661,19 @@ details
             H(A|B) += ;$P_\beta$;*binning.entropy(;$\hat{A}$;)
         return H(A|B)
 
-      def binning.binData(T):
+      def binning.addNoise(T):
         ;$\hat{T}$; = [binVector(t) for t in T] # refer to $\autoref{figBin}$
         return ;$\hat{T}$;
     \end{pythonfigure}
     \caption{
-      Implementation of binning MIE. Functions estimateX and estimateY are
-      called by Algorithm from \autoref{figGeneral}.
+      Implementation of binning MIE. Functions \ms{estimateX} and \ms{estimateY}
+      are called by Algorithm from \autoref{figGeneral}.
     }
     \label{figBinning}
 \end{figure}
 \newpage
 
-\subsection{MIE - Kernel Density Estimation} \label{subKDE}
+\subsection{MIE - Kernel Density Estimation (Used by Saxe)} \label{subKDE}
 
 \subsubsection{Simulating Randomness}
 
@@ -736,7 +736,7 @@ the dataset might be imbalanced.
 
 As in Equations \ref{eqDiscreteContinuousX} and \ref{eqDiscreteContinuousY} the
 implementation computes the values as a sum of differential entropies. See
-\autoref{figKDE} routines KDE.estimateX and KDE.estimateY for the
+\autoref{figKDE} routines \ms{KDE.estimateX} and \ms{KDE.estimateY} for the
 implementation.
 
 \paragraph{Deriving Conditional Entropy with input X}
@@ -848,7 +848,7 @@ see$\cite{KDEENTROPY}$
         return H(A|B)
     \end{pythonfigure}
     \caption{
-      Implementation of KDE MIE. Functions estimateX and estimateY are
+      Implementation of KDE MIE. Functions \ms{estimateX} and \ms{estimateY} are
       called by Algorithm from \autoref{figGeneral}.
     }
     \label{figKDE}
@@ -856,20 +856,40 @@ see$\cite{KDEENTROPY}$
 \newpage
 
 \subsection{MIE - Batching} \label{subAIR}
+
+Batching method proposes a way how to improve performance of already existing
+MIE. Recall that in order to achieve compression we are required to add noise to
+the layer activations $t$. Fundamentally Batching method proposes that by
+aggregating information about multiple epochs we can reduce the amount of noise
+we need to add in order to achieve compression.
  
 \subsubsection{Simulating Randomness}
 
-The hope is that at the later stages of the training period changes to the
+Let us assume that at the later stages of the training period changes to the
 probability distribution of parameters $\hat\theta$ are very small. That is we
 can consider parameter instances $\theta(i),\theta(j)$ to be instances of the
-same probability distribution if $i$ and $j$ are close enough.
-\autoref{figRxty3AIR} defines random variables that captures these assumptions.
+same probability distribution if $i$ and $j$ are close enough. Let us use the
+assumption to define the Batching method to be formally defined by
+\autoref{figRxty3AIR}, i.e we assume that the parameters $\theta$ in the epoch
+range $[e, e+b]$ are from the same underlying probability distribution.
+
+However, sampling $b$  consecutive epochs does not introduce enough randomness
+to introduce compression. Recall that our activations $t$ are in the
+$\mathbb{R}^k$ space and generated by random matrices. That means that the Batch
+method picks a random matrix out of $b$ and applies it to the input $x$. The
+Probability that any two matrices produce the same output $\hat{t}$ is zero.
+Hence, we need to apply another layer of noise to this method. For example to
+introduce extra noise we can apply the binning method or add Gaussian noise as
+in KDE. However, the noise applied can be reduced -- in the binning method we
+could increase the number of sub-spaces or when applying the Gaussian noise we
+could use lower values noise. 
+
 
 \begin{figure}[h]
     \begin{pythonfigure}
-      def rxty(;$e$;, ;$l$;, batch):
+      def rxty(;$e$;, ;$l$;, ;$b$;):
         pick i ;$\sim$; Uniform {1...N}
-        pick j ;$\sim$; Uniform {e...(e+batch)}
+        pick j ;$\sim$; Uniform {;$e...(e+b)$;}
         return ;$(x_i, F_{\theta(j)}^l(x_i), y_i)$;
     \end{pythonfigure}
     \caption{
@@ -880,54 +900,67 @@ same probability distribution if $i$ and $j$ are close enough.
 \end{figure}
 
 \subsubsection{Implementation} As this method requires to have access to
-information about multiple epochs at the same time it is incompatible with the
-general algorithm defined in \autoref{figGeneral}. However, to no
+information about multiple epochs at the same time. Hence, it is incompatible
+with the general algorithm defined in \autoref{figGeneral}. However, to not
+deviate from the format assume that routines \ms{estimateX} and \ms{estimateY}
+get the output for all the epochs aggregated to one i.e.
+\begin{align}
+  \ms{T} &= [t_1,...,t_{N*b}]\\
+  \ms{X} &= [x_1,...,x_{N*b}]\\
+  \ms{Y} &= [y_1,...,y_{N*b}]
+\end{align}
 
+Since Batching method relies on adding extra noise, we cannot have unified
+algorithm that calculates entropy as it depends on the type of noise that gets
+added. Hence, we have to specify different entropy calculations for different
+noise -- in the implementation in \autoref{figBatching} we do this by having a
+global MIE parameter.
 
+Notice that in our implementation methods \ms{estimateX} and \ms{estimateY} are
+identical. This is due to the fact that our dataset \ms{X} no longer contains
+only unique elements and now has duplicates. 
 \begin{itemize}
   \item{
-      X is uniform
+      In the Binning method we cannot assume that $H(T|X)$ is 0.
     }
   \item{
-      want a better way estimate randomness
-    }
-  \item{
-      In the later phases of training the NNs weights changes very little.
-    }
-  \item{
-      The hypothesis is that aggregating multiple layers together can give a
-      better estimation for MI as for a specific $P(T|X=x)=1/batch$
-    }
-  \item{
-      only trusted in the later epochs as in the early period of training there
-      are allot of changes
+      In the KDE method we cannot assume that $H(T|X)$ is the entropy of a
+      Gaussian.
     }
 \end{itemize}
-\newpage
 \subsubsection{The Algorithm}
 \begin{figure}[H]
     \begin{pythonfigure}
+      # MIE - here is a globally defined value that can be any mutual
+      # estimator for example: KDE or Binning.
       def Batching.estimateX(T, X): 
-        # Estimates mutual information between the observed states T and input X
-        return H(T) - H(T|X)
+        ;$\hat{T}$; = MIE.addNoise(T)
+        return Batching.estimateMI(;$\hat{T}$;, X)
 
       def Batching.estimateY(T, Y): 
-        # Estimates mutual information between the observed states T and Y
-        return H(T) - H(T|Y)
+        ;$\hat{T}$; = MIE.addNoise(T)
+        return Batching.estimateMI(;$\hat{T}$;, X)
 
-      def Batching.entropy(A):
+      def Batching.estimateMI(T, XY):
+          # T - must be the activation dataset, as there might be assumptions
+          # made by the MIE
+          # XY - either the input set X or the label set Y
+          H(T) = MIE.entropy(T)
+          H(T|XY) = MIE.conditionalEntropy(T, XY)
+          return H(T) - H(T|XY)
 
-      def Batching.conditionalEntropy(A, B)
-        # Returns H(A|B)
-        return H(A|B)
+      # Need to define a function for KDE that does nothing, since the noise is
+      # added analytically.
+      def KDE.addNoise(T):
+        return T
+
     \end{pythonfigure}
     \caption{
-      Implementation of Batching MIE. Functions estimateX and estimateY are
-      called by Algorithm from \autoref{figGeneral}.
+      Implementation of Batching MIE. With the assumption that the added noise
+      is 
     }
     \label{figBatching}
 \end{figure}
-\newpage
 
 ------------------------------------
 \subsection{Advanced methods} \label{ssection:advanced}
