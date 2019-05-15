@@ -25,9 +25,9 @@ total = (
         .strip()
 )
 print("Total + tikz : ", total)
-target_total_wordcount = 9000
+target_total_wordcount = 12000
 okay_string = ""
-if total_wordcount < target_total_wordcount:
+if total_wordcount > target_total_wordcount:
     okay_string = termcolor.colored("❌", "red")
 else:
     okay_string = termcolor.colored("✓", "green")
