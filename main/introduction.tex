@@ -1,47 +1,50 @@
 \documentclass[dissertation.tex]{subfiles}
 \begin{document}
 
-Deep Neural Networks (DNNs) are an extremely successful tool, they are widely
-adopted commercially and closely studied academically, however even given the
-attention they have gathered there is no comprehensive understanding of how
-these models generalize data and provide such impressive performance - in fact
-very little is know about how DNNs learn or about their inner workings. Recently
-Prof.\ Tishby produced a paper claiming to understand the basic principle of how
-DNNs work. He suggested that there are two phases that the network goes trough
-while being trained - the fitting phase and the compression phase. During the
-fitting phase the network memorizes the training data and makes predictions
-based on what it has seen before, during the compression phase the network
-generalizes, it forgets the unnecessary information from the training data.
-Tishby suggested that the incredible performance that DNNs are able to achieve
-is due to this compression phase, and that this process of compression is a
-result of randomness inherent in Stochastic gradient descent. Tishby showed this
-by looking at DNNs trough the information domain, most notably he used what is
-now called the information plane. The information plane summarizes how the
-information is flowing trough the DNN, for every neuron layer the plane shows
-mutual information it has with the input data and the label data. In his
-experiments Tishby has concluded that every layer loses unnecessary information
-from the input data and tries to keep information of the label.
-Tishby made some interesting and significant claims about how DNNs work, however
-he did no provide a formal proof, his conclusion are based only on experimental
-evidence. 
+\paragraph{Abstract}
+Neural Networks (NN) are an extremely successful tool, they are widely adopted
+commercially and closely studied academically, however even given the attention
+they have there is no comprehensive understanding of how these models generalize
+data and provide such impressive performance -- in fact very little is known
+about how NN learn or about their inner workings. 
 
-In our work we look at Tishby's claim that DNNs compress data and throw away
-unnecessary information about the input. We reimplement his experiments as a
-form of independent verification, showing that the results Tishby got are robust
-and are stable to parameter changes. We also take a look at a paper produced by
-Saxe that provides an opposing view to that of Tishby's. Saxe showed that
-compression that Tishby showed is only a result of Tishby's choice of
-activation function for the neural network. He showed that compression only
-happens when Tanh activation function is used and does not happen when ReLu is
-used.
+Recently Prof.\ Tishby
+\cite{TISHBY} produced a paper claiming to understand the basic principles of
+how NN work. He decided to examine NNs through the information domain. Tishby
+made the claim that the incredible performance of NNs is due to their ability to
+compress information. Compressing data means the network is only able to keep
+relevant input features and it must discard the irrelevant bits of information,
+leading to ability to generalize. 
 
-Lastly, we think that the experiments presented in both papers don't fully align
-with the ideas that Tishby presented to us, specifically his idea that weights
-should be treated `as if' they are random variables. Tishby's and Saxe's
-experiment deal with this `as if' random notion quite crudely or try to sidestep
-it completely. As a result we devised an experiment that tries to capture this
-idea more explicitly, although it is still relatively crude and more work should
-be put into it in the future.
+Tishby made interesting claims and provided experimental evidence to support his
+claims. However, he did not provide a formal proof leaving his results up for
+debate. A paper release by Saxe \cite{SAXE} has contested the claims made by
+Tishby arguing that compression cannot happen in Neural Networks and the results
+are a consequence of the Neural Network activation function Tishby used.
+However, Saxe's paper suffers from the same problem as Tishby's as it does not
+provide a formal proof only experimental evidence -- as such it does not settle
+the rebuttal.
 
+\paragraph{Our Contribution}
+The project was originally meant to reproduce the experiments presented in
+Tishby's paper and show that they are robust -- not just an epiphenomenon of
+Tishby's specific hyperparameters.  In this project I have successfully
+implemented tools that are able to reproduce Tishby's and Saxe's experiments, as
+well as leaving them open to extensions for future experiments.  Thus I was able
+reproduced Tishby's experiments -- and manged to achieve the same results, and
+showed that they are robust to changes in hyperparameters. 
+
+However, Tishby's method for estimating Mutual Information (MI) are quite
+primitive -- so the project evolved to be an exploration of compression in
+Neural Networks. I Explored the role of Noise in Neural Networks and Studied
+different Methods of MI Estimation. My Supervisor and Me devised a method to
+potentially improve performance of existing MI estimation techniques -- called
+Batching.
+
+Overall, the project was a success.  However, the results we got are not
+conclusive and opened up more questions and doubts.  More work needs to be done
+on this topic.  Specifically, on mutual information estimation -- the tools
+currently available are primitive and not fit to answer questions, that Tishby
+and Saxe claim to have the answers to.
 
 \end{document}
