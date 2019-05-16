@@ -3,49 +3,61 @@
 
 \section{Success Criteria}
 
-\begin{itemize}
-  \item{
-      Successfully reproduced Tishby's results as presented in his paper.
-    }
-  \item{
-      Showed That Tishby's results are robust to changes in some hyperparameters
-    }
-\end{itemize}
+The project was a success. I have met all the success criteria specified in the
+proposal. That is I have reproduced the experiments presented in Tishby's paper.
+I have produced a software suite that can run configurable experiments and can
+be extended in the future.
 
 \section{Extensions}
 
+I have implemented a number of extensions for the project:
+
 \begin{itemize}
   \item{
-      Extended the code to be able to reproduce results by Saxe.
+      Extended the code to accommodate KDE MIE, used in the paper by Saxe.
     }
   \item{
-      Reproduced some results Published by Saxe
+      Extended the code to accommodate for different datasets and added the
+      MNIST dataset as an option. Adding more datasets requires writing code,
+      but is easily done.
     }
   \item{
-      Extended the code to accommodate for different Datasets
+      Extended the code to be able to use different MIE on the same instance of
+      a NN, in order to be able to compare how they perform. Previously to
+      compare MIEs we either needed to save information for the whole training
+      period of a NN or to launch two different instances of a NN with the same
+      parameters, which might yield different results.
     }
   \item{
-      However, did not have the time to test if the results of Both Tishby and
-      Saxe are robust to changes in datasets.
+      Extended the code to improve performance.
+      \begin{itemize}
+        \item{
+            Made the code parallel -- information for multiple epochs can be
+            computed at the same time.
+          }
+        \item{
+            Introduced adaptive ways to skip MI computations, which speed up
+            computation significantly.
+          }
+      \end{itemize}
     }
   \item{
-      Extended the code to be able to compare multiple MIE in real time on the
-      same instance of NN.
-    }
-  \item{
-      Implemented adaptive ways to skip MI computations in order to save on
-      compute, Multi Threaded ones and Single Threaded ones, depending on how
-      much memory is available.
-    }
-  \item{
-      Implemented movie plotting which allows us to see training over time, and
-      better analyse the data.
+      Implemented movie plotting tools, which allow us to see how information
+      plane changes over the training period. This allows us to better analyse
+      the data and detect any issues we may have.
     }
 \end{itemize}
 
+
+\section{Tishby's Experiment}
+
+\section{MIE bad}
+
+\section{Saxe's experiment}
+
 \paragraph{Tishby's Experiment} 
 
-REPRODUCED do images.
+jEPRODUCED do images.
 
 Tishby\cite{TISBHY} talks about a subset of the hyper parameters mentioned
 above. 
