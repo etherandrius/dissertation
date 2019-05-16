@@ -513,6 +513,7 @@ would have to insert code from \autoref{figMINMAX} in the loop defined
         ;$low$; = min(;$low$;, NN.minNodeActivation.predict(x))
         ;$high$; = max(;$high$;, NN.maxNodeActivation.predict(x))
   \end{pythonfigure}
+  \caption{}
   \label{figMINMAX}
 \end{figure}
 See \autoref{figBin} for the implementation of binning. See
@@ -1013,7 +1014,7 @@ minimize the amount of work we are doing.
 \subsection{Maximising Resource Utilization}
 
 The obvious way to maximise the resource usage is to parllelize the workload.
-If we refer to \autoref{fig:general}, we can see two main ways we can do this.
+If we refer to \autoref{figGeneral}, we can see two main ways we can do this.
 
 The first way is to parallelize one of the two outer loops and run mutual
 information calculations in parallel, this is easy to do, however an issue
