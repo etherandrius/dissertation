@@ -26,6 +26,25 @@ provide a formal proof only experimental evidence -- as such it does not settle
 the rebuttal.
 
 \paragraph{Our Contribution}
+The task of the project was to reproduce the experiments presented in Tishby's
+paper and show that they are robust -- not just an epiphenomenon of Tishby's
+specific hyperparameters. During the project I have successfully implemented
+tools that are able to reproduce the Tishby's and Saxe's experiments, as well as
+leaving the tools open to extensions and future modifications. Using the tools I
+was able to reproduce Tishby's experiment. I've managed to reproduce Tishby's
+results exactly and show that they is robust to basic hyperparameters. However,
+we were not able to reproduce Tishby's results if we varied the activation
+function or the mutual information (MI) estimators. These results are similar to
+that of Saxe's, but our experiments differed slightly, leading to a different
+conclusion.
+
+Tishby's method for estimating MI are quite primitive compared to
+papers\cite{WGAO}\cite{SGAO}. Hence, the project was extended to be an
+exploration of compression in Neural Networks. I investigated the role of Noise
+in Neural Networks and Studied different method of MI estimation. My supervisor
+and I devised a method "Batching" to potentially improve performance of existing
+MI estimation techniques.
+
 The project was originally meant to reproduce the experiments presented in
 Tishby's paper and show that they are robust -- not just an epiphenomenon of
 Tishby's specific hyperparameters.  In this project I have successfully
@@ -34,17 +53,12 @@ well as leaving them open to extensions for future experiments.  Thus I was able
 reproduced Tishby's experiments -- and manged to achieve the same results, and
 showed that they are robust to changes in hyperparameters. 
 
-However, Tishby's method for estimating Mutual Information (MI) are quite
-primitive -- so the project evolved to be an exploration of compression in
-Neural Networks. I Explored the role of Noise in Neural Networks and Studied
-different Methods of MI Estimation. My Supervisor and Me devised a method to
-potentially improve performance of existing MI estimation techniques -- called
-Batching.
-
-Overall, the project was a success.  However, the results we got are not
-conclusive and opened up more questions and doubts.  More work needs to be done
-on this topic.  Specifically, on mutual information estimation -- the tools
-currently available are primitive and not fit to answer questions, that Tishby
-and Saxe claim to have the answers to.
+Overall, the project was a success. We have achieved aims set at the start of
+the project. However, the results we got are not conclusive as we have not
+provide a formal proof that support the correctness of our results. More work
+needs to be done on the topic of compression in Neural Networks. Specifically,
+we need new better tools for estimating mutual information -- the tools
+currently available are provide different results. They are not fit to
+conclusively answer questions that would help us to understand Neural Networks. 
 
 \end{document}
