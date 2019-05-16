@@ -1,6 +1,49 @@
 \documentclass[dissertation.tex]{subfiles}
 \begin{document}
 
+\section{Success Criteria}
+
+\begin{itemize}
+  \item{
+      Successfully reproduced Tishby's results as presented in his paper.
+    }
+  \item{
+      Showed That Tishby's results are robust to changes in some hyperparameters
+    }
+\end{itemize}
+
+\section{Extensions}
+
+\begin{itemize}
+  \item{
+      Extended the code to be able to reproduce results by Saxe.
+    }
+  \item{
+      Reproduced some results Published by Saxe
+    }
+  \item{
+      Extended the code to accommodate for different Datasets
+    }
+  \item{
+      However, did not have the time to test if the results of Both Tishby and
+      Saxe are robust to changes in datasets.
+    }
+  \item{
+      Extended the code to be able to compare multiple MIE in real time on the
+      same instance of NN.
+    }
+  \item{
+      Implemented adaptive ways to skip MI computations in order to save on
+      compute, Multi Threaded ones and Single Threaded ones, depending on how
+      much memory is available.
+    }
+  \item{
+      Implemented movie plotting which allows us to see training over time, and
+      better analyse the data.
+    }
+\end{itemize}
+
+
 \paragraph{Tishby's Experiment} 
 
 Tishby\cite{TISBHY} talks about a subset of the hyper parameters mentioned
@@ -32,6 +75,24 @@ Tishby varies the following
       considered to be from the same probability distribution. And I am not
       aware of any method to choose the number of intervals in the Binning MIE
       or the noise size in KDE MIE.
+    }
+\end{itemize}
+
+\section{Ending remarks}
+ 
+\begin{itemize}
+  \item{
+      Tishby and Saxe makes big claims about phases that a neural network is in
+      NN. Such as "Is the compression phase an inherent part of NN and SGD
+      algorithm" with out first agreeing on if compression can actually happen
+      inside NNs.
+    }
+  \item{
+      Furthermore, they are using very simple MIE.
+    }
+  \item{
+      However they are using very simple MIE. In my opinion we need better tools
+      before we can judge 
     }
 \end{itemize}
 
@@ -94,28 +155,6 @@ Tishby varies the following
       performance
     }
 \end{itemize}
-
----------------------------------------
-
-\subsection{Deterministic networks} \label{ssection:detnet}
-
-There's a very real argument to be made against compression in neural networks.
-Consider a generic neural network we can think of it as a function that is a
-series of matrix transformation, where a matrix corresponds to weights of a
-specific layer. However these matrices are all random (at least at the start of
-training) and hence probability of them being invertible is 100\%. 
-
-Knowing that every single matrix is invertible allows us to conclude that that
-neural network as a whole is an invertible function, which means no information
-is lost and compression is impossible.
-
-% matrix is invertible if it's random, maybe the neural network tends to
-% non-invertible matrices ? if this was the case we would see mutual information
-% full at the start and it would decrease over time - however we see that mutual
-% information increases for Y and decreases for X
-
-
-\subsection{Why Randomness is hard to capture} \label{ssection:rename}
 
 
 \end{document}
