@@ -779,7 +779,7 @@ differential entropy of a Gaussian to be
   \label{eqGaussianEntropy}
 \end{equation}
 In the implementation we have defined $\Sigma$ to be the identity matrix $I$
-multiplied by some noise value $\sigma\in\mathbb{R}$. This implies
+multiplied by some noise value $\sigma^2\in\mathbb{R}$. This implies
 $det(\Sigma)=\sigma$ and hence \autoref{eqGaussianEntropy} can be simplified to
 \begin{equation}
   H(\mathcal{N}_{d_l}(0, \Sigma))
@@ -962,31 +962,46 @@ only unique elements and now has duplicates.
     \label{figBatching}
 \end{figure}
 
-------------------------------------
 \subsection{Advanced methods} \label{ssection:advanced}
 
-Since mutual information estimation is a contentious part of the project we
-wanted to experiment with more advanced techniques however we were not able to
-adopt the methods for this project, the methods that we have tried are outlined
-below.
+I also took a look at more advanced Mutual Information Estimation methods.
+However, I was not able to adopt these methods for my project. The methods we
+have looked into are outlined below.
 
-\subsubsection{Mutual Information by Gaussian approximation}
-  
-  "Estimating Mutual Information by Local Gaussian Approximation" (Shuyang Gao). A
-  promising way to estimate mutual information. However the implementation
-  proved to be to difficult and time consuming so we abandoned it. I contacted
-  out to the author but he was not able to provide any concrete code.
+\paragraph{Estimating Mutual Information by Local Gaussian Approximation}
+Shuyang Gao 2016\cite{SGAO}. I was directed to this by my supervisor. The Method
+looked promising at first as the paper suggested it had better performance than
+other Entropy Estimators and had Pseudocode in the paper. However, the
+implementation of the method proved to be to difficult to implement; 
+\begin{itemize}
+  \item{
+      The method had complicated Hyper-Parameters -- that were not well
+      explained in the paper,
+    }
+  \item{
+      The pseudo code had confusing types that were difficult to understand,
+    }
+  \item{
+      The method relied on computing Hessian matrices, and satisfying Wolfe
+      inequalities. The paper did not explain either of these topics and I was
+      not able to find much information on them,
+    }
+  \item{
+      The method required to implement Gradient descent, which added more
+      complexity to the algorithm.
+    }
+\end{itemize}
+Due to these hurdles I was not able to implement the pseudocode. I contacted the
+author of the paper, however he was not able to provide working code for us to
+adapt. The author however, pointed us to another paper discussed below.
 
-\subsubsection{Geometrical Adaptive Entropy Estimation}
-
-  "Breaking the Bandwidth Barrier: Geometric Adaptive Entropy Estimation"
-  (Weihao Gao). We were pointed to this paper by S. Gao the author of the
-  previous method, as previously this looked like a promising method to measure
-  entropy and mutual information. Furthermore, the code was available online
-  unfortunately we were not able to adapt the code for multidimensional values
-  as a result we were getting wrong and inconsistent results. We decided making
-  this method work would require too much time and is out of scope of this
-  project.
+\paragraph{Breaking the Bandwidth Barrier: Geometrical Adaptive Entropy
+Estimation} Weihao Gao 2016\cite{WGAO} This looked like a promising method to
+measure entropy and mutual information.  Furthermore, the code was available
+online unfortunately we were not able to adapt the code for our problem as a
+result we were getting wrong and inconsistent results such as negative mutual
+information.  We decided making this method work would require too much time and
+is out of scope of this project.
 
 \section{Implementation Optimizations}
 
@@ -1279,8 +1294,45 @@ have implemented a couple of ways to skip the epochs
     \label{fig:deltaapprox}
 \end{figure}
 
------------------------------------------------------------------------------
-
 \section{Repository Structure}
+
+The code is hosted on github at
+\textbf{https://github.com/etherandrius/information-networks/releases/tag/2}.
+
+\paragraph{The code has 2 main entry points}
+\begin{itemize}
+  \item{
+      \ms{main_data.py} - is used to run experiments using Binning MIE or KDE MIE.
+
+      run : \ms{python3 main_data.py --help}, for help
+    }
+  \item{
+      \ms{main_as_if_random.py} - is used to run the Batching MIE with added Noise
+      from the Binning MIE.
+
+      run : \ms{python3 main_as_if_random.py --help}, for help
+    }
+\end{itemize}
+\paragraph{And two auxiliary entry points}
+\begin{itemize}
+  \item{
+      \ms{main_plot.py} - is to produce the visualization of the Information
+      Plane.
+
+      run : \ms{python3 main_plot.py --help}, for help
+    }
+  \item{
+      \ms{main_movie.py} - is used to make a video of the Information Plane to
+      help analyse the data.
+
+      run : \ms{python3 main_movie.py --help}, for help
+    }
+\end{itemize}
+
+
+
+
+
+
 
 \end{document}
