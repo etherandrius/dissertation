@@ -4,17 +4,29 @@
 \section{Success Criteria}
 
 The project was a success. I have met all the success criteria specified in the
-proposal. That is I have reproduced the experiments presented in Tishby's paper.
+proposal. That is, I have reproduced the experiments presented in Tishby's paper.
 I have produced a software suite that can run configurable experiments and can
 be extended in the future.
 
 \section{Extensions}
 
-I have implemented a number of extensions for the project:
+I have achieved a number of extensions for the project:
 
 \begin{itemize}
   \item{
-      Extended the code to accommodate KDE MIE, used in the paper by Saxe.
+      Investigated the ideas presented in paper by Saxe. Devised an experiment
+      that contradicts Saxe's conclusion about compression. See
+      \autoref{subEvalSaxe}
+    }
+  \item{
+      Devised and Implemented Batching MIE. A method that aims to increase
+      accuracy of currently available mutual information estimation techniques .
+      See \autoref{subEvalBatching}.
+    }
+  \item{
+      Extended the code to accommodate for different MIE. Added KDE MIE as an
+      KDE was used by Saxe in his paper, my implementation follows the code
+      verbatim. Adding more different MIEs requires writing code, but is doable.
     }
   \item{
       Extended the code to accommodate for different datasets and added the
@@ -74,15 +86,20 @@ default hyperparameters and have showed the results are robust for:
     }
   \item{
       Network Shape, \autoref{figNetworkShapes}. Note that amount of compression
-      seems to be highly correlated with the size of the data layer size -- I
-      have not investigated the implications of this observation.
+      seems to be highly correlated with the size of the data layer size to the
+      point where we cannot distinguish most of the early layers apart.
     }
   \item{
       Batch Size, \autoref{figBatchSize}. The results seem to be very robust to
-      batch size as the graphs all look very similar.
+      batch size as the graphs all look very similar. 
     }
   \item{
-      Bin count for the Binning MIE, \autoref{figBinCount}.
+      Bin count for the Binning MIE, \autoref{figBinCount}. If we increase the
+      number of bins we reduce the noise in the network and hence get less
+      compression visible. We see exactly this in the figures for Bin count >
+      30. It seems that for high value of Bin count we we capture all the
+      information about the input and the label. Nevertheless, the compression
+      phase still appears to happen.
     }
 \end{itemize}
 
@@ -228,7 +245,7 @@ not inline with the ideas Tishby presented.
   \end{subfigure}
   \hfill
   \caption{
-      Tweaking bin count for Tishby's binning MIE. Training Size - 20\%
+      Tweaking bin count for Tishby's binning MIE. Training Size - 20\%. 
     }
   \label{figBinCount}
 \end{figure}
@@ -238,7 +255,7 @@ not inline with the ideas Tishby presented.
 layer has the activation function $softmax$, so if we change the activation
 function we should ignore the last layer as it might be misleading.
 
-\subsection{Saxe's experiment and the activation function} 
+\subsection{Saxe's experiment and the activation function} \label{subEvalSaxe}
 
 In his Paper Saxe claimed that Tishby's results are an epiphenomena of the
 activation function $tanh$ and compression phase does not happen if we use the
@@ -272,11 +289,11 @@ in \autoref{figReluTanh}
 \end{itemize}
 According to Saxe a NN with activation ReLu does not have a compression phase --
 a claim that \autoref{figReluTanhRelu} goes against. The discrepancy arises when
-we use different MI Estimators: here KDE vs Binning. I suspect that one or both
-of these estimators are misleading. I did not provide a plot for the KDE MIE as
-there are slight discrepancies between my results and results of Saxe -- even
-though I have used used his implementation of KDE. As I was not able to detect
-the source of the discrepancies I decided against including it here, see
+we use different MI Estimators: in our case KDE and Binning. I suspect that one
+or both of these estimators are misleading. I did not provide a plot for the KDE
+MIE as there are slight discrepancies between my results and results of Saxe --
+even though I have used used their implementation of KDE. As I was not able to
+detect the source of the discrepancies I decided against including it here, see
 \autoref{appendixKDE}.
 
 
@@ -305,7 +322,7 @@ the source of the discrepancies I decided against including it here, see
   \label{figReluTanh}
 \end{figure}
 
-\section{Batching} 
+\section{Batching} \label{subEvalBatching}
 
 Motivation for deriving the batching MIE was the discovery of disagreements
 between the two methods: Binning and KDE. The disagreement implied that methods
