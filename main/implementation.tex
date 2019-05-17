@@ -8,13 +8,17 @@ not talk about the compression phase, just about compression in the network for
 a single epoch } data -- i.e is it possible to lose information from layer to
 layer. There is an argument to be made for both sides. We can easily construct a
 NN that loses information. If we take the layer transition function $f_\theta^l$
-to be
+to be 
 \begin{equation*}
   f_\theta^{l}(x) = 0
 \end{equation*}
 This function would lose information as we are not able to recover the input
-given the output, hence the NN must have discarded some information. Therefore
-compression is definitely possible. However, it is equally possible to create a
+given the output, hence the NN must have discarded some information.
+Therefore
+compression is possible
+Intuitively we lose information if out transition is not invertible either
+trough collisions or some form of noisy random variable.
+However, it is equally possible to create a
 function that preserves all the information about the input. Every layer in a NN
 is just a number $\mathbb{R}^{d_l}$,where $d_l$ is the dimension of layer $l$.
 We know there is a one to one mapping between $\mathbb{R}$ and $\mathbb{R}^{d}$
@@ -54,8 +58,6 @@ Form \autoref{eqIlH} and \autoref{eqIdef} we have,
 Consider the value $H(X|T_{e,l})$. $H(X|T_{e,l})$ is 0 iff the value of
 $T_{e,l}$ uniquely identifies the value of $X$ i.e
 \begin{equation} 
-  H(X|T_{e,l}) = 0
-  \Leftrightarrow 
   P(X=x|T_{e,t}=t) = \begin{cases}
     1, & \text{if } t = F_{\theta(e)}^l(x). \\
     0, & \text{otherwise}.
@@ -75,7 +77,7 @@ Recall the definition of $F_{\theta}^l(x)$
   \forall{i}\in{\{1...l\}}. f_\theta^i \text{ is invertible} 
 \end{equation*}
 
-Putting it all together we get the bi implications
+Finally, we have the bi-implications.
 \begin{align}
   I(X, T_{e,l}) < H(X) 
   &\Leftrightarrow 
@@ -90,7 +92,7 @@ Putting it all together we get the bi implications
 \end{align}
 and 
 
-This implies that compression can only happen if at least on transition
+This implies that compression can only happen if at least one transition
 function $f_\theta^l$ is not invertible.
 
 \subsection{Determinism of the Transition Function} \label{subDTF}
@@ -132,17 +134,18 @@ Let $M$ be a matrix and $M^{-1}$ be the inverse, then;
   det(M) \neq 0
   \label{eqMa}
 \end{equation}
-Let $M$ be a random matrix, then;
+Let $M$ be a random matrix of Real $\mathbb{R}$ numbers, then;
 \begin{equation}
   P(det(M)=0)=0
   \label{eqMb}
 \end{equation}
-Let $M$ be random matrix, then from \autoref{eqMa} and \autoref{eqMb} we have
+Let $M$ be random matrix of Real $\mathbb{R}$ numbers, then from \autoref{eqMa}
+and \autoref{eqMb} we have
 \begin{equation}
   P(M^{-1} \text{ is defined}) = 1 
   \label{eqMc}
 \end{equation}
-i.e every random matrix has an inverse.
+i.e every real random matrix has an inverse.
 
 \paragraph{Randomness in SGD} 
 Consider the matrix $m_\theta^l$. The Matrix is defined by the parameters
@@ -155,7 +158,8 @@ random throughout the training process.
 
 Having $m_\theta^l$ be an instance of a random matrix would mean that
 \autoref{eqMc} holds -- which would imply that every transition function is
-invertible, which in turn means that there cannot be any compression in a NN.
+invertible, which in turn means that there cannot be any compression in an
+arbitrary NN.
 
 This would mean having discussion about Information in NN is moot. However, we
 can still have a meaningful discussion about neural networks if consider the
@@ -164,8 +168,8 @@ concrete value. This is not agreed upon fully within the scientific community --
 Tishby assumes this is inherent in SGD, while Saxe has contested the claim.
 
 Let us refer to the parameters as probability distribution with notation
-$\hat\theta$. $\hat\theta$ is a sequence of probability distributions that
-depend s.t $\hat\theta(e+1)$ depends on $\hat\theta(e)$, where $e$ is the epoch.
+$\hat\theta$. $\hat\theta$ is a sequence of probability distributions: s.t
+$\hat\theta(e+1)$ depends on $\hat\theta(e)$, where $e$ is the epoch.
 
 Let us formally define $\hat\theta$. Since at the start of the training period
 SGD initializes parameters at random -- let the start of the sequence
@@ -250,7 +254,7 @@ which finally implies
 and proves that if we consider parameters to be random distributions the
 compression happens inside NN.
 
-\subsection{Recap}
+\subsection{Summary}
 
 There is contention if NN are actually capable of compressing information. 
 I have shown that if we assume the parameters of a NN to be concrete values
@@ -422,6 +426,10 @@ Therefore, even if we were able to exactly compute MI values defined by
 \autoref{figRxty2}, they would still be only estimates.
 
 \subsubsection{Auxiliary functions}
+
+\autoref{figGetProbabilities} is a helper function used by Mutual Information
+Estimators subsections \ref{subBinning} and \ref{subKDE}.
+
 \begin{figure}[H]
     \begin{pythonfigure}
       def getProbabilitiesOfData(A):
