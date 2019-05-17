@@ -1153,7 +1153,7 @@ have implemented a couple of ways to skip the epochs
   \end{itemize}
 
   Every unknown has to save the state of the neural network, that means that
-  every unknown contains $|X|*|nodes|$ float numbers. To put it into perspective
+  every unknown contains $N*|nodes|$ float numbers. To put it into perspective
   if we use the MNIST dataset which has 240,000 samples into a small network of
   128 nodes every unknown would contain ~0.25GB of data. As such this method is
   unsuited for large datasets in that case Delta Skip Approximate is more suited
@@ -1236,7 +1236,7 @@ have implemented a couple of ways to skip the epochs
   compute it or to \autoref{fig:ip_pair} for a graphical representation.
 
   \begin{equation}
-    D = \max_{t\in T} [\max( I_e(X, t) - I_{\hat{e}}(X, t), I_e(Y, t) - I_{\hat{e}}(Y, t))]
+    D = \max_{l\in \{1,...,L\}} [\max(I(X, T_{e,l}) - I(X, T_{\hat{e}, l}), I(Y, T_{e,l}) - I(Y, T_{\hat{e}, l})]
     \label{eq:distance}
   \end{equation} 
 
@@ -1250,7 +1250,7 @@ have implemented a couple of ways to skip the epochs
   in \autoref{eq:distance2}.
 
   \begin{equation}
-    D = \max_{s\in\{X, Y\}} \max_{t\in T} [(I_e(s, t) - I_{\hat{e}}(s, t)) / H(s)]
+    D = \max_{S\in\{X, Y\}} \max_{l\in \{1,...,L\}} [(I(S, T_{e,l}) - I(S, T_{\hat{e},l})) / H(S)]
     \label{eq:distance2}
   \end{equation} 
 
