@@ -1,63 +1,55 @@
 \documentclass[dissertation.tex]{subfiles}
 \begin{document}
 
-\begin{itemize}
-  \item{
-      Success
-    }
-  \item{
-      A number unforeseen extensions completed
-    }
-  \item{
-      Learned more about compression in NN.
-    }
-  \item{
-      Devised a method that should better estimate how NN retain MI.
-    }
-\end{itemize}
+The project was a Success. I have implemented tools that are able to reproduce
+experiments equivalent to those of Tishby's and Saxe's. I've added a number of
+features to the implementation, that help with: Data analysis, Configuration of
+experiments, extensibility of code, and performance improvements. Using the
+tools, I was able to reproduce Tishby's results and show that they are robust to
+changes in some parameters. I've investigated the results published by Saxe and
+devised an experiment which contradicts his results. This lead me to doubt the
+tools Saxe, Tishby, and I was using. To address this problem My supervisor and
+I, devised a method that should improve the performance of our tools --
+Batching. However, the method prevents us from answering the original questions
+Tishby was asking.
 
 \section{Looking Back}
-\begin{itemize}
-  \item{
-      I have underestimated the importance of subtle details
-    }
-  \item{
-      Not understanding the theory fully I made preventable mistakes, and wrong
-      assumptions that lead to misleading conclusions.
-    }
-  \item{
-      I implemented code for mutual information estimation with out
-      understanding the importance of noise and compression.
-    }
-  \item{
-      If were to reimplement the code again I would first derive a mathematical
-      model of how theory heavy parts are expected to work, then try to
-      implement the maths as closely as possible. Rather than just thinking how
-      it works and trying to keep everything in my head.
-    }
-\end{itemize}
+I have underestimated the importance of subtle details present in the theory of
+this topic. Having a subpar understanding, I have made wrong assumptions, which
+lead to preventable mistakes and wasted time. I implemented code for mutual
+information estimation with out fully understanding the importance of noise in
+compression -- this made some of my results invalid.
+
+If I were to reimplement the code again I would first derive a mathematical
+model of the important parts of the project, before any code was written. Having
+this model would have helped me tremendously.
 
 \section{Further Work}
+There is lots of further work that need to be done:
 \begin{itemize}
   \item{
-      Further work needs to be done MI estimation.
+      We need better ways to estimate mutual information.
     }
   \item{
-      The MIE Tishby used is very primitive. 
+      It would be helpful to understand why the Binning and KDE MIE show
+      different results for the activation function ReLu.
     }
   \item{
-      The MIE used by Saxe is more complex and captures more details, but is
-      still a basic estimator
-    }
-  \item{
-      It would be great to see work being done on NN specific estimators that
-      take into account properties specific to NNs
+      It would be great to see work being done on NN-specific MI estimation. In
+      a similar way to the batching method that assumes knowledge about the
+      structure of a NN.
     }
   \item{
       I believe that before we get better tools we cannot ask questions about
       the "phases" a NN is in such as the "Compression Phase" and "Memorization
       Phase" as mentioned in \autoref{subVIZ}.
     }
+  \item{
+      Lastly, This topic lacks a concrete mathematical backing it's claims. 
+    }
 \end{itemize}
+Overall, I think the topic of compression within NN is a very interesting one with
+the possibility to help us understand the inner working of NNs. It is a very
+young idea and would contribute greatly with more attention it gets.
 
 \end{document}

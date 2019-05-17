@@ -54,16 +54,19 @@ I have implemented a number of extensions for the project:
 In order to reproduce Tishby's work I have to generate the Information Plane for
 the hyperparameters he used. In order to show the results are robust I tune the
 hyperparameters and see if the results change significantly. Tishby used the
-following default hyperparameters: MIE - Binning, Dataset - Tishby's, Training
-Size - 40\%, activation function - $\tanh$, batch size - 512, network shape
-12,10,8,6,4,2 (how many node in every layer). Throughout this section if any of
-the hyperparameters are not specified assume they are the default values. 
+following default hyperparameters: MIE - Binning, Dataset\footnote{I did not
+have the time to test if the results are robust to changes in the dataset.
+However, the tools provide a way to natively run the MNIST dataset and adding
+more is reasonably simple.} - Tishby's, Training Size - 40\%, activation
+function - $\tanh$, batch size - 512, network shape 12,10,8,6,4,2 (how many node
+in every layer). Throughout this section if any of the hyperparameters are not
+specified assume they are the default values. 
 
 I claim to have successfully reproduced the results if the generated Information
-Plane looks similar \autoref{figIplane} and the it follows the loose definition
-of \emph{Compression Phase} and \emph{Fitting Phase}. I have successfully
-reproduced Tishby's results for his default hyperparameters and have showed the
-results are robust for:
+Plane looks similar \autoref{figIplane} and the it follows the loose definitions
+of \emph{Compression Phase} and of \emph{Fitting Phase} as described in
+\autoref{subIotIP}. I have successfully reproduced Tishby's results for his
+default hyperparameters and have showed the results are robust for:
 \begin{itemize}
   \item{
       Training size, \autoref{figTS}. Note that higher training set implies we
@@ -180,10 +183,10 @@ not inline with the ideas Tishby presented.
     }
     \label{figBatchSize512}
   \end{subfigure}
-  \label{figBatchSize}
   \caption{
       Tweaking batch size for Tishby's binning MIE. Training Size - 20\%
     }
+  \label{figBatchSize}
 \end{figure}
 
 \begin{figure}[ht]
@@ -235,7 +238,7 @@ not inline with the ideas Tishby presented.
 layer has the activation function $softmax$, so if we change the activation
 function we should ignore the last layer as it might be misleading.
 
-\subsection{Saxe's experiment} 
+\subsection{Saxe's experiment and the activation function} 
 
 In his Paper Saxe claimed that Tishby's results are an epiphenomena of the
 activation function $tanh$ and compression phase does not happen if we use the
@@ -251,52 +254,31 @@ ReLu activation function. Let us look at his experiments:
     }
 \end{itemize}
 Notice that both of the experiments, changes MIE and the activation changes MIE
-and the activation function at the same time. However, let us tweak the
-hyperparameters independently:
+and the activation function at the same time. However, If we tweak only the
+activation function while leaving MIE to be Binning we get the results present
+in \autoref{figReluTanh}
 \begin{itemize}
   \item{
-      If we change activation function only, \autoref{figReluTanh}: The $\tanh$
-      is as usual following the phases. However, The ReLu graph is completely
-      different to the previous one. Every layer shows some signs of
-      compression. However we cannot say that it supports Tishby's results.
-      Having said that, it is also difficult to claim that compression phase
-      does not happen for the activation function ReLu.
+      Tanh - we see the usual results.
     }
   \item{
-      If we change the MIE only, \autoref{figKDEBinning}: Notice:
-      \begin{itemize}
-        \item{
-            If we only change the MIE we get completely different images.
-            Leading to believe that one or both of the estimators are wrong.
-          }
-        \item{
-            The figure produced by KDE MIE contradicts the Data Processing
-            Inequality from \autoref{subsubPoMI} -- an impossible
-            results.\footnote{It is possible I have made a mistake in my
-            implementation, however the code for the KDE Entropy estimation is
-            taken directly from the same code used for Saxe's paper.}
-          }
-      \end{itemize}
-      
+      ReLu - we see a completely different Information Plane. We can clearly see
+      see signs of a Compression phase. However, it is not as pronounced
+      as for the Tanh activation. This result goes against the claims proposed
+      by Saxe -- that ReLu function does not produce a compression phase.
+      Furthermore this results does not support Tishby's claims as the
+      Information plane is missing the Fitting phase.
     }
 \end{itemize}
+According to Saxe a NN with activation ReLu does not have a compression phase --
+a claim that \autoref{figReluTanhRelu} goes against. The discrepancy arises when
+we use different MI Estimators: here KDE vs Binning. I suspect that one or both
+of these estimators are misleading. I did not provide a plot for the KDE MIE as
+there are slight discrepancies between my results and results of Saxe -- even
+though I have used used his implementation of KDE. As I was not able to detect
+the source of the discrepancies I decided against including it here, see
+\autoref{appendixKDE}.
 
-\paragraph{A note on KDE}
-When using the activation function $\tanh$ my
-experiments consistently reproduced the impossible results. 
-More precisely my experiments always showed a dip in information for the second
-layer, then an increase for the consecutive layers. Which, seems to suggest the
-estimator is broken.
-
-However, if the activation function was ReLu the results seem to be in line with
-what Saxe has presented in his paper. See Appendix \ref{appendixKDE}
-
-\paragraph{} My results contradict the results produced by Saxe. 
-However, there is suspicion that my implementation of KDE MIE is wrong -- so let
-us discard the results from figure \autoref{figKDEBinKDE}.
-Nevertheless, the results from figure \autoref{figReluTanhRelu}, suggest that
-there might a \emph{compression phase} even if the activation function ReLu is
-used.
 
 \begin{figure}[ht]
   \centering
@@ -323,112 +305,34 @@ used.
   \label{figReluTanh}
 \end{figure}
 
-
-\begin{figure}[ht]
-  \centering
-  \begin{subfigure}[t]{0.49\textwidth}
-    \centering
-    \includegraphics[width=0.7\textwidth]{figs/eval/trainingSize/Binning40.png}
-    \caption{
-      MIE - Binning, activation function - $\tanh$
-    }
-    \label{figKDEBinBin}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.49\textwidth}
-    \centering
-    \includegraphics[width=0.7\textwidth]{figs/eval/trainingSize/KDE40.png}
-    \caption{
-      MIE - KDE, activation function - $\tanh$
-    }
-    \label{figKDEBinKDE}
-  \end{subfigure}
-  \caption{
-      Tweaking the MIE.
-    }
-  \label{figKDEBinning}
-\end{figure}
-
 \section{Batching} 
 
-Evaluating the Batching MIE is difficult.
+Motivation for deriving the batching MIE was the discovery of disagreements
+between the two methods: Binning and KDE. The disagreement implied that methods
+currently used do not provide enough precision in order to answer questions
+proposed. Such as is the compression inherent in to the NN.  Deriving a novel
+method of mutual information estimation was beyond this project. Instead a
+better way was to use properties of the NN to explore ways how we can improve
+performance of an exists in method to estimate MI. 
+
+The tool batches multiple epochs together therefore, it is not fit to answer
+questions that ask about how information plane changes from epoch to epoch.
+This includes questions about the Compression phase and the Fitting phase.  It
+is a tool specifically made to get a better estimate for one instance. As such it
+is difficult to evaluate, as to do so we would need to know true information
+values inside the NN.
 
 \section{Ending remarks}
- 
-\begin{itemize}
-  \item{
-      Tishby and Saxe makes big claims about phases that a neural network is in
-      NN. Such as "Is the compression phase an inherent part of NN and SGD
-      algorithm" with out first agreeing on if compression can actually happen
-      inside NNs.
-    }
-  \item{
-      Furthermore, they are using very simple MIE.
-    }
-  \item{
-      However they are using very simple MIE. In my opinion we need better tools
-      before we can judge 
-    }
-\end{itemize}
 
-
-\begin{itemize}
-  \item{
-      Success Criteria
-    }
-  \item{
-      we have successfully reproduced the results showed by Tishby and Saxe.
-      However there are reasons to not trust either of them as they have flaws
-      with them.
-      \begin{itemize}
-        \item{
-            Tishby -- used only a toy dataset 
-          }
-        \item{
-            Saxe -- Changed allot of parameters at once made the claim that no
-            compression phase happens
-          }
-      \end{itemize}
-    }
-  \item{
-      We need better tools for MIE
-      \begin{itemize}
-        \item{
-            cannot judge subtleties if something has a compression phase our MIE
-            are not trustesd
-          }
-        \item{
-            we have seen KDE and Discrete show inconsistent results, when n'th
-            layers hass less information about the input than the n+1'th layer.
-          }
-      \end{itemize}
-    }
-  \item{
-      compression phase 
-      \begin{itemize}
-        \item{
-            judging if the networks have a compression phase is moot point as of
-            yet as tools for measuring information are not good enough. Case and
-            point Saxe argues that there cannot be compression in NN but every
-            every experiments show that compression exists.
-          }
-        \item{
-            Saxe states that there is no compression in NN, however their
-            experiments disagree. 
-          }
-        \item{
-            we don't have the tools to say if the compression phase is actually
-            happening
-          }
-        \item{
-            Tishby says compression phase happens but he is using a toy dataset,
-            which was shown to not have a compression phase by Saxe.
-          }
-      \end{itemize}
-    }
-  \item{
-      performance
-    }
-\end{itemize}
-
+In this project we have explored the assumptions that need to be made in order
+for NN to compress information.  We investigated Binning and KDE: tools that
+estimate the level of compression in a different ways.  We showed that tat
+Binning is robust to some parameter changes.  However, robust does not imply
+correct.  We discovered that the reason why Tishby and Saxe disagree, might be
+because their tools give different answers in specific situations.  I think
+there needs to be more work done to improve the tools being used.  It would be
+interesting to understand why Binning and KDE produce differing results when the
+activation function is ReLu. This work needs to be done, before we can answer
+fundamental question about Neural Networks 
 
 \end{document}
