@@ -22,20 +22,17 @@ $X$, is defined by \autoref{eq:entropy}.
 \label{eq:entropy}
 \end{equation}
 
-Consider a random variable $Y$ s.t $P(Y=1) = P(Y=0) = 0.5$, \autoref{eq:entropy}
-defines $H(Y)$ to be 1.
-
-Similarly for a random variable $Y$ s.t $P(Y=0) = 0.5, P(Y=1) = P(Y=2) = 0.25$,
-we have $H(Y) = 1.5$.
+Consider a random variable $Y$ s.t $P(Y=0) = 0.5, P(Y=1) = P(Y=2) = 0.25$,
+\autoref{eq:entropy} defines $H(Y)$ to be 1.5.
 
 \subsection{Conditional Entropy}
 \textbf{Conditional Entropy} -- quantifies the amount of information needed to
 describe an outcome of variable $Y$ given that value of another random variable
-$X$ is already known. Conditional Entropy of $Y$ given $X$ is written as
+$X$ is already known. The Conditional Entropy of $Y$ given $X$ is written as
 $H(Y|X)$. Let $X$ be defined as before, Let $Y$ be a discrete random variable
 that can take values in $\{y_i,...,y_m\}$. Equations \ref{eq:condEntropy} and
-\ref{eq:condEntropy2} are two examples how we can compute conditional entropies
--- using explicit probabilities or entropies of or entropies of random variables
+\ref{eq:condEntropy2} are two definitions of how we can compute conditional
+entropies -- using explicit probabilities or entropies of random variables
 conditioned on an event.
 
 \begin{equation}
@@ -76,7 +73,7 @@ Let the correlated variables $X$ and $Y$ be defined by \autoref{t:prob}.
 \textbf{Mutual Information (MI)} -- measures how much information two random
 variables have in common. It quantifies information gained about one variable
 when observing the other. Equations \ref{eq:miExplicit} and \ref{eq:miEntropy}
-are two examples of how we can compute MI -- using explicit probability
+are two definitions of how we can compute MI -- using explicit probability
 computations or entropies of the random variables respectively, here $X$ and $Y$
 are as previously defined.
 
@@ -101,10 +98,10 @@ them in \autoref{eq:miEntropy} to compute $I(X,Y)$.
 \end{equation}
 
 \subsubsection{Properties of Mutual Information} \label{subsubPoMI}
-There are some important properties of MI that we need to take note of. Let $X$
-and $Y$ be any probability distributions then:
+There are some important properties of MI that we need to take note of. For any
+probability distributions $X$ and $Y$:
 
-\subparagraph{Commutative} 
+\subparagraph{Commutativity} 
 \begin{equation}
   I(X,Y) = I(Y, X)
 \end{equation}
@@ -115,11 +112,11 @@ of either of them.
   H(Y) \geq I(X,Y)
   \label{eq:MIloss}
 \end{align}
-\subparagraph{Data Processing Inequality} Let u be some function; then,
+\subparagraph{Data Processing Inequality} Let $u$ be some function; then,
 \begin{equation}
   I(X,Y) \geq I(X, u(Y))
 \end{equation}
-\subparagraph{Invertible Transformation} Let u be some invertible function;
+\subparagraph{Invertible Transformation} Let $u$ be some invertible function;
 then,
 \begin{equation}
   I(X, Y) = I(X, u(Y))
@@ -131,7 +128,7 @@ then,
 Before we understand neural networks we need to understand The Prediction
 Problem and the purpose of Machine Learning Frameworks.
 
-\subsection{The Prediction problem} 
+\subsection{The Prediction problem} \label{subTPPP}
 
 Suppose we have some dataset $D$ defined as $(x_i, y_i)$ for $i = 1,...,N$. The
 prediction problem is finding a function $f$ s.t \autoref{eq:prediction} is
@@ -149,12 +146,12 @@ natural number $x_i\in\mathbb{N}$, and our label is either $true$ or $false$
 depending if $x$ is even or odd -- in which case function defined by
 \autoref{eq:evenodd} satisfies the problem.  \begin{equation}
   g(x) = \begin{cases}
-    True, & \text{if } \exists n\in\mathbb{N}.x = 2n , \\
-    False, & \text{otherwise}.
+    true, & \text{if } \exists n\in\mathbb{N}.\;x = 2n , \\
+    false, & \text{otherwise}.
   \end{cases}
 \label{eq:evenodd}
 \end{equation}
-The prediction problem also can be impossible to solve: for example the halting
+The prediction problem can also be impossible to solve: for example the halting
 problem, if our $x's$ are programs and $y's$ boolean values corresponding if the
 program halts or not.
 
@@ -168,10 +165,10 @@ case for problems:
       \hline
       \rowcolor{Gray}
       medical symptoms & diagnosis & intractable \\ 
-      picture  & object in the picture &  \\ 
+      picture  & object in the picture & intractable \\ 
       \rowcolor{Gray}
-      face photograph  & identity &  \\ 
-      stock market history  & future stock prices &  \\ 
+      face photograph  & identity & intractable \\ 
+      stock market history  & future stock prices & intractable \\ 
       \rowcolor{Gray}
       program  & does the program halt & proved to be unsolvable \\ 
       boolean equation  & is the equation satisfiable & expensive to compute 
@@ -189,12 +186,12 @@ give the correct answer and runs in a reasonable time.
 If the Prediction problem is too difficult and we are tolerant to errors in our
 labels we may want to use a supervised machine learning framework\footnote{In
 this thesis we are exclusively talking about supervised machine learning
-techniques -- the word "supervised" will be omitted for brevity} to tackle the
+techniques -- the word supervised will be omitted for brevity} to tackle the
 problem. 
 
 Every machine learning framework requires that we have some subset
-$\hat{X}\subseteq\{x_i,...,x_N\}$ s.t that $ \forall x\in\hat{X}$ we know label
-the $y$. A framework uses the data in order to reach some goal -- such as
+$\hat{X}\subseteq\{x_i,...,x_N\}$ s.t that $ \forall x\in\hat{X}$ we know the
+label $y$. A framework uses the data in order to reach some goal -- such as
 minimizing the prediction error. The way any machine learning framework learns
 from data varies, but generally more data means an increase in prediction
 performance.
@@ -202,12 +199,13 @@ performance.
 \subsection{Neural Networks} 
 
 \textbf{Neural Networks (NN)} are an example of a machine learning framework. They learn
-from data and attempt to solve the prediction problem.
+from data and attempt to solve the prediction problem described in
+\autoref{subTPPP}.
 
 The structure of a NN consists of layers of nodes, where every consecutive
 layer is fully connected as in \autoref{fig:nnOriginal}.  When we try to
 predict a label of a specific input every node gets assigned a value in the
-real number space $\mathbb{R}$. Values for the Input nodes are provided,
+real number space $\mathbb{R}$. Values for the input nodes are provided,
 whereas values for the nodes in non-input layers are generated based on nodes
 from the preceding layer. Let $n_{l,i}$ be the value that the $i'th$ node in
 layer $l$ takes. Let $w_{l,j,i}$ be a parameter that influences how relevant
@@ -223,7 +221,7 @@ taken to be:
       Leaky ReLu: 
       \begin{equation*}
         g(x) = \begin{cases}
-          x, & if x > 0 \\
+          x, & \text{if } x > 0 \\
           \alpha{x}, & \text{otherwise}.
         \end{cases}
       \end{equation*}
@@ -233,7 +231,7 @@ taken to be:
       Sigmoid: $g(x) = \frac{1}{1+e^x}$
     }
   \item{
-      Tanh: $g(x) = tanh(x)$
+      Tanh: $g(x) = \tanh(x)$
     }
   \item{
       Softmax: a function that is sometimes used in the last layer of the neural
@@ -247,9 +245,9 @@ called Stochastic Gradient Descent. SGD periodically adjusts the parameters $w$
 according to some goal such as minimising the prediction error. 
 
 SGD is an iterative process -- it introduces a notion of epochs where one
-iteration of the algorithm advances the epochs by one. Notion of epochs implies
-that the parameters $w$ depends on which epoch we are currently at -- thus it
-must take the epoch number $e$ as an argument -- $w(e)$.
+iteration of the algorithm advances the epochs by one. Parameters $w$ depends on
+which epoch we are currently at -- thus it must take the epoch number $e$ as an
+argument -- $w(e)$.
 
 
 \begin{figure}[H]
@@ -293,12 +291,11 @@ function $f_\theta^l$.
 
 \vbox{
 \begin{align}
-	\text{let } t_0 &= x, \nonumber \\
-  t_0 \rightarrow f_{\theta}^1(t_0) &= t_1, \nonumber \\
+  x = t_0 \rightarrow f_{\theta}^1(t_0) &= t_1, \nonumber \\
   t_1 \rightarrow f_{\theta}^2(t_1) &= t_2, \nonumber \\
   &... \nonumber \\
-  t_{L-1} \rightarrow f_{\theta}^L(t_{L-1}) &= t_L, \nonumber\\
-  \text{let } \hat{y} &= t_L \label{eq:nnTransitions}
+  t_{L-1} \rightarrow f_{\theta}^L(t_{L-1}) &= t_L = \hat{y}.
+  \label{eq:nnTransitions}
 \end{align}
 \vspace*{-\baselineskip}
 \vspace*{-\baselineskip}
@@ -309,7 +306,7 @@ function $f_\theta^l$.
 	x \text{ is any input to the NN from the set } \{x_i,...,x_N\}, \nonumber\\
 	\hat{y} \text{ is the prediction of the NN for the input,} x
 	\text{ which may or not be correct label,} \nonumber\\
-	\text{the arrow `}\rightarrow\text{' signifies a transition from one NN layer to another.}
+	\rightarrow\text{ signifies a transition from one NN layer to another.}
 	\nonumber
 \end{gather}
 }
