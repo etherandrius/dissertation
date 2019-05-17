@@ -63,16 +63,23 @@ I have achieved a number of extensions for the project:
 
 \section{Tishby's Experiment}
 
-In order to reproduce Tishby's work I have to generate the Information Plane for
-the hyperparameters he used. In order to show the results are robust I tune the
-hyperparameters and see if the results change significantly. Tishby used the
-following default hyperparameters: MIE - Binning, Dataset\footnote{I did not
-have the time to test if the results are robust to changes in the dataset.
-However, the tools provide a way to natively run the MNIST dataset and adding
-more is reasonably simple.} - Tishby's, Training Size - 40\%, activation
-function - $\tanh$, batch size - 512, network shape 12,10,8,6,4,2 (how many node
-in every layer). Throughout this section if any of the hyperparameters are not
-specified assume they are the default values. 
+In the implementation chapter we discussed the importance of randomness and
+noise for compression within Neural Networks. We introduced Mutual Information
+Estimator and set up our tool chain. This allows us to investigate and try to
+reproduce the specific experiment conducted by Tishby and Saxe.
+
+In order to reproduce Tishby's work I have to compute the MI information values
+$I(X, T_{e,l})$ and $I(Y, T_{e,l})$ for the specific hyperparameters he used.
+This will allow me to plot the Information Plane and analyse the results.  In
+order to show the results are robust I tune the hyperparameters and see if the
+results change significantly. Tishby used the following default hyperparameters:
+MIE - Binning, Dataset\footnote{I did not have the time to test if the results
+are robust to changes in the dataset.  However, the tools provide a way to
+natively run the MNIST dataset and adding more is reasonably simple.} -
+Tishby's, Training Size - 40\%, activation function - $\tanh$, batch size - 512,
+network shape 12,10,8,6,4,2 (how many node in every layer). Throughout this
+section if any of the hyperparameters are not specified assume they are the
+default values. 
 
 I claim to have successfully reproduced the results if the generated Information
 Plane looks similar \autoref{figIplane} and the it follows the loose definitions
