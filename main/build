@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#pdflatex --shell-escape $1.tex && pkill -HUP mupdf-x11 && \
-#bibtex $1 && \ 
-#pdflatex --shell-escape $1.tex && pkill -HUP mupdf-x11 && \ 
+pdflatex --shell-escape $1.tex && pkill -HUP mupdf-x11 && \
+bibtex $1 && \ 
+pdflatex --shell-escape $1.tex && pkill -HUP mupdf-x11 && \ 
 pdflatex --shell-escape $1.tex && pkill -HUP mupdf-x11 &&
 python3.6 wordcount.py
 

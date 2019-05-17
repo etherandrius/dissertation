@@ -5,13 +5,13 @@ This appendix contains figures that visualize the Kernel Density Estimation
 (KDE) discrepancies when using activation function $\tanh$ and ReLu.
 \begin{itemize}
   \item{
-      $\tanh$ - see \autoref{figKDETS}, \autoref{figNetworkShapes}: Almost every
+      $\tanh$ - see \autoref{figKDETSA}, \autoref{figNetworkShapesAA}: Almost every
       figure that visualizes a NN with the $\tanh$ activation function has a
       pronounced dip in label information, this observation seems to exists
       regardless of network shape or training size
     }
   \item{
-      ReLu - see \autoref{figKDETSRelu}, \autoref{figNetworkShapesReLu}: Only
+      ReLu - see \autoref{figKDETSReluAA}, \autoref{figNetworkShapesReLuAA}: Only
       some of the ReLu NNs experience the same dip in information in the second
       layer.
     }
@@ -29,63 +29,57 @@ his paper.
   \centering
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/trainingSize/KDE20.png}
+    \includegraphics[width=\textwidth]{figs/eval/trainingSize/KDE20.jpg}
     \caption{
       Training size - 20\%
     }
-    \label{figKDETS20}
   \end{subfigure}
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/trainingSize/KDE40.png}
+    \includegraphics[width=\textwidth]{figs/eval/trainingSize/KDE40.jpg}
     \caption{
       Training size - 40\%
     }
-    \label{figKDETS40}
   \end{subfigure}
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/trainingSize/KDE70.png}
+    \includegraphics[width=\textwidth]{figs/eval/trainingSize/KDE70.jpg}
     \caption{
       Training size - 70\%
     }
-    \label{figKDETS70}
   \end{subfigure}
   \caption{
       $\tanh$: Demonstrating KDE for different training sizes.  Tweaking training
       size for Tishby's KDE MIE. Hyperparameters: Dataset - Tishby's, activation
       function - $\tanh$, batch size - 512, network shape 12,10,8,6,4,2.
     }
-  \label{figKDETS}
+  \label{figKDETSA}
 \end{figure}
 
 \begin{figure}[ht]
   \centering
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/networkShape/KDE10,8,6,4.png}
+    \includegraphics[width=\textwidth]{figs/eval/networkShape/KDE10,8,6,4.jpg}
     \caption{
       Network Shape - 12,10,8,6,4,2, Default
     }
-    \label{figNetworkShape2}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/networkShape/KDE10,4,2,2.png}
+    \includegraphics[width=\textwidth]{figs/eval/networkShape/KDE10,4,2,2.jpg}
     \caption{
       Network Shape - 12,10,4,2,2,2
     }
-    \label{figNetworkShapeDefault}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/networkShape/KDE12,12,12.png}
+    \includegraphics[width=\textwidth]{figs/eval/networkShape/KDE12,12,12.jpg}
     \caption{
       Network Shape - 12,12,12,12,2
     }
-    \label{figNetworkShape3}
   \end{subfigure}
   \hfill
   \caption{
@@ -93,7 +87,7 @@ his paper.
       size for Tishby's KDE MIE. Hyperparameters: Dataset - Tishby's, activation
       function - $\tanh$, batch size - 512, training size - 40\%.
     }
-  \label{figNetworkShapes}
+  \label{figNetworkShapesAA}
 \end{figure}
 
 % KDE Training Set
@@ -101,21 +95,21 @@ his paper.
   \centering
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/trainingSizeRelu/KDE20.png}
+    \includegraphics[width=\textwidth]{figs/eval/trainingSizeRelu/KDE20.jpg}
     \caption{
       Training size - 20\%
     }
   \end{subfigure}
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/trainingSizeRelu/KDE40.png}
+    \includegraphics[width=\textwidth]{figs/eval/trainingSizeRelu/KDE40.jpg}
     \caption{
       Training size - 40\%
     }
   \end{subfigure}
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/trainingSizeRelu/KDE70.png}
+    \includegraphics[width=\textwidth]{figs/eval/trainingSizeRelu/KDE70.jpg}
     \caption{
       Training size - 70\%
     }
@@ -125,14 +119,14 @@ his paper.
       size for Tishby's KDE MIE. Hyperparameters: Dataset - Tishby's, activation
       function - $\tanh$, batch size - 512, network shape 12,10,8,6,4,2.
     }
-  \label{figKDETSRelu}
+  \label{figKDETSReluAA}
 \end{figure}
   
 \begin{figure}[ht]
   \centering
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/networkShapeRelu/KDE1.png}
+    \includegraphics[width=\textwidth]{figs/eval/networkShapeRelu/KDE1.jpg}
     \caption{
       Network Shape - 12,10,8,6,4,2, Default
     }
@@ -140,7 +134,7 @@ his paper.
   \hfill
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/networkShapeRelu/KDE2.png}
+    \includegraphics[width=\textwidth]{figs/eval/networkShapeRelu/KDE2.jpg}
     \caption{
       Network Shape - 12,10,4,2,2,2
     }
@@ -148,7 +142,7 @@ his paper.
   \hfill
   \begin{subfigure}[t]{0.32\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{figs/eval/networkShapeRelu/KDE3.png}
+    \includegraphics[width=\textwidth]{figs/eval/networkShapeRelu/KDE3.jpg}
     \caption{
       Network Shape - 12,12,12,12,2
     }
@@ -159,7 +153,7 @@ his paper.
       size for Tishby's KDE MIE. Hyperparameters: Dataset - Tishby's, activation
       function - ReLu, batch size - 512, training size - 40\%.
     }
-  \label{figNetworkShapesReLu}
+  \label{figNetworkShapesReLuAA}
 \end{figure}
 
 \end{document}
